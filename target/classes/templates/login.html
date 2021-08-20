@@ -6,10 +6,15 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        .box-shadow {
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+    </style>
 </head>
 <body>
 <form id="form" th:action="@{/login}" method="post" class="form-horizontal container d-flex flex-centered">
-    <div class="col-4 card" style="margin-top: 50px">
+    <div class="col-4 card box-shadow" style="margin-top: 50px">
         <div class="card-header">
             <figure class="figure text-center">
                 <img style="object-fit: cover;width: 100px" th:src="@{/uploads/login.png}" alt="Login Banner">

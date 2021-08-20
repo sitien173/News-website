@@ -6,13 +6,18 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        .box-shadow {
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+    </style>
 </head>
 <body>
 <form id="form" th:action="@{/registration}"
       th:object="${user}" method="post"
       class="form-horizontal d-flex flex-centered"
       enctype="multipart/form-data">
-    <div class="col-8 card">
+    <div class="col-8 card box-shadow">
         <div class="card-header">
             <figure class="figure text-center">
                 <img style="object-fit: cover;width: 100px" th:src="@{/uploads/registration.png}" alt="Login Banner">

@@ -30,7 +30,7 @@ public class ForgotPasswordController {
     public String sendCode(@RequestParam("email") String email, Model model) {
         model.addAttribute("info", "We have send code to mail. Please check mail and change password");
         userService.forgotPassword(email);
-        return "forgot-password";
+        return "wait-confirm";
     }
 
     @GetMapping("/confirm")

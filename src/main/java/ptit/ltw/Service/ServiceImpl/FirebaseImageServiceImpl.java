@@ -7,8 +7,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ptit.ltw.Service.FirebaseImageService;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -26,8 +25,8 @@ public class  FirebaseImageServiceImpl implements FirebaseImageService {
 
     private final Environment environment;
 
-    @EventListener
-    public void init(ApplicationReadyEvent event) {
+    @PostConstruct
+    public void init() {
         // initialize Firebase
         try {
             ClassPathResource serviceAccount = new ClassPathResource("firebase.json");
@@ -67,6 +66,7 @@ public class  FirebaseImageServiceImpl implements FirebaseImageService {
         return fileUploaded;
     }
 
+    @Async
     @Override
     public void delete(String name) throws IOException {
         Bucket bucket = StorageClient.getInstance().bucket();

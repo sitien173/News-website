@@ -12,7 +12,7 @@ public interface FirebaseImageService {
 
     String save(MultipartFile file) throws IOException;
 
-    @Async
+
     void delete(String name) throws IOException;
 
     byte [] getFile(String path) throws IOException;
