@@ -1,9 +1,13 @@
 package ptit.ltw.Service;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
+import ptit.ltw.Entity.User;
 
-@Service
+import javax.validation.constraints.NotNull;
+
 public interface UserService extends UserDetailsService {
-
+    void save(@NotNull User user);
+    User findByEmail(String email);
+    User findByPhone(String phone);
+    void forgotPassword(String email);
+    void updatePassword(String email, String password);
 }

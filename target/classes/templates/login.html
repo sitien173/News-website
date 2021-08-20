@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+</head>
+<body>
+<form id="form" th:action="@{/login}" method="post" class="form-horizontal container d-flex flex-centered">
+    <div class="col-4 card" style="margin-top: 50px">
+        <div class="card-header">
+            <figure class="figure text-center">
+                <img style="object-fit: cover;width: 100px" th:src="@{/uploads/login.png}" alt="Login Banner">
+                <figcaption class="figure-caption text-center"><em>Đăng nhập để tăng trải nghiệm website</em></figcaption>
+            </figure>
+
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="username">Email</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input required class="form-input" type="email" name="username"  id="username" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="password">Mật khẩu</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
+                           class="form-input" name="password" type="password" id="password" placeholder="Mật khẩu">
+                </div>
+            </div>
+            <div class="form-group" style="float: right">
+                <a th:href="@{/forgot-password}">Quên mật khẩu</a>
+            </div>
+            <div class="form-group" style="margin-left: 100px">
+                <label class="form-checkbox">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <i class="form-icon"></i> Lưu đăng nhập
+                </label>
+            </div>
+            <div class="text-center">
+                <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn">Đăng Nhập</button>
+            </div>
+            <div class="text-right" style="margin-top: 10px">
+                <a id="btn-registration" th:href="@{/registration}">Chưa có tài khoản. Bấm vào đây để đăng ký</a>
+                <i class="icon-forward"></i>
+            </div>
+        </div>
+    </div>
+</form>
+<script th:src="@{/script/login.js}"></script>
+</body>
+</html>

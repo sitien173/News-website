@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+</head>
+<body>
+<form id="form" th:action="@{/registration}"
+      th:object="${user}" method="post"
+      class="form-horizontal d-flex flex-centered"
+      enctype="multipart/form-data">
+    <div class="col-8 card">
+        <div class="card-header">
+            <figure class="figure text-center">
+                <img style="object-fit: cover;width: 100px" th:src="@{/uploads/registration.png}" alt="Login Banner">
+                <figcaption class="figure-caption text-center"><em>Mọi thông tin cá nhân đều được bảo mật toàn vẹn</em></figcaption>
+            </figure>
+
+        </div>
+        <div class="card-body">
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="firstName">Họ</label>
+                    <input required class="form-input" type="text" id="firstName" th:field="*{firstName}"
+                           placeholder="Họ">
+                    <p th:if="${#fields.hasErrors('firstName')}" class="label label-rounded label-error"
+                       th:errors="*{firstName}"></p>
+                </div>
+                <div class="col-5 col-sm-12">
+                    <label class="form-label" for="lastName">Tên</label>
+                    <input required class="form-input" type="text" id="lastName" th:field="*{lastName}"
+                           placeholder="Tên">
+                    <p th:if="${#fields.hasErrors('lastName')}" class="label label-rounded label-error"
+                       th:errors="*{lastName}"></p>
+                </div>
+            </div>
+            <div class="form-group d-flex flex-centered">
+                <div class="col-1 col-sm-12" style="margin-right: 60px">
+                    <label class="form-label" for="age">Tuổi</label>
+                    <input required min="18" max="100" class="form-input" type="number" id="age" th:field="*{age}"
+                           placeholder="18">
+                    <p th:if="${#fields.hasErrors('age')}" class="label label-rounded label-error"
+                       th:errors="*{age}"></p>
+                </div>
+                <div class="col-3 mr-2">
+                    <label class="form-label">Giới tính</label>
+                    <label class="form-radio">
+                        <input required type="radio" name="gender" th:field="*{sex}" value="MALE" checked>
+                        <i class="form-icon"></i> Nam
+                    </label>
+                    <label class="form-radio">
+                        <input required type="radio" th:field="*{sex}" value="FEMALE" name="gender">
+                        <i class="form-icon"></i> Nữ
+                    </label>
+                </div>
+                <div class="col-5">
+                    <label class="form-label">Avatar</label>
+                    <figure id="avt-uploaded" class="avatar avatar-xl">
+                        <img th:if="${user.avatar}" th:src="@{/file(path=${user.avatar})}" alt="avt" />
+                    </figure>
+                </div>
+            </div>
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="address">Địa chỉ</label>
+                    <textarea required class="form-input" rows="2" id="address" th:field="*{address}"
+                              placeholder="Địa chỉ"></textarea>
+                    <p th:if="${#fields.hasErrors('address')}" class="label label-rounded label-error"
+                       th:errors="*{address}"></p>
+                </div>
+                <div class="col-5">
+                    <label class="form-label" for="avatar">
+                        Ảnh đại diện
+                    </label>
+                    <input accept="image/*" class="form-input" id="avatar" type="file" name="file">
+                    <div class="bar bar-sm">
+                        <div class="bar-item" id="process-bar" role="progressbar" style="width:0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <span style="display: none" class="label label-rounded label-error" id="avt-error"></span>
+                    <input type="hidden" id="avt" th:field="*{avatar}">
+                </div>
+            </div>
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="email">Email</label>
+                    <input required class="form-input" type="email" id="email" th:field="*{email}" placeholder="Email">
+                    <p th:if="${#fields.hasErrors('email')}" class="label label-rounded label-error"
+                       th:errors="*{email}"></p>
+                </div>
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="phone">Số điện thoại</label>
+                    <input required class="form-input" type="tel" id="phone" th:field="*{phone}" placeholder="Số điện thoại">
+                    <p th:if="${#fields.hasErrors('phone')}" class="label label-rounded label-error"
+                       th:errors="*{phone}"></p>
+                </div>
+            </div>
+
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="password">Mật khẩu</label>
+                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
+                           class="form-input" type="password" id="password" th:field="*{password}"
+                           placeholder="Mật khẩu">
+                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
+                       th:errors="*{password}"></p>
+                </div>
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="repassword">Nhập lại mật khẩu</label>
+                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
+                           class="form-input" type="password" id="repassword" placeholder="Nhập lại mật khẩu">
+                    <p style="display: none" id="error" class="label label-rounded label-error"></p>
+                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
+                       th:errors="*{password}"></p>
+                </div>
+            </div>
+            <div class="form-group" style="margin-left: 60px">
+                <label class="form-switch">
+                    <input type="checkbox">
+                    <i class="form-icon"></i> Gửi email thông báo cho tôi về sản phẩm và tin tức mới
+                </label>
+            </div>
+            <div class="text-center">
+                <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn">Đăng ký</button>
+            </div>
+            <div class="text-left">
+                <a th:href="@{/login}" id="btn-signin">Đã có tài khoản. Bấm vào đây để đăng nhập</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script th:src="@{script/registration.js}">
+
+</script>
+</body>
+</html>

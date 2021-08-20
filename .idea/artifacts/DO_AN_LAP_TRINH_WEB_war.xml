@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="DO AN LAP TRINH WEB:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>DO AN LAP TRINH WEB</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ltw-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="DO AN LAP TRINH WEB:war exploded" />
+    </root>
+  </artifact>
+</component>

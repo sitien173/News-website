@@ -3,6 +3,7 @@ package ptit.ltw.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ptit.ltw.Entity.Role;
+import ptit.ltw.Enum.Role;
 import ptit.ltw.Service.UserService;
 
 
@@ -18,13 +19,16 @@ import ptit.ltw.Service.UserService;
 @EnableWebSecurity
 public class SpringSecurity extends WebSecurityConfigurerAdapter {
 
+    private final Environment environment;
     private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SpringSecurity(UserService userService){
+    public SpringSecurity(Environment environment, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.environment = environment;
         this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,7 +41,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**")
                 .hasAuthority(Role.ADMIN.name())
                 .anyRequest()
-                .authenticated()
+                .permitAll()
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
@@ -45,6 +49,11 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/login?info=logout success!")
+                .and()
+                .rememberMe()
+                .key("uniqueAndSecret")
+                .tokenValiditySeconds(Integer.parseInt(environment.getProperty("remember.me.expiredAt")))
+                .userDetailsService(userService)
                 .and()
                 .formLogin()
                 .loginPage("/login");
@@ -56,14 +65,9 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     protected DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
     }
