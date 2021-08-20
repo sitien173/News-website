@@ -75,7 +75,7 @@ public class User implements UserDetails {
 
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$",
             message = "Password up to 8 characters. It includes lowercase, uppercase, characters and numbers")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     @Column(nullable = false,
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String password;
@@ -87,6 +87,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Boolean isEnable = false;
+
+    @Column
+    private Boolean isAccountNonLocked = true;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
@@ -118,7 +121,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
     }
 
     @Override

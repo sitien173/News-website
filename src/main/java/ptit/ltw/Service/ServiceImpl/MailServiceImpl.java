@@ -14,7 +14,6 @@ import javax.mail.internet.MimeMessage;
 @AllArgsConstructor
 public class MailServiceImpl implements MailService {
     private final JavaMailSender emailSender;
-
     @Override
     @Async
     public void sendMail(String to, String subject, String text) {
