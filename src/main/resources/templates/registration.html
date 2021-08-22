@@ -16,7 +16,8 @@
 <form id="form" th:action="@{/registration}"
       th:object="${user}" method="post"
       class="form-horizontal d-flex flex-centered"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data"
+      style="width: 70%;margin: auto">
     <div class="col-8 card box-shadow">
         <div class="card-header">
             <figure class="figure text-center">
@@ -43,14 +44,14 @@
                 </div>
             </div>
             <div class="form-group d-flex flex-centered">
-                <div class="col-1 col-sm-12" style="margin-right: 60px">
+                <div class="col-2">
                     <label class="form-label" for="age">Tuổi</label>
                     <input required min="18" max="100" class="form-input" type="number" id="age" th:field="*{age}"
                            placeholder="18">
                     <p th:if="${#fields.hasErrors('age')}" class="label label-rounded label-error"
                        th:errors="*{age}"></p>
                 </div>
-                <div class="col-3 mr-2">
+                <div class="col-3 mr-2" style="margin-left: 10px">
                     <label class="form-label">Giới tính</label>
                     <label class="form-radio">
                         <input required type="radio" name="gender" th:field="*{sex}" value="MALE" checked>
@@ -107,25 +108,15 @@
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="password">Mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
-                           class="form-input" type="password" id="password" th:field="*{password}"
+                           class="form-input" type="password" name="password" id="password"
                            placeholder="Mật khẩu">
-                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
-                       th:errors="*{password}"></p>
                 </div>
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="repassword">Nhập lại mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
                            class="form-input" type="password" id="repassword" placeholder="Nhập lại mật khẩu">
-                    <p style="display: none" id="error" class="label label-rounded label-error"></p>
-                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
-                       th:errors="*{password}"></p>
+                    <p style="display: none" id="repass-error" class="label label-rounded label-error"></p>
                 </div>
-            </div>
-            <div class="form-group" style="margin-left: 60px">
-                <label class="form-switch">
-                    <input type="checkbox">
-                    <i class="form-icon"></i> Gửi email thông báo cho tôi về sản phẩm và tin tức mới
-                </label>
             </div>
             <div class="text-center">
                 <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn">Đăng ký</button>

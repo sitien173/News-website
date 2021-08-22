@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ptit.ltw.Entity.User;
+import ptit.ltw.Dto.UserDto;
+import ptit.ltw.Dto.VerificationTokenDto;
 import ptit.ltw.Service.UserService;
 import ptit.ltw.Service.VerificationTokenService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -22,32 +24,35 @@ public class RegistrationController {
     @GetMapping
     public String showViewRegistration(Model model){
         if(!model.containsAttribute("user")){
-            model.addAttribute("user", new User());
+            model.addAttribute("user", new UserDto());
         }
         return "registration";
     }
 
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String registrationForm(@Valid @ModelAttribute("user") User user,
-                                   BindingResult result,
-                                   Model model){
+    public String registrationForm(@Valid @ModelAttribute("user") UserDto userDto,
+                                   @RequestParam("password") String password,
+                                   BindingResult result){
         if(result.hasErrors()) return "registration";
-        else if(userService.findByEmail(user.getEmail()) != null){
+        else if(userService.findByEmail(userDto.getEmail()) != null){
             result.rejectValue("email","error","Email is exist");
             return "registration";
-        }else if(userService.findByPhone(user.getPhone()) != null){
+        }else if(userService.findByPhone(userDto.getPhone()) != null){
             result.rejectValue("phone","error","Phone is exist");
             return "registration";
         }
         // TODO: check email isExist
-
-        userService.save(user);
-        model.addAttribute("info", "We have sent a confirmation code to your email. Please check your email and confirm your account");
-        return "wait-confirm";
+        userService.save(userDto,password);
+        return "redirect:/wait-confirm?info=We have sent a confirmation code to your email. Please check your email and confirm your account";
     }
+
+
+
     @GetMapping(value = "/confirm", params = "token")
-    public String confirmToken(@RequestParam("token") String token) {
-        verificationTokenService.confirmToken(token);
-        return "redirect:/home";
+    public String confirmToken(@RequestParam("token") String token, HttpSession session) {
+       VerificationTokenDto verificationTokenDto = verificationTokenService.confirmToken(token);
+       userService.setAuthentication(session,verificationTokenDto.getUserId());
+       return "redirect:/home";
     }
 }

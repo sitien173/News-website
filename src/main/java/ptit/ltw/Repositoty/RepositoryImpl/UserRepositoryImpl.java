@@ -1,6 +1,5 @@
 package ptit.ltw.Repositoty.RepositoryImpl;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -9,9 +8,9 @@ import ptit.ltw.Entity.User;
 import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Utils.HibernateUtils;
 
-import javax.management.Query;
 import javax.persistence.NoResultException;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Optional;
 
 @Log4j2
@@ -25,6 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.error("Save user Exception: " + e.getMessage());
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -36,11 +36,39 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.error("Update user Exception: " + e.getMessage());
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public void delete(Long id) {
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            User user = session.get(User.class,id);
+            session.beginTransaction();
+            session.delete(user);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            log.error("Delete user Exception: " + e.getMessage());
+           throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Collection<? extends User> getAll() {
+        Collection<? extends User> users = null;
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            String HQL = "select u from  User u";
+            users = session.createQuery(HQL,User.class).getResultList();
+            session.getTransaction().commit();
+        } catch (NoResultException | HibernateException e) {
+            log.error("get all user Exception: " + e.getMessage());
+        }
+        return users;
+    }
+
+    @Override
+    public Optional<? extends User> findByEmail(String email) {
         User user = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -54,7 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByPhone(String phone) {
+    public Optional<? extends User> findByPhone(String phone) {
         User user = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -63,6 +91,17 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction().commit();
         } catch (NoResultException | HibernateException e) {
             log.error("Find By Phone Exception: " + e.getMessage());
+        }
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public Optional<? extends User> findById(Long id) {
+        User user = null;
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+            user =  session.get(User.class,id);
+        } catch (NoResultException | HibernateException e) {
+            log.error("Find By Id Exception: " + e.getMessage());
         }
         return Optional.ofNullable(user);
     }

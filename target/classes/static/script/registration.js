@@ -7,10 +7,7 @@ const isValidImage = () => {
         .match(/.(jpg|jpeg|png|gif)$/i);
 }
 
-const upLoadImage = (event) => {
-    // TODO: save image to localStore
-    localStorage.setItem("imageTemp",event.target.value);
-    console.log(event.target.value);
+const upLoadImage = () => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST",URL + "/file/upload",true);
     const processBar = document.getElementById("process-bar");
@@ -23,7 +20,6 @@ const upLoadImage = (event) => {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
           // TODO: delete image if exist
             deleteImage();
-
            const avtUploaded = document.getElementById("avt-uploaded");
            let eImg;
            if(avtUploaded.childElementCount === 0){
@@ -51,21 +47,35 @@ const deleteImage = () => {
     xhr.send(formData);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+const checkPassword = (event) => {
+    const password = document.getElementById("password");
+    const rePassword = document.getElementById("repassword");
+    const error = document.getElementById("repass-error");
+    const btn = document.getElementById("btn-submit");
+    if(password.value !== rePassword.value){
+        error.style.display="block";
+        error.textContent = "Mật khẩu không khớp";
+        event.preventDefault();
+    }else {
+        error.style.display="none";
+        btn.classList.add("loading");
+        btn.disabled = true;
+    }
+}
 
-    // set value to input avatar
-    document.getElementById("avatar").setAttribute("value",localStorage.getItem("imageTemp"));
-    // check file upload is Image
-    const avt = document.getElementById("avatar");
+document.addEventListener("DOMContentLoaded", function () {
     const btnSubmit = document.getElementById("btn-submit");
+
+    document.getElementById("form").addEventListener("submit",checkPassword);
 
     document.getElementById("btn-signin").addEventListener("click",deleteImage);
 
-    avt.addEventListener("change", function (event) {
+    document.getElementById("form").addEventListener("submit",checkPassword);
+    document.getElementById("avatar").addEventListener("change", function (event) {
         const avtError = document.getElementById("avt-error");
         if (!isValidImage()) {
             avtError.style.display = "block";
-            avtError.textContent = "File must be a image!";
+            avtError.textContent = "Vui lòng chọn file có định dạng ảnh!";
             btnSubmit.disabled = true;
         } else {
             avtError.style.display = "none";
