@@ -44,7 +44,7 @@ public  class SpringSecurityAdmin extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers("/**/admin/**")
-                            .permitAll()
+                            .hasAuthority(Role.ADMIN.name())
                 .and()
                 .formLogin()
                     .loginPage("/admin/login")
@@ -60,9 +60,6 @@ public  class SpringSecurityAdmin extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                     .key("uniqueAndSecret")
                         .tokenValiditySeconds(Integer.parseInt(environment.getProperty("remember.me.expiredAt")))
-                            .userDetailsService(userService)
-                .and()
-                .exceptionHandling()
-                    .accessDeniedPage("/403");
+                            .userDetailsService(userService);
     }
 }

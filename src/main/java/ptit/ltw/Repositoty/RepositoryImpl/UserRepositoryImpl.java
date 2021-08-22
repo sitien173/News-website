@@ -1,7 +1,6 @@
 package ptit.ltw.Repositoty.RepositoryImpl;
 
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -10,10 +9,6 @@ import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Utils.HibernateUtils;
 
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Optional;
@@ -48,8 +43,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void delete(Long id) {
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            session.beginTransaction();
             User user = session.get(User.class,id);
+            session.beginTransaction();
             session.delete(user);
             session.getTransaction().commit();
         } catch (HibernateException e) {
@@ -104,9 +99,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<? extends User> findById(Long id) {
         User user = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            session.beginTransaction();
             user =  session.get(User.class,id);
-            session.getTransaction().commit();
         } catch (NoResultException | HibernateException e) {
             log.error("Find By Id Exception: " + e.getMessage());
         }

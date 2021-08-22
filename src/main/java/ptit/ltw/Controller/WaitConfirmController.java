@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/wait-confirm")
 public class WaitConfirmController {
     @GetMapping
-    public String showView(@RequestParam(required = false) String messenger, Model model){
-        if(messenger != null) model.addAttribute("info",messenger);
+    public String showView(@RequestParam(value = "info",required = false) String info, Model model){
+        if(info != null) model.addAttribute("info",info);
         return "wait-confirm";
     }
 }

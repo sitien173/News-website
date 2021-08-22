@@ -108,18 +108,14 @@
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="password">Mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
-                           class="form-input" type="password" id="password" th:field="*{password}"
+                           class="form-input" type="password" name="password" id="password"
                            placeholder="Mật khẩu">
-                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
-                       th:errors="*{password}"></p>
                 </div>
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="repassword">Nhập lại mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
                            class="form-input" type="password" id="repassword" placeholder="Nhập lại mật khẩu">
                     <p style="display: none" id="repass-error" class="label label-rounded label-error"></p>
-                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
-                       th:errors="*{password}"></p>
                 </div>
             </div>
             <div class="text-center">

@@ -2,29 +2,35 @@ package ptit.ltw.Service.ServiceImpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ptit.ltw.Converter.VerificationTokenConverter;
+import ptit.ltw.Dto.VerificationTokenDto;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Repositoty.VerificationTokenRepository;
 import ptit.ltw.Service.VerificationTokenService;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class VerificationTokenServiceImpl implements VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserRepository userRepository;
+    private final VerificationTokenConverter verificationTokenConverter;
 
     @Override
-    public Optional<VerificationToken> findByToken(String token) {
-        return verificationTokenRepository.findByToken(token);
+    public VerificationTokenDto findByToken(String token) {
+        return verificationTokenConverter.vfTokenEntityToDto(verificationTokenRepository
+                .findByToken(token)
+                    .orElseThrow(() ->
+                        new IllegalStateException(String.format("token %s not found",token))));
     }
 
     @Override
-    public VerificationToken confirmToken(String token) {
+    public VerificationTokenDto confirmToken(String token) {
         VerificationToken verificationToken = verificationTokenRepository.
-                findByToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
+                findByToken(token)
+                    .orElseThrow(() -> new IllegalStateException(String.format("token %s not found",token)));
         if (verificationToken.getConfirmedAt() != null) {
             throw new IllegalStateException("email already confirmed");
         }
@@ -36,6 +42,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         if (!verificationToken.getUser().isEnabled())
             verificationToken.getUser().setIsEnable(true);
         userRepository.update(verificationToken.getUser());
-        return verificationToken;
+        return verificationTokenConverter.vfTokenEntityToDto(verificationToken);
     }
 }

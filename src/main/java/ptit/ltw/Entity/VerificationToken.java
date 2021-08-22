@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(name = "verificationToken_token_unique", columnNames = "token"))
-public class VerificationToken implements Serializable {
-    private static final long serialVersionUID = 5186013952828648626L;
+public class VerificationToken  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,7 +32,6 @@ public class VerificationToken implements Serializable {
     @Column
     private LocalDateTime confirmedAt;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_verificationToken_user"))
     private User user;

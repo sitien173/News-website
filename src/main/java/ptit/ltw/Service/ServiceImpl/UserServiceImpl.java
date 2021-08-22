@@ -2,10 +2,18 @@ package ptit.ltw.Service.ServiceImpl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ptit.ltw.Converter.UserConverter;
+import ptit.ltw.Converter.VerificationTokenConverter;
+import ptit.ltw.Dto.UserDto;
+import ptit.ltw.Dto.VerificationTokenDto;
 import ptit.ltw.Entity.User;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.UserRepository;
@@ -13,6 +21,7 @@ import ptit.ltw.Repositoty.VerificationTokenRepository;
 import ptit.ltw.Service.MailService;
 import ptit.ltw.Service.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,27 +36,32 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
+    private final UserConverter userConverter;
+    private final VerificationTokenConverter vfConverter;
 
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseGet(() -> null);
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        return user != null ? userConverter.userEntityToDto(user) : null;
     }
 
     @Override
-    public User findByPhone(String phone) {
-        return userRepository.findByPhone(phone).orElseGet(() -> null);
+    public UserDto findByPhone(String phone) {
+        User user = userRepository.findByPhone(phone).orElse(null);
+        return user != null ? userConverter.userEntityToDto(user) : null;
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(String.format("%s not found",id)));
+    public UserDto findById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        return user != null ? userConverter.userEntityToDto(user) : null;
     }
 
     @Override
-    public List<User> getAll() {
-        return new ArrayList<>(userRepository.getAll());
+    public List<UserDto> getAll() {
+        List<User> users = new ArrayList<>(userRepository.getAll());;
+       return new ArrayList<>(userConverter.userEntityToDto(users));
     }
 
     @Override
@@ -56,20 +70,22 @@ public class UserServiceImpl implements UserService {
     }
 
     public void forgotPassword(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
-        VerificationToken verificationToken = new VerificationToken(
+        UserDto userDto = userConverter.userEntityToDto(userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email))));
+        VerificationTokenDto verificationTokenDto = new VerificationTokenDto(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
-                user
+                userDto.getId()
         );
+
+        VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
         verificationTokenRepository.save(verificationToken);
         // TODO: send mail token
         String link = environment.getProperty("base.url") + "/forgot-password/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to get password",
-                buildEmail(email, link));
+                buildEmail(userDto.getFirstName() + "-" + userDto.getLastName(), link));
     }
 
     @Override
@@ -87,32 +103,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(@NotNull User user) {
+    public void save(@NotNull UserDto userDto,String password) {
          // TODO: encode password
-        String passwordEncode = passwordEncoder.encode(user.getPassword());
+        String passwordEncode = passwordEncoder.encode(password);
+
+        User user = userConverter.userDtoToEntity(userDto);
         user.setPassword(passwordEncode);
-
-
         // TODO: save user
         userRepository.save(user);
-
+        userDto.setId(user.getId());
         // TODO: insert verificationToken and send mail to active account
-        sendMailRegistration(user);
+        sendMailRegistration(userDto.getId(), user.getEmail());
     }
-    private void sendMailRegistration(User user) {
-        VerificationToken verificationToken = new VerificationToken(
+
+    @Override
+    public void setAuthentication(HttpSession session, Long userId) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        User user = userRepository
+                    .findById(userId)
+                    .orElseThrow(() -> new IllegalStateException(String.format("id %s not found",userId)));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, user.getAuthorities());
+        securityContext.setAuthentication(authentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+    }
+
+    private void sendMailRegistration(Long userId, String email) {
+        VerificationTokenDto verificationTokenDto = new VerificationTokenDto(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
-                user
+                userId
         );
-
+        User user = userRepository.findById(userId).orElse(null);
+        VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
+        verificationToken.setUser(user);
         verificationTokenRepository.save(verificationToken);
         // TODO: send mail token authentication account
         String link = environment.getProperty("base.url") + "/registration/confirm?token=" + verificationToken.getToken();
-        mailService.sendMail(user.getEmail(), "Confirm Token to enable account",
-                buildEmail(user.getFirstName() + " " + user.getLastName(), link));
+        mailService.sendMail(email, "Confirm Token to enable account",
+                buildEmail(email, link));
     }
 
     private String buildEmail(String name, String link) {

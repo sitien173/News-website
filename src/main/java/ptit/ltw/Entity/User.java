@@ -1,6 +1,5 @@
 package ptit.ltw.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,11 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ptit.ltw.Enum.Sex;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -22,59 +18,42 @@ import java.util.List;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "UN_email", columnNames = "email"),
                             @UniqueConstraint(name = "UN_phone", columnNames = "phone")})
-public class User implements UserDetails, Serializable {
-    private static final long serialVersionUID = 5186013952828648626L;
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @NotEmpty(message = "First Name is not empty")
-    @Size(min = 2, max = 50, message = "Minimum 2 characters and maximum 50 characters")
     @Column(nullable = false,
             columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String firstName;
 
-    @NotEmpty(message = "Last Name is not empty")
-    @Size(min = 2, max = 50, message = "Minimum 2 characters and maximum 50 characters")
     @Column(nullable = false,
             columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String lastName;
 
-
     @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String avatar;
 
-    @Min(value = 18, message = "Minimum is 18")
-    @Max(value = 100, message = "Maximum is 100")
     @Column(nullable = false)
-    private Byte age = 18; // default 18
+    private Byte age;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,
             columnDefinition = "VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
-    private Sex sex = Sex.MALE; // default MALE
+    private Sex sex;
 
-
-    @JsonIgnore
     @Column(nullable = false,
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String address;
 
-    @Email(message = "Email Malformed ex: emxample123@gmail.com")
     @Column(nullable = false,
             columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String email;
 
-    @Pattern(regexp = "^(09|03|07|08|05)+([0-9]{8})$",
-            message = "Phone Malformed ex: 0342884211")
-    @Size(min = 10, max = 12, message = "Minimum 10 characters and maximum 12 characters")
     @Column(nullable = false,
             columnDefinition = "VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String phone;
 
-    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$",
-            message = "Password up to 8 characters. It includes lowercase, uppercase, characters and numbers")
     @Column(nullable = false,
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String password;
@@ -82,7 +61,7 @@ public class User implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,
             columnDefinition = "VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci")
-    private Role role = Role.USER;
+    private Role role;
 
     @Column(nullable = false)
     private Boolean isEnable = false;
@@ -90,7 +69,6 @@ public class User implements UserDetails, Serializable {
     @Column
     private Boolean isAccountNonLocked = true;
 
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},mappedBy = "user")
@@ -98,12 +76,11 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-       authorities.add(new SimpleGrantedAuthority(role.name()));
-       return authorities;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+      return authorities;
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
@@ -114,7 +91,6 @@ public class User implements UserDetails, Serializable {
         return email;
     }
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -125,7 +101,6 @@ public class User implements UserDetails, Serializable {
         return isAccountNonLocked;
     }
 
-    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
