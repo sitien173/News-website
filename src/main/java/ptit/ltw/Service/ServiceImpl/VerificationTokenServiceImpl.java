@@ -22,7 +22,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     @Override
-    public Boolean confirmToken(String token) {
+    public VerificationToken confirmToken(String token) {
         VerificationToken verificationToken = verificationTokenRepository.
                 findByToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
         if (verificationToken.getConfirmedAt() != null) {
@@ -36,6 +36,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         if (!verificationToken.getUser().isEnabled())
             verificationToken.getUser().setIsEnable(true);
         userRepository.update(verificationToken.getUser());
-        return true;
+        return verificationToken;
     }
 }

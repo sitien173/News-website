@@ -1,12 +1,9 @@
 package ptit.ltw.Controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ptit.ltw.Service.UserService;
 
 @Controller
@@ -18,9 +15,11 @@ public class UpdatePasswordController {
     public String showViewUpdatePassword(){
         return "update-password";
     }
+
     @PostMapping
-    public String handlerFormUpdate(@RequestParam("password") String password){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    public String handlerFormUpdate(@RequestParam("password") String password,
+                                    @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext){
+        String email = securityContext.getAuthentication().getName();
         userService.updatePassword(email,password);
         return "index";
     }

@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ptit.ltw.Entity.User;
 import ptit.ltw.Entity.VerificationToken;
-import ptit.ltw.Enum.Role;
 import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Repositoty.VerificationTokenRepository;
 import ptit.ltw.Service.MailService;
@@ -16,7 +15,8 @@ import ptit.ltw.Service.UserService;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,6 +37,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByPhone(String phone) {
         return userRepository.findByPhone(phone).orElseGet(() -> null);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(String.format("%s not found",id)));
+    }
+
+    @Override
+    public List<User> getAll() {
+        return new ArrayList<>(userRepository.getAll());
+    }
+
+    @Override
+    public void delete(Long id) {
+        userRepository.delete(id);
     }
 
     public void forgotPassword(String email) {
@@ -75,6 +91,7 @@ public class UserServiceImpl implements UserService {
          // TODO: encode password
         String passwordEncode = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncode);
+
 
         // TODO: save user
         userRepository.save(user);

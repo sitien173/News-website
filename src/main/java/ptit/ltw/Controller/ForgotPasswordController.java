@@ -3,6 +3,7 @@ package ptit.ltw.Controller;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Service.UserService;
 import ptit.ltw.Service.VerificationTokenService;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @AllArgsConstructor
@@ -32,13 +35,16 @@ public class ForgotPasswordController {
         userService.forgotPassword(email);
         return "wait-confirm";
     }
-
-    @GetMapping("/confirm")
-    public String confirmToken(@RequestParam("token") String token) {
-        verificationTokenService.confirmToken(token);
-        VerificationToken verificationToken = verificationTokenService.findByToken(token).orElseThrow(() -> new IllegalStateException("Token is not exist"));
+    private void setAuthentication(HttpSession session, VerificationToken verificationToken){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = new UsernamePasswordAuthenticationToken(verificationToken.getUser().getEmail(), null, verificationToken.getUser().getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "update-password";
+        securityContext.setAuthentication(authentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+    }
+    @GetMapping("/confirm")
+    public String confirmToken(@RequestParam("token") String token,HttpSession session) {
+        VerificationToken verificationToken = verificationTokenService.confirmToken(token);
+        setAuthentication(session, verificationToken);
+        return "redirect:/update-password";
     }
 }
