@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trang chủ</title>
 </head>
 <body>
-    <a href="/login">Login</a>
-    <a href="/registration">Registration</a>
+    <a th:href="@{/login}">Login</a>
+    <a  th:href="@{/user/j_spring_security_logout}">
+        Logout
+    </a>
+    <a th:href="@{/admin/dashboard}">Trang chủ admin</a>
 </body>
 </html>

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/login")
 public class LoginController {
     @GetMapping
-    public String showViewLogin(@RequestParam(value = "messenger",required = false) String messenger,
+    public String showViewLogin(@RequestParam(value = "info",required = false) String messenger,
                                 Model model){
-        if(messenger != null) model.addAttribute("info","Login Error. Please input again!");
+        if(messenger != null) model.addAttribute("info",messenger);
         return "login";
     }
 }
