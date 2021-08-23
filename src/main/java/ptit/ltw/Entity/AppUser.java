@@ -18,7 +18,7 @@ import java.util.*;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "UN_email", columnNames = "email"),
                             @UniqueConstraint(name = "UN_phone", columnNames = "phone")})
-public class User implements UserDetails {
+public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},mappedBy = "appUser")
     private Collection<VerificationToken> verificationTokens;
 
     @Override

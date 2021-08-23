@@ -23,8 +23,8 @@ public class RegistrationController {
     private final UserService userService;
     @GetMapping
     public String showViewRegistration(Model model){
-        if(!model.containsAttribute("user")){
-            model.addAttribute("user", new UserDto());
+        if(!model.containsAttribute("appUserDto")){
+            model.addAttribute("appUserDto", new UserDto());
         }
         return "registration";
     }
@@ -52,7 +52,7 @@ public class RegistrationController {
     @GetMapping(value = "/confirm", params = "token")
     public String confirmToken(@RequestParam("token") String token, HttpSession session) {
        VerificationTokenDto verificationTokenDto = verificationTokenService.confirmToken(token);
-       userService.setAuthentication(session,verificationTokenDto.getUserId());
+       userService.setAuthentication(session,verificationTokenDto.getAppUserId());
        return "redirect:/home";
     }
 }

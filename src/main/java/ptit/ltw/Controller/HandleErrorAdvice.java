@@ -29,7 +29,7 @@ public class HandleErrorAdvice {
                 "<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Chờ xác nhận</title>\n" +
+                "    <title>Lỗi</title>\n" +
                 "    <link rel=\"stylesheet\" href=\"https://unpkg.com/spectre.css/dist/spectre.min.css\">\n" +
                 "    <link rel=\"stylesheet\" href=\"https://unpkg.com/spectre.css/dist/spectre-exp.min.css\">\n" +
                 "    <link rel=\"stylesheet\" href=\"https://unpkg.com/spectre.css/dist/spectre-icons.min.css\">\n" +
@@ -48,7 +48,7 @@ public class HandleErrorAdvice {
                 "<div class=\"container d-flex flex-centered\" style=\"margin-top: 50px\">\n" +
                 "    <div class=\"card d-flex flex-centered box-shadow\">\n" +
                 "        <div class=\"card-body\">\n" +
-                "            <h5  class=\"text-bold text-break\">"+messenger+"</h5>\n" +
+                "            <div class='text-center'><h5  class=\"text-bold text-break\">\"+messenger+\"</h5></div>\n" +
                 "            <div class=\"text-center\"><a href=\"javascript:window.history.back()\">Back</a></div>\n" +
                 "        </div>\n" +
                 "    </div>\n" +

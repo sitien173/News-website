@@ -1,11 +1,9 @@
 package ptit.ltw.Entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -34,13 +32,13 @@ public class VerificationToken  {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_verificationToken_user"))
-    private User user;
+    private AppUser appUser;
 
-    public VerificationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, LocalDateTime confirmedAt, User user) {
+    public VerificationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, LocalDateTime confirmedAt, AppUser appUser) {
         this.token = token;
         this.createdAt = createdAt;
         this.expiredAt = expiredAt;
         this.confirmedAt = confirmedAt;
-        this.user = user;
+        this.appUser = appUser;
     }
 }

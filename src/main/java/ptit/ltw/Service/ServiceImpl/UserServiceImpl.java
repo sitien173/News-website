@@ -14,7 +14,7 @@ import ptit.ltw.Converter.UserConverter;
 import ptit.ltw.Converter.VerificationTokenConverter;
 import ptit.ltw.Dto.UserDto;
 import ptit.ltw.Dto.VerificationTokenDto;
-import ptit.ltw.Entity.User;
+import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Repositoty.VerificationTokenRepository;
@@ -42,26 +42,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        return user != null ? userConverter.userEntityToDto(user) : null;
+        AppUser appUser = userRepository.findByEmail(email).orElse(null);
+        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
     }
 
     @Override
     public UserDto findByPhone(String phone) {
-        User user = userRepository.findByPhone(phone).orElse(null);
-        return user != null ? userConverter.userEntityToDto(user) : null;
+        AppUser appUser = userRepository.findByPhone(phone).orElse(null);
+        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
     }
 
     @Override
     public UserDto findById(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        return user != null ? userConverter.userEntityToDto(user) : null;
+        AppUser appUser = userRepository.findById(id).orElse(null);
+        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
     }
 
     @Override
     public List<UserDto> getAll() {
-        List<User> users = new ArrayList<>(userRepository.getAll());;
-       return new ArrayList<>(userConverter.userEntityToDto(users));
+        List<AppUser> appUsers = new ArrayList<>(userRepository.getAll());;
+       return new ArrayList<>(userConverter.userEntityToDto(appUsers));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
-                userDto.getId()
+                userDto.getAppUserId()
         );
 
         VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
@@ -90,10 +90,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String email, String password) {
-        User user = userRepository.findByEmail(email)
+        AppUser appUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
-        user.setPassword(passwordEncoder.encode(password));
-        userRepository.update(user);
+        appUser.setPassword(passwordEncoder.encode(password));
+        userRepository.update(appUser);
     }
 
     @Override
@@ -107,22 +107,22 @@ public class UserServiceImpl implements UserService {
          // TODO: encode password
         String passwordEncode = passwordEncoder.encode(password);
 
-        User user = userConverter.userDtoToEntity(userDto);
-        user.setPassword(passwordEncode);
+        AppUser appUser = userConverter.userDtoToEntity(userDto);
+        appUser.setPassword(passwordEncode);
         // TODO: save user
-        userRepository.save(user);
-        userDto.setId(user.getId());
+        userRepository.save(appUser);
+        userDto.setAppUserId(appUser.getId());
         // TODO: insert verificationToken and send mail to active account
-        sendMailRegistration(userDto.getId(), user.getEmail());
+        sendMailRegistration(userDto.getAppUserId(), appUser.getEmail());
     }
 
     @Override
     public void setAuthentication(HttpSession session, Long userId) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        User user = userRepository
+        AppUser appUser = userRepository
                     .findById(userId)
                     .orElseThrow(() -> new IllegalStateException(String.format("id %s not found",userId)));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, user.getAuthorities());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(appUser.getEmail(), null, appUser.getAuthorities());
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
     }
@@ -135,9 +135,9 @@ public class UserServiceImpl implements UserService {
                 null,
                 userId
         );
-        User user = userRepository.findById(userId).orElse(null);
+        AppUser appUser = userRepository.findById(userId).orElse(null);
         VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
-        verificationToken.setUser(user);
+        verificationToken.setAppUser(appUser);
         verificationTokenRepository.save(verificationToken);
         // TODO: send mail token authentication account
         String link = environment.getProperty("base.url") + "/registration/confirm?token=" + verificationToken.getToken();

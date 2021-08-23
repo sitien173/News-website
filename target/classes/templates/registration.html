@@ -14,7 +14,7 @@
 </head>
 <body>
 <form id="form" th:action="@{/registration}"
-      th:object="${user}" method="post"
+      th:object="${appUserDto}" method="post"
       class="form-horizontal d-flex flex-centered"
       enctype="multipart/form-data"
       style="width: 70%;margin: auto">
@@ -65,7 +65,7 @@
                 <div class="col-5">
                     <label class="form-label">Avatar</label>
                     <figure id="avt-uploaded" class="avatar avatar-xl">
-                        <img th:if="${user.avatar}" th:src="@{/file(path=${user.avatar})}" alt="avt" />
+                        <img th:if="${appUserDto.avatar}" th:src="@{/file(path=${appUserDto.avatar})}" alt="avt" />
                     </figure>
                 </div>
             </div>
