@@ -4,7 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import ptit.ltw.Entity.User;
+import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Repositoty.UserRepository;
 import ptit.ltw.Utils.HibernateUtils;
 
@@ -17,10 +17,10 @@ import java.util.Optional;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     @Override
-    public void save(@NotNull User user) {
+    public void save(@NotNull AppUser appUser) {
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.save(user);
+            session.save(appUser);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.error("Save user Exception: " + e.getMessage());
@@ -29,10 +29,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(@NotNull User user) {
+    public void update(@NotNull AppUser appUser) {
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.update(user);
+            session.update(appUser);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.error("Update user Exception: " + e.getMessage());
@@ -43,9 +43,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void delete(Long id) {
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            User user = session.get(User.class,id);
+            AppUser appUser = session.get(AppUser.class,id);
             session.beginTransaction();
-            session.delete(user);
+            session.delete(appUser);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.error("Delete user Exception: " + e.getMessage());
@@ -54,12 +54,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Collection<? extends User> getAll() {
-        Collection<? extends User> users = null;
+    public Collection<? extends AppUser> getAll() {
+        Collection<? extends AppUser> users = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            String HQL = "select u from  User u";
-            users = session.createQuery(HQL,User.class).getResultList();
+            String HQL = "select u from  AppUser u";
+            users = session.createQuery(HQL, AppUser.class).getResultList();
             session.getTransaction().commit();
         } catch (NoResultException | HibernateException e) {
             log.error("get all user Exception: " + e.getMessage());
@@ -68,41 +68,41 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<? extends User> findByEmail(String email) {
-        User user = null;
+    public Optional<? extends AppUser> findByEmail(String email) {
+        AppUser appUser = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            String HQL = "from User where email = :email";
-            user = session.createQuery(HQL, User.class).setParameter("email", email).getSingleResult();
+            String HQL = "from AppUser where email = :email";
+            appUser = session.createQuery(HQL, AppUser.class).setParameter("email", email).getSingleResult();
             session.getTransaction().commit();
         } catch (NoResultException | HibernateException e) {
            log.error("Find By Email Exception: " + e.getMessage());
         }
-        return Optional.ofNullable(user);
+        return Optional.ofNullable(appUser);
     }
 
     @Override
-    public Optional<? extends User> findByPhone(String phone) {
-        User user = null;
+    public Optional<? extends AppUser> findByPhone(String phone) {
+        AppUser appUser = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            String HQL = "from User where phone = :phone";
-            user = session.createQuery(HQL, User.class).setParameter("phone", phone).getSingleResult();
+            String HQL = "from AppUser where phone = :phone";
+            appUser = session.createQuery(HQL, AppUser.class).setParameter("phone", phone).getSingleResult();
             session.getTransaction().commit();
         } catch (NoResultException | HibernateException e) {
             log.error("Find By Phone Exception: " + e.getMessage());
         }
-        return Optional.ofNullable(user);
+        return Optional.ofNullable(appUser);
     }
 
     @Override
-    public Optional<? extends User> findById(Long id) {
-        User user = null;
+    public Optional<? extends AppUser> findById(Long id) {
+        AppUser appUser = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            user =  session.get(User.class,id);
+            appUser =  session.get(AppUser.class,id);
         } catch (NoResultException | HibernateException e) {
             log.error("Find By Id Exception: " + e.getMessage());
         }
-        return Optional.ofNullable(user);
+        return Optional.ofNullable(appUser);
     }
 }

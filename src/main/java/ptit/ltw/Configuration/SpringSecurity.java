@@ -46,7 +46,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                                 .permitAll()
                 .and()
                 .logout()
-                    .logoutUrl("/j_spring_security_logout")
+                    .logoutUrl("/user/j_spring_security_logout")
                         .logoutSuccessUrl("/login?info=logout success!")
                             .deleteCookies("JSESSIONID","remember-me")
                                  .clearAuthentication(true)

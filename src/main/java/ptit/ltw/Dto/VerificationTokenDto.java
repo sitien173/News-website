@@ -16,5 +16,5 @@ public class VerificationTokenDto implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime expiredAt;
     private LocalDateTime confirmedAt;
-    private Long userId;
+    private Long appUserId;
 }

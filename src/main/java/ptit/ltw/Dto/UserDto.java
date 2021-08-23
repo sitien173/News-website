@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserDto implements Serializable {
     private static final long serialVersionUID = 5186013952828648626L;
-    private Long id;
+    private Long appUserId;
     @NotEmpty(message = "First Name is not empty")
     @Size(min = 2, max = 50, message = "Minimum 2 characters and maximum 50 characters")
     private String firstName;
