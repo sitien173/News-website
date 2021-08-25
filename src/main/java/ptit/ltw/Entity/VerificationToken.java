@@ -2,6 +2,7 @@ package ptit.ltw.Entity;
 
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,12 +13,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(name = "verificationToken_token_unique", columnNames = "token"))
+@Table(name = "verificationtoken",indexes = @Index(name = "vf_index_token",columnList = "token",unique = true))
 public class VerificationToken  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NaturalId
     @Column(nullable = false,
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String token;

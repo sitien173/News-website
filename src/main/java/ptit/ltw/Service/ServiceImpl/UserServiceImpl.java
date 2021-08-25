@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(Long id) {
-        AppUser appUser = userRepository.findById(id).orElse(null);
-        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
+        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new IllegalStateException(String.format("Id %s not found",id)));
+        return userConverter.userEntityToDto(appUser);
     }
 
     @Override
@@ -70,22 +70,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public void forgotPassword(String email) {
-        UserDto userDto = userConverter.userEntityToDto(userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email))));
-        VerificationTokenDto verificationTokenDto = new VerificationTokenDto(
+        AppUser appUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
+        VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
-                userDto.getAppUserId()
+                appUser
         );
-
-        VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
         verificationTokenRepository.save(verificationToken);
         // TODO: send mail token
         String link = environment.getProperty("base.url") + "/forgot-password/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to get password",
-                buildEmail(userDto.getFirstName() + "-" + userDto.getLastName(), link));
+                buildEmail(appUser.getFirstName() + "-" + appUser.getLastName(), link));
     }
 
     @Override
@@ -93,7 +91,7 @@ public class UserServiceImpl implements UserService {
         AppUser appUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         appUser.setPassword(passwordEncoder.encode(password));
-        userRepository.update(appUser);
+        userRepository.save(appUser);
     }
 
     @Override
@@ -111,9 +109,9 @@ public class UserServiceImpl implements UserService {
         appUser.setPassword(passwordEncode);
         // TODO: save user
         userRepository.save(appUser);
-        userDto.setAppUserId(appUser.getId());
+        userDto.setId(appUser.getId());
         // TODO: insert verificationToken and send mail to active account
-        sendMailRegistration(userDto.getAppUserId(), appUser.getEmail());
+        sendMailRegistration(userDto.getId(), appUser.getEmail());
     }
 
     @Override
@@ -135,7 +133,9 @@ public class UserServiceImpl implements UserService {
                 null,
                 userId
         );
-        AppUser appUser = userRepository.findById(userId).orElse(null);
+        AppUser appUser = userRepository
+                            .findById(userId)
+                                .orElseThrow(() -> new IllegalStateException(String.format("User id %s not found",userId)));
         VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
         verificationToken.setAppUser(appUser);
         verificationTokenRepository.save(verificationToken);

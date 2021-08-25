@@ -19,13 +19,15 @@ public class VerificationTokenConverter {
         return modelMapper.map(verificationTokenDto,VerificationToken.class);
     }
     public Collection<VerificationToken> vfTokenDtoToEntity(Collection<VerificationTokenDto> verificationTokenDtoList){
-        return verificationTokenDtoList.stream().map(vfDto -> modelMapper.map(vfDto,VerificationToken.class)).collect(Collectors.toList());
+        return verificationTokenDtoList.stream().map(this::vfTokenDtoToEntity).collect(Collectors.toList());
     }
     public VerificationTokenDto vfTokenEntityToDto(@NotNull VerificationToken verificationToken){
-        return modelMapper.map(verificationToken,VerificationTokenDto.class);
+        VerificationTokenDto verificationTokenDto = modelMapper.map(verificationToken,VerificationTokenDto.class);
+        verificationTokenDto.setAppUserId(verificationToken.getAppUser().getId());
+        return verificationTokenDto;
     }
     public Collection<VerificationTokenDto> vfTokenEntityToDto(Collection<VerificationToken> verificationTokenList){
-        return verificationTokenList.stream().map(vf -> modelMapper.map(vf,VerificationTokenDto.class)).collect(Collectors.toList());
+        return verificationTokenList.stream().map(this::vfTokenEntityToDto).collect(Collectors.toList());
     }
 
 }

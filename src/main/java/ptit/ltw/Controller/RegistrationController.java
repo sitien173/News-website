@@ -31,7 +31,7 @@ public class RegistrationController {
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String registrationForm(@Valid @ModelAttribute("user") UserDto userDto,
+    public String registrationForm(@Valid @ModelAttribute("appUserDto") UserDto userDto,
                                    @RequestParam("password") String password,
                                    BindingResult result){
         if(result.hasErrors()) return "registration";

@@ -12,9 +12,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-
-
-        <mapping class="ptit.ltw.Entity.AppUser"/>
+        <mapping class="ptit.ltw.Entity.AppUser" />
         <mapping class="ptit.ltw.Entity.VerificationToken"/>
     </session-factory>
 </hibernate-configuration>

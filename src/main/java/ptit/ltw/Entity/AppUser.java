@@ -1,6 +1,7 @@
 package ptit.ltw.Entity;
 
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +17,10 @@ import java.util.*;
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "UN_email", columnNames = "email"),
-                            @UniqueConstraint(name = "UN_phone", columnNames = "phone")})
+@Table(name = "user",
+        indexes = {@Index(name = "appUser_index_email",columnList = "email",unique = true),
+                  @Index(name = "appUser_index_email",columnList = "email",unique = true)},
+        uniqueConstraints = @UniqueConstraint(name = "phone_UN",columnNames = "phone"))
 public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,11 +49,12 @@ public class AppUser implements UserDetails {
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String address;
 
+    @NaturalId
     @Column(nullable = false,
             columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String email;
 
-    @Column(nullable = false,
+    @Column(nullable = false,unique = true,
             columnDefinition = "VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String phone;
 

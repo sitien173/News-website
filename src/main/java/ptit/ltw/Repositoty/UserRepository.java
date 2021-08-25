@@ -8,10 +8,9 @@ import java.util.Optional;
 
 public interface UserRepository {
     void save(@NotNull AppUser appUser);
-    void update(@NotNull AppUser appUser);
     void delete(Long id);
-    Collection<? extends AppUser> getAll();
-    Optional<? extends AppUser> findByEmail(String email);
-    Optional<? extends AppUser> findByPhone(String phone);
-    Optional<? extends AppUser> findById(Long id);
+    Collection<AppUser> getAll();
+    Optional<AppUser> findByEmail(String email);
+    Optional<AppUser> findByPhone(String phone);
+    Optional<AppUser> findById(Long id);
 }
