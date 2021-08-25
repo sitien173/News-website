@@ -3,6 +3,7 @@ package ptit.ltw.Repositoty.RepositoryImpl;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.VerificationTokenRepository;
@@ -18,38 +19,44 @@ import java.util.Optional;
 public class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
     @Override
     public void save(@NotNull VerificationToken verificationToken) {
+        Transaction tr = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.save(verificationToken);
-            session.getTransaction().commit();
+            tr = session.beginTransaction();
+            session.saveOrUpdate(verificationToken);
+            tr.commit();
+            session.close();
         } catch (HibernateException e) {
+            if(tr != null) tr.rollback();
             log.error("Save VerificationToken Exception: " + e.getMessage());
         }
     }
 
     @Override
     public Optional<VerificationToken> findByToken(String token) {
-        VerificationToken verificationToken = null;
+        Optional<VerificationToken> verificationToken = Optional.empty();
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            String HQL = "from VerificationToken where token = :token";
-            verificationToken = session.createQuery(HQL, VerificationToken.class)
-                    .setParameter("token", token).getSingleResult();
+           verificationToken = session.byNaturalId(VerificationToken.class).using("token",token)
+                    .loadOptional();
             session.getTransaction().commit();
-        } catch (NoResultException | HibernateException e) {
-            log.error("Find By Token Exception: " + e.getMessage());
+            session.close();
+        } catch (HibernateException e) {
+            log.error("Save VerificationToken Exception: " + e.getMessage());
         }
-        return Optional.ofNullable(verificationToken);
+        return verificationToken;
     }
     @Override
     public void setConfirmAt(Long id) {
+        Transaction tr = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             VerificationToken verificationToken = session.get(VerificationToken.class, id);
-            session.beginTransaction();
             verificationToken.setConfirmedAt(LocalDateTime.now());
+            tr = session.beginTransaction();
             session.update(verificationToken);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
+            tr.commit();
+            session.close();
+        } catch (NullPointerException | HibernateException e) {
+            if(tr != null) tr.rollback();
             log.error("setConfirmAt Exception: " + e.getMessage());
         }
     }

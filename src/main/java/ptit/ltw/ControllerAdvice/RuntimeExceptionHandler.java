@@ -1,4 +1,4 @@
-package ptit.ltw.Controller;
+package ptit.ltw.ControllerAdvice;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,12 +18,6 @@ public class RuntimeExceptionHandler extends RuntimeException{
     public ModelAndView handler403(AccessDeniedException exc){
         ModelAndView mv = new ModelAndView("error/403");
         mv.addObject("message",exc.getMessage());
-        return mv;
-    }
-    @ExceptionHandler(NullPointerException.class)
-    public ModelAndView handlerNullPointerException(NullPointerException exc){
-        ModelAndView mv = new ModelAndView("error/500");
-        mv.addObject("message",exc.getMessage());
-        return mv;
+         return mv;
     }
 }

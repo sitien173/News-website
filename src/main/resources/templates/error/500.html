@@ -18,7 +18,9 @@
 <div class="container d-flex flex-centered" style="margin-top: 50px">
     <div class="card d-flex flex-centered box-shadow">
         <div class="card-body">
-            <img th:src="@{/uploads/403.png}" style="width: 100%;height: 90%;object-fit: cover">
+            <div class="text-center">
+                <h6 th:utext="${message}"></h6>
+            </div>
             <div class="text-center">
                 <button  type="submit" onclick="history.back()" class="btn btn-primary input-group-btn">Quay lại</button>
             </div>

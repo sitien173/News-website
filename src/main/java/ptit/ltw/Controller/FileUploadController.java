@@ -12,7 +12,7 @@ import ptit.ltw.Service.FirebaseImageService;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/file")
+@RequestMapping(value = "/file")
 @AllArgsConstructor
 public class FileUploadController {
     private final FirebaseImageService firebaseImageService;
