@@ -8,6 +8,7 @@ import ptit.ltw.Entity.VerificationToken;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,7 +19,7 @@ public class VerificationTokenConverter {
     public VerificationToken vfTokenDtoToEntity(@NotNull VerificationTokenDto verificationTokenDto){
         return modelMapper.map(verificationTokenDto,VerificationToken.class);
     }
-    public Collection<VerificationToken> vfTokenDtoToEntity(Collection<VerificationTokenDto> verificationTokenDtoList){
+    public List<VerificationToken> vfTokenDtoToEntity(Collection<VerificationTokenDto> verificationTokenDtoList){
         return verificationTokenDtoList.stream().map(this::vfTokenDtoToEntity).collect(Collectors.toList());
     }
     public VerificationTokenDto vfTokenEntityToDto(@NotNull VerificationToken verificationToken){
@@ -26,7 +27,7 @@ public class VerificationTokenConverter {
         verificationTokenDto.setAppUserId(verificationToken.getAppUser().getId());
         return verificationTokenDto;
     }
-    public Collection<VerificationTokenDto> vfTokenEntityToDto(Collection<VerificationToken> verificationTokenList){
+    public List<VerificationTokenDto> vfTokenEntityToDto(Collection<VerificationToken> verificationTokenList){
         return verificationTokenList.stream().map(this::vfTokenEntityToDto).collect(Collectors.toList());
     }
 

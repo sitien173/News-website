@@ -8,6 +8,7 @@ import ptit.ltw.Entity.AppUser;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -20,7 +21,7 @@ public class UserConverter {
         userDto.setId(appUser.getId());
         return userDto;
     }
-    public Collection<UserDto> userEntityToDto(Collection<AppUser> appUsers){
+    public List<UserDto> userEntityToDto(Collection<AppUser> appUsers){
         return appUsers.stream().map(this::userEntityToDto).collect(Collectors.toList());
     }
     public AppUser userDtoToEntity(@NotNull UserDto userDto){
@@ -28,7 +29,7 @@ public class UserConverter {
         appUser.setId(userDto.getId());
         return appUser;
     }
-    public Collection<AppUser> userDtoToEntity(Collection<UserDto> userDtoList){
+    public List<AppUser> userDtoToEntity(Collection<UserDto> userDtoList){
         return userDtoList.stream().map(this::userDtoToEntity).collect(Collectors.toList());
     }
 }
