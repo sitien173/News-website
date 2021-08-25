@@ -19,8 +19,7 @@ import java.util.*;
 @Entity
 @Table(name = "user",
         indexes = {@Index(name = "appUser_index_email",columnList = "email",unique = true),
-                  @Index(name = "appUser_index_email",columnList = "email",unique = true)},
-        uniqueConstraints = @UniqueConstraint(name = "phone_UN",columnNames = "phone"))
+                  @Index(name = "appUser_index_phone",columnList = "phone",unique = true)})
 public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

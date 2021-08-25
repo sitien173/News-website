@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void delete(Long id) {
         Transaction tr = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            AppUser appUser = session.get(AppUser.class, id);
+            AppUser appUser = session.getReference(AppUser.class, id);
             tr = session.beginTransaction();
             session.delete(appUser);
             tr.commit();
