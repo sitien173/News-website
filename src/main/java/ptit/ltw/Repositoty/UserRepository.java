@@ -11,6 +11,5 @@ public interface UserRepository {
     void delete(Long id);
     Collection<AppUser> getAll();
     Optional<AppUser> findByEmail(String email);
-    Optional<AppUser> findByPhone(String phone);
     Optional<AppUser> findById(Long id);
 }

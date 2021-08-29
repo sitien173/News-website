@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "verificationtoken",indexes = @Index(name = "vf_index_token",columnList = "token",unique = true))
+@Table(name = "Verificationtoken",uniqueConstraints =
+                @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))
 public class VerificationToken  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class VerificationToken  {
     private LocalDateTime confirmedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_verificationToken_user"))
+    @JoinColumn(name = "appuser_id",foreignKey = @ForeignKey(name = "FK_verificationToken_user"))
     private AppUser appUser;
 
     public VerificationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, LocalDateTime confirmedAt, AppUser appUser) {

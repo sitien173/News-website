@@ -1,22 +1,23 @@
 package ptit.ltw.Utils;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class HibernateUtils {
-    private static StandardServiceRegistry standardServiceRegistry;
-    private static SessionFactory sessionFactory;
 
-    static {
+    @Bean
+    public SessionFactory getSessionFactory() {
+        SessionFactory sessionFactory = null;
+        StandardServiceRegistry standardServiceRegistry = null;
         try {
             // Create StandardServiceRegistry
-            standardServiceRegistry = new StandardServiceRegistryBuilder()
+             standardServiceRegistry = new StandardServiceRegistryBuilder()
                     .configure()
                     .build();
             // Create MetadataSources
@@ -31,10 +32,7 @@ public class HibernateUtils {
                 StandardServiceRegistryBuilder.destroy(standardServiceRegistry);
             }
         }
-    }
-
-    //Utility method to return SessionFactory
-    public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+
 }

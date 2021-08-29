@@ -10,10 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ptit.ltw.Converter.UserConverter;
-import ptit.ltw.Converter.VerificationTokenConverter;
-import ptit.ltw.Dto.UserDto;
-import ptit.ltw.Dto.VerificationTokenDto;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.UserRepository;
@@ -36,32 +32,21 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
-    private final UserConverter userConverter;
-    private final VerificationTokenConverter vfConverter;
-
-
     @Override
-    public UserDto findByEmail(String email) {
-        AppUser appUser = userRepository.findByEmail(email).orElse(null);
-        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
+    public AppUser findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
-    public UserDto findByPhone(String phone) {
-        AppUser appUser = userRepository.findByPhone(phone).orElse(null);
-        return appUser != null ? userConverter.userEntityToDto(appUser) : null;
+    public AppUser findById(Long id) {
+       return userRepository.findById(id)
+               .orElseThrow(() ->
+                       new IllegalStateException(String.format("Id %s not found",id)));
     }
 
     @Override
-    public UserDto findById(Long id) {
-        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new IllegalStateException(String.format("Id %s not found",id)));
-        return userConverter.userEntityToDto(appUser);
-    }
-
-    @Override
-    public List<UserDto> getAll() {
-        List<AppUser> appUsers = new ArrayList<>(userRepository.getAll());;
-       return new ArrayList<>(userConverter.userEntityToDto(appUsers));
+    public List<AppUser> getAll() {
+        return new ArrayList<>(userRepository.getAll());
     }
 
     @Override
@@ -83,7 +68,7 @@ public class UserServiceImpl implements UserService {
         // TODO: send mail token
         String link = environment.getProperty("base.url") + "/forgot-password/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to get password",
-                buildEmail(appUser.getFirstName() + "-" + appUser.getLastName(), link));
+                buildEmail(appUser.getEmail(), link));
     }
 
     @Override
@@ -101,43 +86,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(@NotNull UserDto userDto,String password) {
+    public void save(@NotNull AppUser appUser) {
          // TODO: encode password
-        String passwordEncode = passwordEncoder.encode(password);
-
-        AppUser appUser = userConverter.userDtoToEntity(userDto);
+        String passwordEncode = passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(passwordEncode);
         // TODO: save user
         userRepository.save(appUser);
-        userDto.setId(appUser.getId());
         // TODO: insert verificationToken and send mail to active account
-        sendMailRegistration(userDto.getId(), appUser.getEmail());
+        sendMailRegistration(appUser, appUser.getEmail());
     }
 
     @Override
-    public void setAuthentication(HttpSession session, Long userId) {
+    public void setAuthentication(HttpSession session, AppUser appUser) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        AppUser appUser = userRepository
-                    .findById(userId)
-                    .orElseThrow(() -> new IllegalStateException(String.format("id %s not found",userId)));
         Authentication authentication = new UsernamePasswordAuthenticationToken(appUser.getEmail(), null, appUser.getAuthorities());
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
     }
 
-    private void sendMailRegistration(Long userId, String email) {
-        VerificationTokenDto verificationTokenDto = new VerificationTokenDto(
+    private void sendMailRegistration(AppUser appUser, String email) {
+        VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
-                userId
+                appUser
         );
-        AppUser appUser = userRepository
-                            .findById(userId)
-                                .orElseThrow(() -> new IllegalStateException(String.format("User id %s not found",userId)));
-        VerificationToken verificationToken = vfConverter.vfTokenDtoToEntity(verificationTokenDto);
-        verificationToken.setAppUser(appUser);
         verificationTokenRepository.save(verificationToken);
         // TODO: send mail token authentication account
         String link = environment.getProperty("base.url") + "/registration/confirm?token=" + verificationToken.getToken();

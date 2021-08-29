@@ -1,63 +1,82 @@
 package ptit.ltw.Repositoty.RepositoryImpl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.VerificationTokenRepository;
 import ptit.ltw.Utils.HibernateUtils;
 
 import javax.persistence.NoResultException;
 import javax.validation.constraints.NotNull;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
 @Log4j2
+@AllArgsConstructor
 public class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
+    private final SessionFactory sessionFactory;
     @Override
-    public void save(@NotNull VerificationToken verificationToken) {
+    public void save(@NotNull VerificationToken verificationToken){
+        Session session =  null;
         Transaction tr = null;
-        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+        try {
+            session = sessionFactory.openSession();
             tr = session.beginTransaction();
             session.saveOrUpdate(verificationToken);
             tr.commit();
-            session.close();
         } catch (HibernateException e) {
             if(tr != null) tr.rollback();
-            log.error("Save VerificationToken Exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if(session != null) session.close();
         }
     }
 
     @Override
     public Optional<VerificationToken> findByToken(String token) {
+        Session session =  null;
+        Transaction tr = null;
         Optional<VerificationToken> verificationToken = Optional.empty();
-        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            session.beginTransaction();
-           verificationToken = session.byNaturalId(VerificationToken.class).using("token",token)
+        try {
+            session = sessionFactory.openSession();
+            tr = session.beginTransaction();
+           verificationToken = session.byNaturalId(VerificationToken.class)
+                    .using("token",token)
                     .loadOptional();
-            session.getTransaction().commit();
-            session.close();
+            tr.commit();
         } catch (HibernateException e) {
-            log.error("Save VerificationToken Exception: " + e.getMessage());
+            if(tr != null) tr.rollback();
+            e.printStackTrace();
+        } finally {
+            if(session != null) session.close();
         }
         return verificationToken;
     }
     @Override
-    public void setConfirmAt(Long id) {
+    public void setConfirmAt(Long id,LocalDateTime confirmTime) {
+        Session session = null;
         Transaction tr = null;
-        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            VerificationToken verificationToken = session.get(VerificationToken.class, id);
-            verificationToken.setConfirmedAt(LocalDateTime.now());
+        try {
+            session = sessionFactory.openSession();
+            VerificationToken verificationToken = session.getReference(VerificationToken.class, id);
+            verificationToken.setConfirmedAt(confirmTime);
             tr = session.beginTransaction();
             session.update(verificationToken);
             tr.commit();
-            session.close();
-        } catch (NullPointerException | HibernateException e) {
-            if(tr != null) tr.rollback();
-            log.error("setConfirmAt Exception: " + e.getMessage());
+        } catch (HibernateException e) {
+            if (tr != null) tr.rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
         }
     }
 }

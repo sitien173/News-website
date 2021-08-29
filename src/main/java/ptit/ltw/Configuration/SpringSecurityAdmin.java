@@ -44,7 +44,7 @@ public  class SpringSecurityAdmin extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers("/**/admin/**")
-                            .hasAuthority(Role.ADMIN.name())
+                            .permitAll()
                 .and()
                 .formLogin()
                     .loginPage("/admin/login")
