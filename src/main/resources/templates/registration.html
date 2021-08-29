@@ -14,7 +14,7 @@
 </head>
 <body>
 <form id="form" th:action="@{/registration}"
-      th:object="${appUserDto}" method="post"
+      th:object="${appUser}" method="post"
       class="form-horizontal d-flex flex-centered"
       enctype="multipart/form-data"
       style="width: 70%;margin: auto">
@@ -35,7 +35,7 @@
                     <p th:if="${#fields.hasErrors('firstName')}" class="label label-rounded label-error"
                        th:errors="*{firstName}"></p>
                 </div>
-                <div class="col-5 col-sm-12">
+                <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="lastName">Tên</label>
                     <input required class="form-input" type="text" id="lastName" th:field="*{lastName}"
                            placeholder="Tên">
@@ -44,40 +44,16 @@
                 </div>
             </div>
             <div class="form-group d-flex flex-centered">
-                <div class="col-2">
-                    <label class="form-label" for="age">Tuổi</label>
-                    <input required min="18" max="100" class="form-input" type="number" id="age" th:field="*{age}"
-                           placeholder="18">
-                    <p th:if="${#fields.hasErrors('age')}" class="label label-rounded label-error"
-                       th:errors="*{age}"></p>
+                <div class="col-5 mr-2">
+                    <label class="form-label" for="email">Email</label>
+                    <input required class="form-input" type="email" id="email" th:field="*{email}" placeholder="Email">
+                    <p th:if="${#fields.hasErrors('email')}" class="label label-rounded label-error"
+                       th:errors="*{email}"></p>
                 </div>
-                <div class="col-3 mr-2" style="margin-left: 10px">
-                    <label class="form-label">Giới tính</label>
-                    <label class="form-radio">
-                        <input required type="radio" name="gender" th:field="*{sex}" value="MALE" checked>
-                        <i class="form-icon"></i> Nam
-                    </label>
-                    <label class="form-radio">
-                        <input required type="radio" th:field="*{sex}" value="FEMALE" name="gender">
-                        <i class="form-icon"></i> Nữ
-                    </label>
-                </div>
-                <div class="col-5">
-                    <label class="form-label">Avatar</label>
-                    <figure id="avt-uploaded" class="avatar avatar-xl">
-                        <img th:if="${appUserDto.avatar}" th:src="@{/file(path=${appUserDto.avatar})}" alt="avt" />
-                    </figure>
-                </div>
+                <div class="col-5"></div>
             </div>
             <div class="form-group d-flex flex-centered">
                 <div class="col-5 col-sm-12 mr-2">
-                    <label class="form-label" for="address">Địa chỉ</label>
-                    <textarea required class="form-input" rows="2" id="address" th:field="*{address}"
-                              placeholder="Địa chỉ"></textarea>
-                    <p th:if="${#fields.hasErrors('address')}" class="label label-rounded label-error"
-                       th:errors="*{address}"></p>
-                </div>
-                <div class="col-5">
                     <label class="form-label" for="avatar">
                         Ảnh đại diện
                     </label>
@@ -88,28 +64,23 @@
                     <span style="display: none" class="label label-rounded label-error" id="avt-error"></span>
                     <input type="hidden" id="avt" th:field="*{avatar}">
                 </div>
-            </div>
-            <div class="form-group d-flex flex-centered">
-                <div class="col-5 col-sm-12 mr-2">
-                    <label class="form-label" for="email">Email</label>
-                    <input required class="form-input" type="email" id="email" th:field="*{email}" placeholder="Email">
-                    <p th:if="${#fields.hasErrors('email')}" class="label label-rounded label-error"
-                       th:errors="*{email}"></p>
-                </div>
-                <div class="col-5 col-sm-12 mr-2">
-                    <label class="form-label" for="phone">Số điện thoại</label>
-                    <input required class="form-input" type="tel" id="phone" th:field="*{phone}" placeholder="Số điện thoại">
-                    <p th:if="${#fields.hasErrors('phone')}" class="label label-rounded label-error"
-                       th:errors="*{phone}"></p>
+                <div class="col-5 d-flex flex-centered">
+                   <div>
+                       <label class="form-label">Ảnh đại diện</label>
+                       <figure id="avt-uploaded" class="avatar avatar-xl">
+                           <img th:if="${appUser.avatar}" th:src="@{/file(path=${appUser.avatar})}" alt="avt" />
+                       </figure>
+                   </div>
                 </div>
             </div>
-
             <div class="form-group d-flex flex-centered">
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="password">Mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
-                           class="form-input" type="password" name="password" id="password"
+                           class="form-input" type="password" th:field="*{password}" id="password"
                            placeholder="Mật khẩu">
+                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
+                       th:errors="*{password}"></p>
                 </div>
                 <div class="col-5 col-sm-12 mr-2">
                     <label class="form-label" for="repassword">Nhập lại mật khẩu</label>

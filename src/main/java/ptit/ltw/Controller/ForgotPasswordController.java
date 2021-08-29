@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ptit.ltw.Dto.VerificationTokenDto;
+import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Service.UserService;
 import ptit.ltw.Service.VerificationTokenService;
 
@@ -34,8 +34,8 @@ public class ForgotPasswordController {
 
     @GetMapping("/confirm")
     public String confirmToken(@RequestParam("token") String token,HttpSession session) {
-        VerificationTokenDto verificationTokenDto = verificationTokenService.confirmToken(token);
-        userService.setAuthentication(session,verificationTokenDto.getAppUserId());
+        VerificationToken verificationToken = verificationTokenService.confirmToken(token);
+        userService.setAuthentication(session,verificationToken.getAppUser());
         return "redirect:/update-password";
     }
 }

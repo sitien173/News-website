@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ptit.ltw.Dto.UserDto;
-import ptit.ltw.Dto.VerificationTokenDto;
+import ptit.ltw.Entity.AppUser;
+import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Service.UserService;
 import ptit.ltw.Service.VerificationTokenService;
 
@@ -23,27 +23,23 @@ public class RegistrationController {
     private final UserService userService;
     @GetMapping
     public String showViewRegistration(Model model){
-        if(!model.containsAttribute("appUserDto")){
-            model.addAttribute("appUserDto", new UserDto());
+        if(!model.containsAttribute("appUser")){
+            model.addAttribute("appUser", new AppUser());
         }
         return "registration";
     }
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String registrationForm(@Valid @ModelAttribute("appUserDto") UserDto userDto,
-                                   @RequestParam("password") String password,
+    public String registrationForm(@Valid @ModelAttribute("appUser") AppUser appUser,
                                    BindingResult result){
         if(result.hasErrors()) return "registration";
-        else if(userService.findByEmail(userDto.getEmail()) != null){
+        else if(userService.findByEmail(appUser.getEmail()) != null){
             result.rejectValue("email","error","Email is exist");
-            return "registration";
-        }else if(userService.findByPhone(userDto.getPhone()) != null){
-            result.rejectValue("phone","error","Phone is exist");
             return "registration";
         }
         // TODO: check email isExist
-        userService.save(userDto,password);
+        userService.save(appUser);
         return "redirect:/wait-confirm?info=We have sent a confirmation code to your email. Please check your email and confirm your account";
     }
 
@@ -51,8 +47,8 @@ public class RegistrationController {
 
     @GetMapping(value = "/confirm", params = "token")
     public String confirmToken(@RequestParam("token") String token, HttpSession session) {
-       VerificationTokenDto verificationTokenDto = verificationTokenService.confirmToken(token);
-       userService.setAuthentication(session,verificationTokenDto.getAppUserId());
+       VerificationToken verificationToken = verificationTokenService.confirmToken(token);
+       userService.setAuthentication(session,verificationToken.getAppUser());
        return "redirect:/home";
     }
 }

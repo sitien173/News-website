@@ -54,11 +54,6 @@ public class  FirebaseImageServiceImpl implements FirebaseImageService {
     }
 
     @Override
-    public String getImageUrl(String name) {
-        return String.format(Objects.requireNonNull(environment.getProperty("firebase.image-url")), name);
-    }
-
-    @Override
     public String save(MultipartFile file) throws IOException {
         Bucket bucket = StorageClient.getInstance().bucket();
         String fileUploaded = generateFileName(file.getOriginalFilename());

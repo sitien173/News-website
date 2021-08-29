@@ -1,10 +1,9 @@
 package ptit.ltw.Service;
 
-import ptit.ltw.Dto.VerificationTokenDto;
+
+import ptit.ltw.Entity.VerificationToken;
 
 
 public interface VerificationTokenService {
-    VerificationTokenDto confirmToken(String token);
-    VerificationTokenDto findByToken(String token);
-
+    VerificationToken confirmToken(String token);
 }
