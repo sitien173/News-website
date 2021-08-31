@@ -6,6 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
+          <factory-entry name="DO AN LAP TRINH WEB" />
           <factory-entry name="entityManagerFactory" value="650ed4a9-391a-4fe4-ad9d-9ce834feb051" />
         </datasource-mapping>
         <naming-strategy-map />

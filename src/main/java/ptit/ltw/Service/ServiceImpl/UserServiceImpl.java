@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,14 +40,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser findById(Long id) {
-       return userRepository.findById(id)
+       return userRepository.findById(AppUser.class,id)
                .orElseThrow(() ->
                        new IllegalStateException(String.format("Id %s not found",id)));
     }
 
     @Override
     public List<AppUser> getAll() {
-        return new ArrayList<>(userRepository.getAll());
+       return new ArrayList<>(userRepository.getAll(AppUser.class));
     }
 
     @Override
@@ -59,7 +60,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
-                LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
                 appUser
@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
     private void sendMailRegistration(AppUser appUser, String email) {
         VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
-                LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
                 appUser

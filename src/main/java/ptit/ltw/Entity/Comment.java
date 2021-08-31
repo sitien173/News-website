@@ -1,5 +1,6 @@
 package ptit.ltw.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,12 +23,13 @@ public class Comment {
     @JoinColumn(name = "post_id",foreignKey = @ForeignKey(name = "FK_comment_post"))
     private Post post;
 
-    @Column(nullable = false)
-    private LocalDateTime creatAt;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createAt;
 
     @Column
     private Long parentId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "appuser_id",foreignKey = @ForeignKey(name = "FK_comment_user"))
     private AppUser appUser;
