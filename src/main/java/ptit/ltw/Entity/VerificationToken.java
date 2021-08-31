@@ -1,6 +1,7 @@
 package ptit.ltw.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -25,21 +26,21 @@ public class VerificationToken  {
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String token;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createAt;
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;
     @Column
     private LocalDateTime confirmedAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "appuser_id",foreignKey = @ForeignKey(name = "FK_verificationToken_user"))
     private AppUser appUser;
 
-    public VerificationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, LocalDateTime confirmedAt, AppUser appUser) {
+    public VerificationToken(String token, LocalDateTime expiredAt, LocalDateTime confirmedAt, AppUser appUser) {
         this.token = token;
-        this.createdAt = createdAt;
         this.expiredAt = expiredAt;
         this.confirmedAt = confirmedAt;
         this.appUser = appUser;
