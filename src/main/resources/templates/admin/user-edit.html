@@ -1,0 +1,213 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/admin/head::head}">
+    <title>User Management</title>
+</head>
+<body>
+<div th:replace="~{/fragments/admin/header::header}"></div>
+<div class="container-xxl my-md-4 bd-layout">
+    <div th:replace="~{/fragments/admin/nav::nav}"></div>
+
+</div>
+
+<main class="container-fluid bd-main order-1 d-flex align-items-center">
+    <div class="container">
+        <div class="bd-intro ps-lg-4">
+            <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                <a class="btn btn-sm btn-bd-light mb-2 mb-md-0" href="#" style="visibility: hidden" title="View and edit this file on GitHub" target="_blank" rel="noopener"></a>
+                <h2 class="bd-title text-primary" id="content">Quản Lí Nhân Viên</h2>
+                <div class="d-inline-flex p-2">
+                    <a id='add' th:href="@{/admin/user-management}" class="btn btn-primary ms-1 ">
+                        thêm
+                    </a>
+                    <a id="edit" class="btn btn-warning ms-1 disabled" >
+                        sửa
+                    </a>
+                    <a id="delete" class="btn btn-danger ms-1 disabled" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-reverse-fill" viewBox="0 0 16 16">
+                            <path d="M0 3a2 2 0 0 1 2-2h7.08a2 2 0 0 1 1.519.698l4.843 5.651a1 1 0 0 1 0 1.302L10.6 14.3a2 2 0 0 1-1.52.7H2a2 2 0 0 1-2-2V3zm9.854 2.854a.5.5 0 0 0-.708-.708L7 7.293 4.854 5.146a.5.5 0 1 0-.708.708L6.293 8l-2.147 2.146a.5.5 0 0 0 .708.708L7 8.707l2.146 2.147a.5.5 0 0 0 .708-.708L7.707 8l2.147-2.146z"/>
+                        </svg>
+                        xoá
+                    </a>
+                    <a th:href="@{/admin/user-management(refresh=true)}" class="btn btn-success ms-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"></path>
+                        </svg>
+                        refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid bd-content ps-lg-4">
+            <div class="bd-example">
+                <div class="table-responsive">
+                    <form id="form-table" method="post" th:action="@{/admin/user-management/delete}">
+                        <table id="table" class="table table-hover table align-middle">
+                            <caption>List of users</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <fieldset class="form-check">
+                                        <input name="usersCheck" type="checkbox" class="form-check-input" id="selectAll">
+                                    </fieldset>
+                                </th>
+                                <th scope="col">Họ</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Trạng Thái</th>
+                                <th scope="col">Xác Thực</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Ngày Tạo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="user : ${users}">
+                                <tr th:id="${user.id}">
+                                    <th scope="row">
+                                        <fieldset class="form-check">
+                                            <input name="userId" th:value="${user.id}" type="checkbox" class="form-check-input">
+                                        </fieldset>
+                                    </th>
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.lastName}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <th:block th:switch="${user.isAccountNonLocked}">
+                                        <td class="text-danger" th:case="false">Lock</td>
+                                        <td class="text-primary" th:case="true">Active</td>
+                                        <td th:case="*">Không Xác Định</td>
+                                    </th:block>
+                                    <th:block th:switch="${user.isEnable}">
+                                        <td class="text-primary" th:case="true">Confirmed</td>
+                                        <td class="text-danger" th:case="false">unconfirmed</td>
+                                        <td th:case="*">Không Xác Định</td>
+                                    </th:block>
+                                    <td th:text="${user.role.name()}"></td>
+                                    <td th:text="${user.createAt.toString().replace('T',' ')}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th class="invisible"></th>
+                                <th>Họ</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <th:block th:if="${userEdit}">
+        <div class="card card-body">
+            <form id="form-edit" class="row g-3" th:action="@{/admin/user-management/update}"
+                  method="post" th:object="${userEdit}" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{password}">
+                <input type="hidden" th:field="*{isEnable}">
+                <input type="hidden" th:field="*{email}">
+                <input type="hidden" th:field="*{avatar}">
+
+
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">Họ</label>
+                    <input required placeholder="Họ" type="text" class="form-control" th:field="*{firstName}">
+                    <p th:if="${#fields.hasErrors('firstName')}" class="text-danger"
+                       th:errors="*{firstName}"></p>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Tên</label>
+                    <input required placeholder="Tên" type="text" class="form-control" th:field="*{lastName}">
+                    <p th:if="${#fields.hasErrors('lastName')}" class="text-danger"
+                       th:errors="*{lastName}"></p>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input placeholder="Email" type="email" id="email" name="email1" th:value="*{email}" class="form-control">
+                    <p th:if="${#fields.hasErrors('email')}" class="text-danger"
+                       th:errors="*{email}"></p>
+                </div>
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <img th:src="@{/file(path=*{avatar})}" class="img-thumbnail" alt="avatar">
+                    <label for="file" class="form-label">Ảnh đại diện</label>
+                    <input id="file" accept="image/*" type="file" class="form-control"  name="file">
+                    <div class="progress" style="background-color: white">
+                        <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    <span class="d-none text-danger" id="avt-error"></span>
+                </div>
+                <div class="col-md-4">
+                    <label for="role" class="form-label">Role</label>
+                    <select th:field="*{role}" class="form-select">
+                        <th:block th:if="*{role.ADMIN}">
+                            <option th:value="*{role.USER}" th:text="*{role.USER}"></option>
+                        </th:block>
+                        <th:block th:if="*{role.USER}">
+                            <option th:value="*{role.ADMIN}" th:text="*{role.ADMIN}"></option>
+                        </th:block>
+                    </select>
+                    <fieldset class="form-check">
+                        <label for="isAccountNonLocked" class="form-check-label">Trạng thái</label>
+                        <input th:field="*{isAccountNonLocked}" type="checkbox" class="form-check-input">
+                    </fieldset>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary p-2">Cập nhật</button>
+                    <button type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                       Đổi mật khẩu
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </th:block>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-changePassword" th:action="@{/admin/user-management/change-password}" method="post">
+                    <input type="hidden" name="email" th:value="${userEdit.email}">
+                    <input type="hidden" name="id" th:value="${userEdit.id}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input name="password" th:value="${userEdit.password}" type="password" class="form-control" id="password" aria-describedby="passwordSub">
+                            <div id="passwordSub" class="form-text">Tối đa 8 kí tự.Bao gồm chữ hoa, chữ thường và 1 kí tự.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="re-password" class="form-label">Xác nhận mật khẩu</label>
+                            <input th:value="${userEdit.password}" type="password" class="form-control" id="re-password" aria-describedby="re-passwordSub">
+                            <div id="re-passwordSub" class="form-text">Nhập lại mật khẩu đã nhập.</div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+<div th:insert="~{/fragments/admin/import-script::import-script}"></div>
+<script th:src="@{/script/admin/user-management.js}"></script>
+</body>
+</html>

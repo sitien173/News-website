@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void forgotPassword(String email) {
-        AppUser appUser = userRepository.findByEmail(email)
+        AppUser appUser = userRepository.findByNaturalId(AppUser.class,"email",email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
@@ -93,7 +93,12 @@ public class UserServiceImpl implements UserService {
         // TODO: save user
         userRepository.save(appUser);
         // TODO: insert verificationToken and send mail to active account
-        sendMailRegistration(appUser, appUser.getEmail());
+        if(!appUser.isEnabled()) sendMailRegistration(appUser, appUser.getEmail());
+    }
+
+    @Override
+    public void update(AppUser appUser) {
+        userRepository.save(appUser);
     }
 
     @Override

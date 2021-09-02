@@ -8,6 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,10 +26,12 @@ public class AppUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false,
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String firstName;
 
+    @NotBlank
     @Column(nullable = false,
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String lastName;
@@ -35,11 +39,13 @@ public class AppUser implements UserDetails {
     @Column(nullable = false,columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String avatar;
 
+    @Email
     @NaturalId
     @Column(nullable = false,
             columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String email;
 
+    @NotBlank
     @JsonIgnore
     @Column(nullable = false,
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
@@ -58,7 +64,7 @@ public class AppUser implements UserDetails {
     @Column(nullable = false)
     private Boolean isAccountNonLocked = true;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(updatable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createAt;
 
     @JsonIgnore
