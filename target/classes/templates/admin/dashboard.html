@@ -1,13 +1,12 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+    <head th:insert="~{/fragments/admin/head::head}">
+        <title>Admin DashBoard</title>
+    </head>
 <body>
-    DASHBOARD
-    <a th:href="@{/admin/j_spring_security_logout}">
-        Logout
-    </a>
+<div th:replace="~{/fragments/admin/header::header}"></div>
+<div class="container-xxl my-md-4 bd-layout">
+    <div th:replace="~{/fragments/admin/nav::nav}"></div>
+</div>
+<div th:insert="~{/fragments/admin/import-script::import-script}"></div>
 </body>
 </html>
