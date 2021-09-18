@@ -1,0 +1,94 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/admin/head::head}">
+    <title>Quản lí Danh Mục</title>
+</head>
+<body>
+<div th:replace="~{/fragments/admin/header::header}"></div>
+<div class="container-xxl my-md-4 bd-layout">
+    <div th:replace="~{/fragments/admin/nav::nav}"></div>
+
+</div>
+<main class="container-fluid bd-main order-1 d-flex align-items-center">
+    <div class="container-fluid">
+        <div class="bd-intro ps-lg-4">
+            <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                <a class="btn btn-sm btn-bd-light mb-2 mb-md-0" href="#" style="visibility: hidden" title="View and edit this file on GitHub" target="_blank" rel="noopener"></a>
+                <h2 class="bd-title text-primary" id="content">Quản Lí Danh Mục</h2>
+                <div class="d-inline-flex p-2">
+                    <a id="add" class="btn btn-primary ms-1 " th:href="@{/admin/category-management/add}">
+                        thêm
+                    </a>
+                    <a id="edit" class="btn btn-warning ms-1 disabled">
+                        sửa
+                    </a>
+                    <a id="delete" class="btn btn-danger ms-1 disabled" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-reverse-fill" viewBox="0 0 16 16">
+                            <path d="M0 3a2 2 0 0 1 2-2h7.08a2 2 0 0 1 1.519.698l4.843 5.651a1 1 0 0 1 0 1.302L10.6 14.3a2 2 0 0 1-1.52.7H2a2 2 0 0 1-2-2V3zm9.854 2.854a.5.5 0 0 0-.708-.708L7 7.293 4.854 5.146a.5.5 0 1 0-.708.708L6.293 8l-2.147 2.146a.5.5 0 0 0 .708.708L7 8.707l2.146 2.147a.5.5 0 0 0 .708-.708L7.707 8l2.147-2.146z"/>
+                        </svg>
+                        xoá
+                    </a>
+                    <a th:href="@{/admin/category-management(refresh=true)}" class="btn btn-success ms-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"></path>
+                        </svg>
+                        refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+        <th:block th:insert="~{/fragments/admin/category-table::category-table(${categories})}"></th:block>
+    </div>
+    <!--       if choose new user -->
+    <div th:if="${category}" id="new-category" class="container">
+        <div class="card card-body">
+            <form id="form" class="row g-3" th:action="@{/admin/category-management/add}"
+                  method="post" th:object="${category}" enctype="multipart/form-data">
+                <div class="col-md-12">
+                    <label for="name" class="form-label">Tên Danh Mục</label>
+                    <input required placeholder="Tên Danh Mục" type="text" class="form-control" th:field="*{name}" id="name">
+                    <p th:if="${#fields.hasErrors('name')}" class="text-danger"
+                       th:errors="*{name}"></p>
+                </div>
+                <div class="col-md-12">
+                    <label for="slug" class="form-label">Đường dẫn</label>
+                    <input required placeholder="Đường Dẫn" type="text" class="form-control" th:field="*{slug}" id="slug">
+                    <p th:if="${#fields.hasErrors('slug')}" class="text-danger"
+                       th:errors="*{slug}"></p>
+                </div>
+                <div class="col-md-6">
+                    <label for="file" class="form-label">Tải lên từ PC</label>
+                    <input accept="image/*" type="file" class="form-control" id="file" name="file">
+                    <div class="progress" style="background-color: white">
+                        <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    <span class="d-none text-danger" id="banner-error"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="banner" class="form-label">Hoặc Paste URL</label>
+                    <input type="text" placeholder="Dán link URL" class="form-control" th:field="*{banner}" id="banner">
+                </div>
+
+                <div class="col-md-4">
+                    <fieldset class="form-check">
+                        <input th:field="*{isEnable}" type="checkbox" class="form-check-input" id="isEnable">
+                        <label for="isEnable" class="form-check-label">Bật Hoạt Động</label>
+                    </fieldset>
+                </div>
+
+                <div class="col-12">
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button onclick="document.getElementById('new-category').classList.add('d-none')" class="btn btn-secondary m-2 p-2" type="button">Đóng</button>
+                        <button class="btn btn-success me-md-2 m-2 p-2" type="reset">Reset</button>
+                        <button type="submit" id="btn-submit" class="btn btn-primary m-2 p-2">Thêm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<div th:insert="~{/fragments/admin/import-script::import-script}"></div>
+<script th:src="@{/assets/js/admin/category-management.js}"></script>
+</body>
+</html>

@@ -3,9 +3,9 @@ package ptit.ltw.Service.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ptit.ltw.Entity.VerificationToken;
-import ptit.ltw.Repositoty.UserRepository;
-import ptit.ltw.Repositoty.VerificationTokenRepository;
-import ptit.ltw.Service.VerificationTokenService;
+import ptit.ltw.Repositoty.IRepository.UserRepository;
+import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
+import ptit.ltw.Service.IService.VerificationTokenService;
 
 import java.time.LocalDateTime;
 

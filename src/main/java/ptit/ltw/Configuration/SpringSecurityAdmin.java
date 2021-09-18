@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ptit.ltw.Enum.Role;
-import ptit.ltw.Service.UserService;
+import ptit.ltw.Service.IService.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +46,7 @@ public  class SpringSecurityAdmin extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers("/**/admin/**")
-                            .permitAll()
+                            .hasAuthority(Role.ADMIN.name())
                 .and()
                 .formLogin()
                     .loginPage("/admin/login")

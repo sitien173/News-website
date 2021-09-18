@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <div th:fragment="nav-horizontal">
+     <nav class="navbar navbar-expand-md navbar-white bg-white py-0"
+          aria-label="navbarexample" id="navbar">
+         <div class="container-fluid">
+             <button type="button" id="sidebarCollapse"
+                     class="btn btn-light py-0">
+                 <i data-feather="menu"></i> <span></span>
+             </button>
+             <img th:src="@{/assets/img/leaf.svg}" alt="logo"
+                  class="app-logo theme-item mx-2 navbrandarea1">
+             <h4 class="sidebar-title theme-item mt-2 navbrandarea2">AVNI</h4>
+             <button class="navbar-toggler py-0" type="button"
+                     data-bs-toggle="collapse" data-bs-target="#navbarsExample04"
+                     aria-controls="navbarsExample04" aria-expanded="false"
+                     aria-label="Toggle navigation">
+                 <span class="navbar-toggler-icon"><i data-feather="menu"></i></span>
+             </button>
+
+             <div class="collapse navbar-collapse mx-1" id="navbarsExample04">
+                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                     <li class="nav-item"><div class="nav-dropdown">
+                         <a class="nav-item nav-link active text-secondary py-0"
+                            aria-current="page" th:href="@{/admin/dashboard}"><i
+                                 class="data-feather theme-item" data-feather="home"></i> <span
+                                 class="theme-item">Home</span></a>
+                     </div>
+
+                     </li>
+
+                     <li class="nav-item dropdown nav-dropdown"><a
+                             class="nav-item nav-link dropdown-toggle text-secondary py-0"
+                             href="#" id="navbarDropdownMenuLink1" role="button"
+                             data-bs-toggle="dropdown" aria-expanded="false"><i
+                             class="data-feather theme-item" data-feather="grid"></i> <span
+                             class="theme-item">Services</span><i
+                             class="data-feather theme-item" data-feather="chevron-down"></i></a>
+                         <ul class="dropdown-menu"
+                             aria-labelledby="navbarDropdownMenuLink1">
+                             <li class="dropdown-item"><a th:href="@{/admin/user-management}"><i
+                                     class="data-feather theme-item" data-feather="user"></i> <span
+                                     class="theme-item"> Người Dùng</span></a></li>
+
+                             <li class="dropdown-item"><a th:href="@{/admin/category-management}"><i
+                                     class="data-feather theme-item" data-feather="folder-plus"></i> <span
+                                     class="theme-item"> Danh Mục</span></a></li>
+                             <li class="dropdown-item"><a th:href="@{/admin/post-management}"><i
+                                     class="data-feather theme-item" data-feather="package"></i> <span
+                                     class="theme-item"> Bài Đăng</span></a></li>
+                             <li class="dropdown-item"><a  href="#"><i
+                                     class="data-feather theme-item" data-feather="thumbs-up"></i> <span
+                                     class="theme-item"> Comment</span></a></li>
+                             <li class="dropdown-item"><a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="data-feather theme-item"
+                                                                                                       data-feather="settings"></i>
+                                 <span class="theme-item">Cấu Hình</span></a>
+                             </li>
+                         </ul></li>
+
+                     <li class="nav-item dropdown nav-dropdown"><a
+                             class="nav-item nav-link dropdown-toggle text-secondary notification"
+                             href="#" id="navbarDropdownmailAlert" role="button"
+                             data-bs-toggle="dropdown" aria-expanded="false"> <i
+                             class="data-feather theme-item" data-feather="bell"></i> <badge
+                             class="badge bg-danger">12</badge></a>
+                         <ul class="dropdown-menu notification-menu"
+                             aria-labelledby="navbarDropdownmailAlert">
+                             <li class="text-center"><i class="data-feather me-2"
+                                                        data-feather="message-square"></i>Notifications</li>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-white bg-info"><i
+                                     class="data-feather me-2" data-feather="user"></i> Lorem
+                                 ipsum dolor sit amet</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-white bg-info"><i
+                                     class="data-feather me-2" data-feather="user"></i> Duis aute
+                                 irure dolor in reprehenderit</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-white bg-info"><i
+                                     class="data-feather me-2" data-feather="user"></i> Excepteur
+                                 sint occaecat cupidatat</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-white bg-info"><i
+                                     class="data-feather me-2" data-feather="user"></i> Aute
+                                 irure dolor in reprehenderit in</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li class="text-center"><a href="#"
+                                                        class="dropdown-item mt-2"><i class="data-feather me-2"
+                                                                                      data-feather="list"></i> See All Notifications</a></li>
+                         </ul></li>
+
+                     <li class="nav-item dropdown nav-dropdown"><a
+                             class="nav-item nav-link dropdown-toggle text-secondary notification"
+                             href="#" id="navbarDropdownmail" role="button"
+                             data-bs-toggle="dropdown" aria-expanded="false"> <i
+                             class="data-feather theme-item" data-feather="mail"></i> <badge
+                             class="badge bg-primary">23</badge></a>
+                         <ul class="dropdown-menu notification-menu"
+                             aria-labelledby="navbarDropdownmail">
+                             <li class="text-center"><i class="data-feather me-2"
+                                                        data-feather="mail"></i>Mails</li>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-danger"><i
+                                     class="data-feather me-2" data-feather="mail"></i> Lorem
+                                 ipsum dolor sit amet</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-danger"><i
+                                     class="data-feather me-2" data-feather="mail"></i> Duis aute
+                                 irure dolor in reprehenderit</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-primary"><i
+                                     class="data-feather me-2" data-feather="mail"></i> Excepteur
+                                 sint occaecat cupidatat</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li><a href="#"
+                                    class="dropdown-item custom-dropmenu mt-2 text-warning"><i
+                                     class="data-feather me-2" data-feather="mail"></i> Aute
+                                 irure dolor in reprehenderit in</a></li>
+                             <div class="dropdown-divider"></div>
+                             <li class="text-center"><a href="#"
+                                                        class="dropdown-item mt-2"><i class="data-feather me-2"
+                                                                                      data-feather="list"></i> See All Mails</a></li>
+                         </ul></li>
+                 </ul>
+                 <div id="navSearchForm" class="mx-1">
+                     <form action="#" class="search-form py-0">
+                         <input type="text" placeholder="Search">
+                         <button type="submit">
+                             <i class="data-feather navbar-search-icon"
+                                data-feather="search"></i>
+                         </button>
+                     </form>
+                 </div>
+
+
+                 <div class="usermenu">
+                     <div class="nav-dropdown py-0">
+                         <a href="#"
+                            class="nav-item nav-link dropdown-toggle text-secondary py-0"
+                            id="navbarDropdown3" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                             <img class="theme-item user-avatar" th:src="@{/assets/img/{path}(path=${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatar})}" th:onerror="updateImg(this,[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatar}]])" alt="User image"> <!--<i class="theme-item" -->
+                             <!--data-feather="user"></i> --> <span class="theme-item" th:text="|${session.SPRING_SECURITY_CONTEXT.authentication.principal.firstName}${' '}${session.SPRING_SECURITY_CONTEXT.authentication.principal.lastName}|">My
+											Name</span><i class="theme-item" data-feather="chevron-down"></i></a>
+                         <ul class="dropdown-menu dropdown-menu-end"
+                             aria-labelledby="navbarDropdown3">
+                             <li><a href="profile.html" class="dropdown-item mt-2"><i
+                                     class="data-feather" data-feather="user"></i> Profile</a></li>
+                             <li><a href="#" class="dropdown-item mt-2"><i
+                                     class="data-feather" data-feather="mail"></i> Messages</a></li>
+                             <li><a th:href="@{/admin/j_spring_security_logout}" class="dropdown-item mt-2"><i
+                                     class="data-feather" data-feather="log-out"></i> Logout</a></li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </nav>
+ </div>
+</body>
+</html>

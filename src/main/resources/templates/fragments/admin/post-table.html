@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="post-table(posts)">
+        <div class="container-fluid bd-content ps-lg-4">
+            <div class="bd-example">
+                <div class="table-responsive">
+                    <form id="form-table" method="post" th:action="@{/admin/post-management/delete}">
+                        <table id="table" class="table table-hover table align-middle">
+                            <caption>List of Posts</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <fieldset class="form-check">
+                                        <input name="postsCheck" type="checkbox" class="form-check-input" id="selectAll">
+                                    </fieldset>
+                                </th>
+                                <th scope="col">Tiêu Đề</th>
+                                <th scope="col">Banner</th>
+                                <th scope="col">Nội Dung</th>
+                                <th scope="col">Views</th>
+                                <th scope="col">Trạng Thái</th>
+                                <th scope="col">Danh Mục</th>
+                                <th scope="col">Người Đăng</th>
+                                <th scope="col">Ngày Tạo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="post : ${posts}">
+                                <tr th:id="${post.id}">
+                                    <th scope="row">
+                                        <fieldset class="form-check">
+                                            <input name="postCheckId" th:value="${post.id}" type="checkbox" class="form-check-input">
+                                        </fieldset>
+                                    </th>
+                                    <td ><!-- HTML to write -->
+                                        <a href="#" class="d-inline-block text-truncate text-info" style="max-width: 150px;" data-bs-toggle="tooltip" th:title="${post.title}" th:text="${post.title}"></a>
+                                    </td>
+                                    <td>
+                                        <img th:src="@{/assets/img/{path}/(path=${post.banner})}" th:onerror="updateImg(this,[[${post.banner}]])" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
+                                    </td>
+                                    <td><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#modal'}${post.id}|">Hiển thị</a>
+                                        <div class="modal fade" th:id="|${'modal'}${post.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${post.id}${'Label'}|" aria-hidden="true">
+                                            <div class="modal-dialog modal-fullscreen">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="text-center" th:utext="|${'Title: '}${post.title}|"></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        <div th:utext="${post.content}"></div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a th:href="@{/admin/post-management/{id}/(id=${post.id})}" class="btn btn-primary">Go to edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-info" th:utext="${post.view}"></td>
+                                    <th:block th:switch="${post.isEnable}">
+                                        <td class="text-danger" th:case="false">Lock</td>
+                                        <td class="text-primary" th:case="true">Active</td>
+                                        <td th:case="*">Không Xác Định</td>
+                                    </th:block>
+                                    <th><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#category-modal'}${post.category.id}|" th:utext="${post.category.name}"></a>
+                                        <div class="modal fade" th:id="|${'category-modal'}${post.category.id}|" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel1">Thông tin danh mục</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body row g-3 mb-4" >
+                                                        <div class="col-12">
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-floating">
+                                                                        <input  placeholder="Họ" type="text" class="form-control" th:value="${post.category.name}">
+                                                                        <label for="firstName" class="form-label">Tên danh mục</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-floating">
+                                                                        <input  placeholder="Đường dẫn" type="text" class="form-control" th:value="${post.category.slug}">
+                                                                        <label for="firstName" class="form-label">Đường dẫn</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-floating">
+                                                                        <input  placeholder="Ngày tạo" type="text" id="createAt" class="form-control" th:value="${post.category.createAt}">
+                                                                        <label for="createAt" class="form-label">Ngày tạo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-6">
+                                                                    <img th:src="@{/assets/img/{avt}(avt=${post.category.banner})}" th:onerror="updateImg(this,[[${post.category.banner}]])"  class="img-thumbnail">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="from-check">
+                                                                        <input type="checkbox" placeholder="Trạng thái" class="form-check-input" th:checked="${post.category.isEnable}">
+                                                                        <label>Trạng thái</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a th:href="@{/admin/category-management/{id}/(id=${post.category.id})}" class="btn btn-primary">Go to edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#user-modal'}${post.appUser.id}|" th:utext="${post.appUser.email}"></a>
+                                        <div class="modal fade" th:id="|${'user-modal'}${post.appUser.id}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Thông tin người dùng</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body row g-3 mb-4" >
+                                                        <div class="col-12">
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-floating">
+                                                                        <input required placeholder="Họ" type="text" class="form-control" th:value="${post.appUser.firstName}" id="firstName">
+                                                                        <label for="firstName" class="form-label">Họ</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-floating">
+                                                                        <input required placeholder="Tên" type="text" class="form-control" th:value="${post.appUser.lastName}" id="lastName">
+                                                                        <label for="lastName" class="form-label">Tên</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-floating">
+                                                                        <input required placeholder="Email" type="email" th:value="${post.appUser.email}"  class="form-control" name="email1" id="email1">
+                                                                        <label for="email1" class="form-label">Email</label>
+                                                                    </div>
+                                                                    <br>
+                                                                    <div class="form-floating">
+                                                                        <input required placeholder="Email" type="email" th:value="${post.appUser.role.name}"  class="form-control"  id="role">
+                                                                        <label for="role" class="form-label">Role</label>
+                                                                    </div>
+
+                                                                    <br>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" required placeholder="Trạng thái" type="checkbox" th:checked="${post.appUser.isAccountNonLocked}">
+                                                                        <label class="form-label">Trạng thái</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <img th:src="@{/assets/img/{path}/(path=${post.appUser.avatar})}" th:onerror="updateImg(this,[[${post.appUser.avatar}]])" style="width: 100px;height: 100px" alt="avatar">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a th:href="@{/admin/user-management/{id}/(id=${post.appUser.id})}" class="btn btn-primary">Go to edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </th>
+                                    <td th:text="${post.createAt}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th class="invisible"></th>
+                                <th>Title</th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th>Category</th>
+                                <th>Author</th>
+                                <th class="invisible"></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

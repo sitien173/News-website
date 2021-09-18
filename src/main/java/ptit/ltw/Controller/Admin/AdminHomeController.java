@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminHomeController {
     @GetMapping
     public String showViewDashBoard(){
-        return "admin/dashboard";
+        return "admin/index";
     }
 }

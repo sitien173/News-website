@@ -19,7 +19,7 @@
     <div class="col-4 card box-shadow" style="margin-top: 50px">
         <div class="card-header">
             <figure class="figure text-center">
-                <img style="object-fit: cover;width: 100px" th:src="@{/uploads/admin.png}" alt="Login Banner">
+                <img style="object-fit: cover;width: 100px" th:src="@{/assets/img/admin.png}" alt="Login Banner">
                 <figcaption class="figure-caption text-center"><em>Trang đăng nhập quản trị viên</em></figcaption>
             </figure>
             <figure class="figure text-center">
@@ -32,7 +32,7 @@
                     <label class="form-label" for="username">Email</label>
                 </div>
                 <div class="col-9 col-sm-12">
-                    <input required class="form-input" type="email" name="username"  id="username" placeholder="Email">
+                    <input required class="form-input" type="text" name="username"  id="username" placeholder="Email">
                 </div>
             </div>
             <div class="form-group">
@@ -40,8 +40,7 @@
                     <label class="form-label" for="password">Mật khẩu</label>
                 </div>
                 <div class="col-9 col-sm-12">
-                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
-                           class="form-input" name="password" type="password" id="password" placeholder="Mật khẩu">
+                    <input required class="form-input" name="password" type="password" id="password" placeholder="Mật khẩu">
                 </div>
             </div>
             <div class="text-center">
@@ -50,6 +49,6 @@
         </div>
     </div>
 </form>
-<script th:src="@{/script/login.js}"></script>
+<script th:src="@{/assets/js/login.js}"></script>
 </body>
 </html>
