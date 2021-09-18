@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ptit.ltw.Entity.VerificationToken;
-import ptit.ltw.Repositoty.VerificationTokenRepository;
+import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

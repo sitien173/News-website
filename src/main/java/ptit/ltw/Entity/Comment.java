@@ -1,11 +1,11 @@
 package ptit.ltw.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,16 +20,15 @@ public class Comment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id",foreignKey = @ForeignKey(name = "FK_comment_post"))
+    @JoinColumn(name = "post_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "FK_comment_post"))
     private Post post;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createAt;
+    @Column(updatable = false)
+    private LocalDate createAt = LocalDate.now();
 
     @Column
     private Long parentId;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "appuser_id",foreignKey = @ForeignKey(name = "FK_comment_user"))
     private AppUser appUser;

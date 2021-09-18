@@ -12,10 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
-import ptit.ltw.Repositoty.UserRepository;
-import ptit.ltw.Repositoty.VerificationTokenRepository;
-import ptit.ltw.Service.MailService;
-import ptit.ltw.Service.UserService;
+import ptit.ltw.Repositoty.IRepository.UserRepository;
+import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
+import ptit.ltw.Service.IService.FileStoreService;
+import ptit.ltw.Service.IService.MailService;
+import ptit.ltw.Service.IService.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -23,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
+    private final FileStoreService fileStoreService;
     @Override
     public AppUser findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
@@ -47,12 +48,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AppUser> getAll() {
-       return new ArrayList<>(userRepository.getAll(AppUser.class));
+        return new ArrayList<>(userRepository.getAll(AppUser.class));
     }
 
     @Override
     public void delete(Long id) {
-        userRepository.delete(id);
+        userRepository.delete(AppUser.class,id);
     }
 
     public void forgotPassword(String email) {

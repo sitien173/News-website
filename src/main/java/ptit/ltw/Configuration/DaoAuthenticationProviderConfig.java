@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ptit.ltw.Service.UserService;
+import ptit.ltw.Service.IService.UserService;
 
 @Configuration
 @AllArgsConstructor

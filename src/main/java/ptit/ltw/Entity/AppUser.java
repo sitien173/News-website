@@ -1,6 +1,5 @@
 package ptit.ltw.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,8 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,7 +40,7 @@ public class AppUser implements UserDetails {
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
     private String lastName;
 
-    @Column(nullable = false,columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(columnDefinition = "VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String avatar;
 
     @Email
@@ -46,51 +50,44 @@ public class AppUser implements UserDetails {
     private String email;
 
     @NotBlank
-    @JsonIgnore
     @Column(nullable = false,
             columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String password;
 
-    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,
             columnDefinition = "VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private Role role = Role.USER;
 
-    @JsonIgnore
     @Column(nullable = false)
     private Boolean isEnable = false;
 
     @Column(nullable = false)
     private Boolean isAccountNonLocked = true;
 
-    @Column(updatable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createAt;
+    @Column(updatable = false)
+    private LocalDate createAt = LocalDate.now();
 
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            mappedBy = "appUser")
+             cascade = CascadeType.ALL,
+             mappedBy = "appUser")
     private List<VerificationToken> verificationTokens;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "appUser",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE)
+            orphanRemoval=true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     private List<Post> posts;
 
-    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
-                cascade = CascadeType.REMOVE,
+                cascade = CascadeType.ALL,
                 mappedBy = "appUser")
     private List<Comment> comments;
 
-
-
-
-    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
@@ -103,13 +100,11 @@ public class AppUser implements UserDetails {
         return password;
     }
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -120,7 +115,6 @@ public class AppUser implements UserDetails {
         return isAccountNonLocked;
     }
 
-    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -130,4 +124,5 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return isEnable;
     }
+
 }

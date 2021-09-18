@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="user-card">
+    <div class="card card-body">
+        <div class="row g3">
+            <div class="col-md-12">
+                <label for="firstName" class="form-label">Họ</label>
+                <input readonly placeholder="Họ" type="text" class="form-control bg-transparent text-dark" th:value="${firstName}" id="firstName">
+            </div>
+            <div class="col-md-12">
+                <label for="lastName" class="form-label">Tên</label>
+                <input readonly placeholder="Tên" type="text" class="form-control bg-transparent text-dark" th:value="${lastName}" id="lastName">
+            </div>
+            <div class="col-md-12">
+                <label for="email" class="form-label">Email</label>
+                <input readonly placeholder="Email" type="email" th:value="${email}"  class="form-control bg-transparent text-dark" id="email">
+            </div>
+            <br>
+            <div class="col-md-6">
+                <label  class="form-label">Ảnh đại diện</label>
+                <img th:src="@{/assets/img/{avt}(avt=${avatar})}" th:onerror="updateImg(this,[[${avatar}]])" class="img-thumbnail">
+            </div>
+            <div class="col-md-6">
+                <label for="role" class="form-label">Role</label>
+                <input readonly id="role"  class="form-control bg-transparent text-dark" th:value="${role}">
+                <br>
+                <fieldset class="form-check">
+                    <input readonly th:if="${isAccountNonLocked == true}" checked type="checkbox" class="form-check-input bg-transparent text-dark" id="isAccountNonLocked">
+                    <input readonly th:if="${isAccountNonLocked == false}" type="checkbox" class="form-check-input bg-transparent text-dark" id="isAccountNonLocked">
+                    <label for="isAccountNonLocked" class="form-check-label">Trạng thái</label>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

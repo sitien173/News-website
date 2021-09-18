@@ -1,0 +1,12 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{/fragments/admin/head::head}">
+        <title>Admin DashBoard</title>
+    </head>
+<body>
+<div th:replace="~{/fragments/admin/header::header}"></div>
+<div class="container-xxl my-md-4 bd-layout">
+    <div th:replace="~{/fragments/admin/nav::nav}"></div>
+</div>
+<div th:insert="~{/fragments/admin/import-script::import-script}"></div>
+</body>
+</html>
