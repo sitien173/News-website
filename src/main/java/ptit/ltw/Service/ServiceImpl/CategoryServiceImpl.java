@@ -9,6 +9,7 @@ import ptit.ltw.Service.IService.CategoryService;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +18,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAll() {
         return new ArrayList<>(categoryRepository.getAll(Category.class));
+    }
+
+    @Override
+    public List<Category> getAllIsEnable() {
+       return this.getAll()
+               .stream().filter(Category::getIsEnable).collect(Collectors.toList());
     }
 
     @Override

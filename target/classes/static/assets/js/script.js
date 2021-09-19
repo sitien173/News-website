@@ -145,7 +145,7 @@ function removeColorCookie() {
 }
 function removeViewSizeCookie() {
 	document.cookie = "compactView=; expires=Thu, 01 Jan 1900 00:00:00 UTC;";
-	//location.reload();
+	location.reload();
 }
 
 

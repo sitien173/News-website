@@ -178,7 +178,9 @@
 <script th:src="@{/assets/js/admin/post-management.js}"></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
-        CKEDITOR.replace( 'content' );
+        CKEDITOR.replace( 'content', {
+            height: 800
+        } );
         feather.replace();
     });
 </script>

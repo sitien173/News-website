@@ -42,7 +42,7 @@ public class AdminPostManagementController {
     }
 
     private List<Category> getCategories(){
-        categories = categoryService.getAll();
+        categories = categoryService.getAllIsEnable();
         return categories;
     }
 

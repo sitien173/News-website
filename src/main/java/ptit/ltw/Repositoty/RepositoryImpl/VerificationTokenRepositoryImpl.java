@@ -1,6 +1,6 @@
 package ptit.ltw.Repositoty.RepositoryImpl;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-@Log4j2
+@Slf4j
 public class VerificationTokenRepositoryImpl extends CrudCustomRepositoryImpl<VerificationToken,Long> implements VerificationTokenRepository {
 
     public VerificationTokenRepositoryImpl(SessionFactory sessionFactory) {
@@ -36,10 +36,11 @@ public class VerificationTokenRepositoryImpl extends CrudCustomRepositoryImpl<Ve
             session.update(verificationToken);
             tr.commit();
         } catch (HibernateException e) {
-            if (tr != null) tr.rollback();
+            log.error("Closing session after rollback error: ", e);
+            if (tr != null && tr.isActive()) tr.rollback();
             e.printStackTrace();
         } finally {
-            if (session != null) session.close();
+            if (session != null && session.isOpen()) session.close();
         }
     }
 

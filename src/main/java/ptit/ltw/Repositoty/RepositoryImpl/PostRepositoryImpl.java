@@ -1,5 +1,6 @@
 package ptit.ltw.Repositoty.RepositoryImpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +12,7 @@ import ptit.ltw.Entity.Post;
 import ptit.ltw.Repositoty.IRepository.PostRepository;
 
 @Repository
+@Slf4j
 public class PostRepositoryImpl extends CrudCustomRepositoryImpl<Post,Long> implements PostRepository {
     public PostRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -37,10 +39,11 @@ public class PostRepositoryImpl extends CrudCustomRepositoryImpl<Post,Long> impl
             session.delete(post);
             tr.commit();
         } catch (HibernateException e) {
-            if(tr != null) tr.rollback();
-            e.printStackTrace();
+            log.error("Closing session after rollback error: ", e);
+            if(tr != null && tr.isActive()) tr.rollback();
+           log.error(e.getMessage());
         } finally {
-            if(session != null) session.close();
+            if(session != null && session.isOpen()) session.close();
         }
     }
 }
