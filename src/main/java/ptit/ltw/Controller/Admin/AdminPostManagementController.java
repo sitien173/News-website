@@ -27,7 +27,6 @@ public class AdminPostManagementController {
     private final PostService postService;
     private final FileStoreService fileStoreService;
     private final CategoryService categoryService;
-    private final UserService userService;
     private static List<Post> posts;
     private static List<Category> categories;
 
@@ -66,6 +65,7 @@ public class AdminPostManagementController {
         return "admin/post-management";
     }
 
+
     @PostMapping(value = "/add",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String registrationForm(@Valid @ModelAttribute("post") Post post,
                                    BindingResult result,
@@ -79,8 +79,7 @@ public class AdminPostManagementController {
         // upload file to uploads
         if(!file.isEmpty()) post.setBanner(fileStoreService.upload(file));
 
-        // TODO: check email isExist
-        AppUser appUser = userService.findByEmail(securityContext.getAuthentication().getName());
+        AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         post.setAppUser(appUser);
         postService.save(post);
         return "redirect:/admin/post-management?refresh=true";
@@ -104,8 +103,7 @@ public class AdminPostManagementController {
             // check change email
         else if( !file.isEmpty() )
             post.setBanner(fileStoreService.upload(file));
-
-        AppUser appUser = userService.findByEmail(securityContext.getAuthentication().getName());
+        AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         post.setAppUser(appUser);
         postService.save(post);
         return "redirect:/admin/post-management?refresh=true";

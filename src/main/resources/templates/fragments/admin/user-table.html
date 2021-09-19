@@ -22,7 +22,6 @@
                                 <th scope="col">Họ</th>
                                 <th scope="col">Tên</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Posts</th>
                                 <th scope="col">Trạng Thái</th>
                                 <th scope="col">Xác Thực</th>
                                 <th scope="col">Role</th>
@@ -40,27 +39,6 @@
                                     <td th:text="${user.firstName}"></td>
                                     <td th:text="${user.lastName}"></td>
                                     <td th:text="${user.email}"></td>
-                                    <td>
-                                        <a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#modal'}${user.id}|"  th:text="|${user.posts.size}${' Posts'}|"></a>
-                                        <div class="modal fade" th:id="|${'modal'}${user.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${user.id}${'Label'}|" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="card card-body">
-                                                        <div th:each="post : ${user.posts}">
-                                                            <p class="text-center">
-                                                                <a class="text-left m-2" th:href="@{/admin/post-management/{id}/(id=${post.id})}" th:utext="${post.title}"></a>
-                                                                <span class="text-muted m-2" th:utext="|${post.view}${' view'}|"></span>
-                                                                <span class="text-muted m-2" th:utext="|${'ngày tạo: '}${post.createAt}|"></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
                                     <th:block th:switch="${user.isAccountNonLocked}">
                                         <td class="text-danger" th:case="false">Lock</td>
                                         <td class="text-primary" th:case="true">Active</td>
@@ -82,7 +60,6 @@
                                 <th>Họ</th>
                                 <th>Tên</th>
                                 <th>Email</th>
-                                <th class="invisible"></th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>

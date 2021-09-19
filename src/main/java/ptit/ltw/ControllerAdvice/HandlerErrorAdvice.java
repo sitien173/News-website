@@ -84,15 +84,6 @@ public class HandlerErrorAdvice {
         return ResponseEntity.internalServerError().body(buildPageError(message));
     }
 
-    @ExceptionHandler(HibernateException.class)
-    public ResponseEntity<String> handlerHibernateException(HibernateException exc) {
-        String message = "<div class='text-left'>" +
-                "<h4><strong>Message: </strong><em>Lỗi Kết Nối Tới CSDL</em></h4> " +
-                "<h4 class='text-break'><strong>Error Messenger:</strong> <em>"+ exc.getMessage() +"</em> </h4>" +
-                "</div>";
-        return ResponseEntity.internalServerError().body(buildPageError(message));
-    }
-
     private String buildPageError(String message){
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +

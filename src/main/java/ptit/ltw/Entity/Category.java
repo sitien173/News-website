@@ -3,6 +3,7 @@ package ptit.ltw.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -40,7 +41,8 @@ public class Category {
     @Column
     private Boolean isEnable = true;
 
-    @OneToMany(mappedBy = "category",orphanRemoval = true,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",orphanRemoval = true,fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     private List<Post> posts;
 
 }

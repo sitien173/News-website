@@ -1,6 +1,7 @@
 package ptit.ltw.Entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,20 +71,19 @@ public class AppUser implements UserDetails {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY,
-             cascade = CascadeType.ALL,
-             mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "appUser")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+              org.hibernate.annotations.CascadeType.DELETE})
     private List<VerificationToken> verificationTokens;
 
-    @OneToMany(mappedBy = "appUser",
-            orphanRemoval=true,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY , orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     private List<Post> posts;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
+                orphanRemoval = true,
                 cascade = CascadeType.ALL,
                 mappedBy = "appUser")
     private List<Comment> comments;
