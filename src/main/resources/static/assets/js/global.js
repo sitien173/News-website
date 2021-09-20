@@ -40,3 +40,8 @@ const checkPassword = (event) => {
     }
 }
 
+const updateImg = (element,url) => {
+    element.onerror = null;
+    element.src = url;
+}
+

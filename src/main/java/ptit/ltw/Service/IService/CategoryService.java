@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CategoryService {
     List<Category> getAll();
+    List<Category> getAllIsEnable();
     Category findBySlug(String slug);
     Category findById(Integer id);
     Category findByName(String name);

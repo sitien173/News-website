@@ -42,7 +42,7 @@ public class RegistrationController {
             result.rejectValue("email","error","Email is exist");
             return "public/registration";
         }
-        appUser.setAvatar(fileStoreService.upload(file));
+        if(!file.isEmpty())  appUser.setAvatar(fileStoreService.upload(file));
         // TODO: check email isExist
         userService.save(appUser);
         return "redirect:/wait-confirm?info=We have sent a confirmation code to your email. Please check your email and confirm your account";

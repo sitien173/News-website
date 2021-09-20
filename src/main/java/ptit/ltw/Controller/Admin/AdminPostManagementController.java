@@ -27,10 +27,8 @@ public class AdminPostManagementController {
     private final PostService postService;
     private final FileStoreService fileStoreService;
     private final CategoryService categoryService;
-    private final UserService userService;
     private static List<Post> posts;
     private static List<Category> categories;
-
 
     private Post getPost(){
         return new Post();
@@ -42,7 +40,7 @@ public class AdminPostManagementController {
     }
 
     private List<Category> getCategories(){
-        categories = categoryService.getAll();
+        categories = categoryService.getAllIsEnable();
         return categories;
     }
 
@@ -66,9 +64,11 @@ public class AdminPostManagementController {
         return "admin/post-management";
     }
 
+
     @PostMapping(value = "/add",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String registrationForm(@Valid @ModelAttribute("post") Post post,
                                    BindingResult result,
+                                   @RequestParam("cateIds") int[] cateIds,
                                    @RequestParam("file") MultipartFile file,
                                    @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext,
                                    Model model) throws IOException {
@@ -79,11 +79,23 @@ public class AdminPostManagementController {
         // upload file to uploads
         if(!file.isEmpty()) post.setBanner(fileStoreService.upload(file));
 
-        // TODO: check email isExist
-        AppUser appUser = userService.findByEmail(securityContext.getAuthentication().getName());
+        updatePostCategory(post, cateIds);
+
+        AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         post.setAppUser(appUser);
+
         postService.save(post);
         return "redirect:/admin/post-management?refresh=true";
+    }
+
+    private void updatePostCategory(Post post,int[] cateIds) {
+        for(int cateId : cateIds){
+            categories.forEach(category -> {
+                if(category.getId() == cateId){
+                    post.addCategory(category);
+                }
+            });
+        }
     }
 
 
@@ -98,14 +110,17 @@ public class AdminPostManagementController {
     @PostMapping(value = "/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String updateForm(@Valid @ModelAttribute("postEdit") Post post,
                              BindingResult result,
+                             @RequestParam("cateIds") int[] cateIds,
                              @RequestParam("file")MultipartFile file,
                              @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext) throws IOException {
-        if(result.hasErrors()) return "admin/category-edit";
+        if(result.hasErrors()) return "admin/post-edit";
             // check change email
         else if( !file.isEmpty() )
             post.setBanner(fileStoreService.upload(file));
 
-        AppUser appUser = userService.findByEmail(securityContext.getAuthentication().getName());
+        updatePostCategory(post,cateIds);
+
+        AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         post.setAppUser(appUser);
         postService.save(post);
         return "redirect:/admin/post-management?refresh=true";

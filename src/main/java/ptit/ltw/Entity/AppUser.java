@@ -1,6 +1,7 @@
 package ptit.ltw.Entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,10 +13,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -70,20 +68,19 @@ public class AppUser implements UserDetails {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY,
-             cascade = CascadeType.ALL,
-             mappedBy = "appUser")
-    private List<VerificationToken> verificationTokens;
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "appUser")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+              org.hibernate.annotations.CascadeType.DELETE})
+    private List<VerificationToken> verificationTokens = new ArrayList<>();
 
-    @OneToMany(mappedBy = "appUser",
-            orphanRemoval=true,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY , orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     private List<Post> posts;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
+                orphanRemoval = true,
                 cascade = CascadeType.ALL,
                 mappedBy = "appUser")
     private List<Comment> comments;
@@ -125,4 +122,7 @@ public class AppUser implements UserDetails {
         return isEnable;
     }
 
+    public void addVerificationToken(VerificationToken verificationToken){
+        this.verificationTokens.add(verificationToken);
+    }
 }

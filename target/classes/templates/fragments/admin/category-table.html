@@ -22,7 +22,6 @@
                             <th scope="col">Tên</th>
                             <th scope="col">Đường dẫn</th>
                             <th scope="col">Banner</th>
-                            <th scope="col">Posts</th>
                             <th scope="col">Trạng Thái</th>
                             <th scope="col">Ngày Tạo</th>
                         </tr>
@@ -40,28 +39,6 @@
                                 <td>
                                     <img th:src="@{/uploads/images/{path}(path=${category.banner})}" th:onerror="updateImg(this,[[${category.banner}]])"  style="width: 100px;height: 100px;object-fit: cover" class="img-thumbnail">
                                 </td>
-                                <td>
-                                    <a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#modal'}${category.id}|"  th:text="|${category.posts.size}${' Posts'}|"></a>
-                                    <div class="modal fade" th:id="|${'modal'}${category.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${category.id}${'Label'}|" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="card card-body">
-                                                    <div th:each="post : ${category.posts}">
-                                                        <p class="text-center">
-                                                            <a class="d-inline-block text-truncate text-info" style="max-width: 500px;" th:href="@{/admin/post-management/{id}/(id=${post.id})}" th:title="${post.title}" th:text="${post.title}"></a>
-                                                            <span class="text-muted m-2" th:utext="|${post.view}${' view'}|"></span>
-                                                            <span class="text-muted m-2" th:utext="|${'ngày tạo: '}${post.createAt}|"></span>
-                                                            <a th:href="@{/admin/user-management/{id}/(id=${post.appUser.id})}" class="link-info m-2" th:utext="|${'đăng bởi: '}${post.appUser.email}|"></a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
                                 <th:block th:switch="${category.isEnable}">
                                     <td class="text-danger" th:case="false">Lock</td>
                                     <td class="text-primary" th:case="true">Active</td>
@@ -76,7 +53,6 @@
                             <th class="invisible"></th>
                             <th>Tên</th>
                             <th>Đường dẫn</th>
-                            <th class="invisible"></th>
                             <th class="invisible"></th>
                             <th class="invisible"></th>
                             <th class="invisible"></th>

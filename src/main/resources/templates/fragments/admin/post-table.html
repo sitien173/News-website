@@ -24,7 +24,6 @@
                                 <th scope="col">Nội Dung</th>
                                 <th scope="col">Views</th>
                                 <th scope="col">Trạng Thái</th>
-                                <th scope="col">Danh Mục</th>
                                 <th scope="col">Người Đăng</th>
                                 <th scope="col">Ngày Tạo</th>
                             </tr>
@@ -68,64 +67,6 @@
                                         <td class="text-primary" th:case="true">Active</td>
                                         <td th:case="*">Không Xác Định</td>
                                     </th:block>
-                                    <th><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#category-modal'}${post.category.id}|" th:utext="${post.category.name}"></a>
-                                        <div class="modal fade" th:id="|${'category-modal'}${post.category.id}|" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel1">Thông tin danh mục</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body row g-3 mb-4" >
-                                                        <div class="col-12">
-                                                            <div class="row g-3 mb-3">
-                                                                <div class="col-sm-12">
-                                                                    <div class="form-floating">
-                                                                        <input  placeholder="Họ" type="text" class="form-control" th:value="${post.category.name}">
-                                                                        <label for="firstName" class="form-label">Tên danh mục</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row g-3 mb-3">
-                                                                <div class="col-sm-12">
-                                                                    <div class="form-floating">
-                                                                        <input  placeholder="Đường dẫn" type="text" class="form-control" th:value="${post.category.slug}">
-                                                                        <label for="firstName" class="form-label">Đường dẫn</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row g-3 mb-3">
-                                                                <div class="col-sm-12">
-                                                                    <div class="form-floating">
-                                                                        <input  placeholder="Ngày tạo" type="text" id="createAt" class="form-control" th:value="${post.category.createAt}">
-                                                                        <label for="createAt" class="form-label">Ngày tạo</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row g-3 mb-3">
-                                                                <div class="col-sm-6">
-                                                                    <img th:src="@{/assets/img/{avt}(avt=${post.category.banner})}" th:onerror="updateImg(this,[[${post.category.banner}]])"  class="img-thumbnail">
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="from-check">
-                                                                        <input type="checkbox" placeholder="Trạng thái" class="form-check-input" th:checked="${post.category.isEnable}">
-                                                                        <label>Trạng thái</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <a th:href="@{/admin/category-management/{id}/(id=${post.category.id})}" class="btn btn-primary">Go to edit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </th>
                                     <th><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#user-modal'}${post.appUser.id}|" th:utext="${post.appUser.email}"></a>
                                         <div class="modal fade" th:id="|${'user-modal'}${post.appUser.id}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -196,7 +137,6 @@
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
-                                <th>Category</th>
                                 <th>Author</th>
                                 <th class="invisible"></th>
                             </tr>

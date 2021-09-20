@@ -1,13 +1,11 @@
 package ptit.ltw.Entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -31,7 +29,7 @@ public class Category {
             columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String slug;
 
-    @Column(columnDefinition = "VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(columnDefinition = "VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci")
     private String banner;
 
     @Column(updatable = false)
@@ -40,7 +38,9 @@ public class Category {
     @Column
     private Boolean isEnable = true;
 
-    @OneToMany(mappedBy = "category",orphanRemoval = true,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "categories")
     private List<Post> posts;
-
 }

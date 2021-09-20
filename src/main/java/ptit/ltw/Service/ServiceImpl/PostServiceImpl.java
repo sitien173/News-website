@@ -9,6 +9,7 @@ import ptit.ltw.Service.IService.PostService;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,13 +21,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getAllIsEnable() {
+     return this.getAll()
+             .stream()
+             .filter(Post::getIsEnable).collect(Collectors.toList());
+    }
+
+    @Override
     public Post findById(Long id) {
         return postRepository.findById(Post.class,id).orElse(null);
     }
 
     @Override
     public void delete(Long id) {
-        postRepository.delete(id);
+        postRepository.delete(Post.class,id);
     }
 
     @Override
