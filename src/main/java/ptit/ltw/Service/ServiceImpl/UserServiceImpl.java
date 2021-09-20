@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
-    private final FileStoreService fileStoreService;
     @Override
     public AppUser findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
@@ -91,10 +90,12 @@ public class UserServiceImpl implements UserService {
          // TODO: encode password
         String passwordEncode = passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(passwordEncode);
-        // TODO: save user
-        userRepository.save(appUser);
         // TODO: insert verificationToken and send mail to active account
-        if(!appUser.isEnabled()) sendMailRegistration(appUser, appUser.getEmail());
+        if(!appUser.isEnabled()) {
+            VerificationToken verificationToken = sendMailRegistration(appUser, appUser.getEmail());
+            appUser.addVerificationToken(verificationToken);
+        }
+        userRepository.save(appUser);
     }
 
     @Override
@@ -110,18 +111,18 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
     }
 
-    private void sendMailRegistration(AppUser appUser, String email) {
+    private VerificationToken sendMailRegistration(AppUser appUser, String email) {
         VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now().plusMinutes(Integer.parseInt(environment.getProperty("token.expiredAt"))),
                 null,
                 appUser
         );
-        verificationTokenRepository.save(verificationToken);
         // TODO: send mail token authentication account
         String link = environment.getProperty("base.url") + "/registration/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to enable account",
                 buildEmail(email, link));
+        return verificationToken;
     }
 
     private String buildEmail(String name, String link) {

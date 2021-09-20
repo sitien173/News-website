@@ -6,11 +6,17 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <base th:href="${#servletContext.getContextPath()}">
     <style>
+        body {
+            background: #fff;
+            background-image: url('/assets/img/bg.svg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
         .box-shadow {
             box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         }
-
     </style>
 
 </head>

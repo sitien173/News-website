@@ -32,8 +32,66 @@
                                 class="data-feather theme-item" data-feather="home"></i> <span
                                 class="theme-item">Home</span></a>
                     </div>
-
                     </li>
+
+                    <li class="nav-item dropdown nav-dropdown">
+                        <a class="nav-item nav-link dropdown-toggle text-secondary py-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link data-feather theme-item">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            <span class="theme-item">Links</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down data-feather theme-item">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item mt-2 py-0" th:href="@{/admin}"><i
+                                        class="data-feather theme-item" data-feather="home"></i> <span
+                                        class="theme-item"> Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item mt-2 py-0 " th:href="@{/admin/user-management}"><i
+                                        class="data-feather theme-item" data-feather="user"></i> <span
+                                        class="theme-item"> Danh Sách Người Dùng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/user-management/add}" class="dropdown-item mt-2 py-0">
+                                    <i class="data-feather theme-item" data-feather="user"></i>
+                                    <span class="theme-item">Thêm Người Dùng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/category-management}" class="dropdown-item mt-2 py-0">
+                                    <i class="data-feather theme-item" data-feather="folder-plus"></i>
+                                    <span class="theme-item">Danh Sách Danh Mục</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/category-management/add}" class="dropdown-item mt-2 py-0">
+                                    <i class="data-feather theme-item" data-feather="folder-plus"></i>
+                                    <span class="theme-item">Thêm Danh Mục</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/post-management}" class="dropdown-item mt-2 py-0">
+                                    <i class="data-feather theme-item" data-feather="package"></i> <span
+                                        class="theme-item">Danh Sách Bài Đăng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/admin/post-management/add}" class="dropdown-item mt-2 py-0">
+                                    <i class="data-feather theme-item" data-feather="package"></i> <span
+                                        class="theme-item">Thêm Bài Đăng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
 
                     <li class="nav-item dropdown nav-dropdown"><a
                             class="nav-item nav-link dropdown-toggle text-secondary py-0"

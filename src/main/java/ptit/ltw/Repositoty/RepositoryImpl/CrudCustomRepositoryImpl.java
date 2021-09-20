@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.DataException;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.stereotype.Repository;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.Category;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 import java.lang.InstantiationException;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,10 +64,14 @@ public class CrudCustomRepositoryImpl<T,ID> implements CrudCustomRepository<T,ID
             log.error("Closing session after rollback error: ", e1);
             if(tr != null && tr.isActive()) tr.rollback();
             throw new DataException(e1.getCause().getMessage(),e1.getSQLException());
+        } catch (GenericJDBCException e2){
+            log.error("Closing session after rollback error: ", e2);
+            if(tr != null && tr.isActive()) tr.rollback();
+            throw new GenericJDBCException(e2.getCause().getMessage(),e2.getSQLException()  );
         } catch (HibernateException e){
             log.error("Closing session after rollback error: ", e);
             if(tr != null && tr.isActive()) tr.rollback();
-            throw new HibernateException("HibernateException: " + e.getMessage());
+            throw new HibernateException("HibernateException: " + e.getCause().getMessage());
         } finally {
             if(session != null && session.isOpen()) session.close();
         }
@@ -77,21 +83,15 @@ public class CrudCustomRepositoryImpl<T,ID> implements CrudCustomRepository<T,ID
         Transaction tr = null;
         try {
             session = sessionFactory.openSession();
-            T obj = className.newInstance();
             tr = session.beginTransaction();
-            if(obj instanceof AppUser)
-                ((AppUser) obj).setId((Long)id);
-            else if(obj instanceof Category)
-                ((Category) obj).setId((Integer) id);
+            T obj = session.getReference(className,id);
             session.delete(obj);
             tr.commit();
         } catch (HibernateException e) {
             log.error("Closing session after rollback error: ", e);
             if(tr != null && tr.isActive()) tr.rollback();
             throw new HibernateException("HibernateException: " + e.getMessage());
-        } catch (IllegalAccessException | InstantiationException  e) {
-           log.error(e.getMessage());
-        } finally {
+        }  finally {
             if(session != null && session.isOpen()) session.close();
         }
     }

@@ -3,12 +3,14 @@ package ptit.ltw.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,9 +37,12 @@ public class Post {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "post",orphanRemoval = true,cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false,name = "category_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "FK_post_category"))
-    private Category category;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_category",
+            joinColumns = @JoinColumn(name = "p_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "c_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<Category> categories = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false,name = "appuser_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "FK_post_user"))
@@ -53,5 +58,9 @@ public class Post {
 
     @Column
     private Boolean isEnable = true;
+
+    public void addCategory(Category category){
+        this.categories.add(category);
+    }
 
 }
