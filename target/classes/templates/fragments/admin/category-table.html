@@ -37,7 +37,7 @@
                                 <td th:text="${category.name}"></td>
                                 <td th:text="${category.slug}"></td>
                                 <td>
-                                    <img th:src="@{/uploads/images/{path}(path=${category.banner})}" th:onerror="updateImg(this,[[${category.banner}]])"  style="width: 100px;height: 100px;object-fit: cover" class="img-thumbnail">
+                                    <img th:src="@{/assets/img/{path}(path=${category.banner})}"  style="width: 100px;height: 100px;object-fit: cover" class="img-thumbnail">
                                 </td>
                                 <th:block th:switch="${category.isEnable}">
                                     <td class="text-danger" th:case="false">Lock</td>

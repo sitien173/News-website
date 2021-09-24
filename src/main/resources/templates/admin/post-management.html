@@ -108,10 +108,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-floating">
-                                            <input type="text" placeholder="Dán link URL vào đây" class="form-control" th:field="*{banner}" id="banner">
-                                            <label for="banner" class="form-label">Hoặc Paste Link URL</label>
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -129,7 +126,7 @@
 
                                     <div class="col-md-4">
                                         <br>
-                                        <a class="m-2 p-2 link-primary" th:href="@{/admin/category-management/add}">Thêm mới</a>
+                                        <a th:href="@{/admin/category-management/add}" class="m-2 p-2 link-primary">Thêm mới</a>
                                     </div>
                                     <div class="col-md-4">
                                         <br>
@@ -164,6 +161,7 @@
 <th:block th:insert="~{/fragments/admin/import-script::import-script}"></th:block>
 <script th:src="@{/assets/js/admin/post-management.js}"></script>
 <script type="text/javascript">
+
     document.addEventListener("DOMContentLoaded", function(event) {
 
         $('.chosen-select').chosen({
@@ -173,9 +171,11 @@
         });
 
 
-        CKEDITOR.replace( 'content' , {
+        var editor = CKEDITOR.replace( 'content' , {
             height: 800
         } );
+        CKFinder.setupCKEditor( editor );
+
         feather.replace();
     });
 </script>

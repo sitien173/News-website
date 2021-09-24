@@ -21,6 +21,7 @@
                                 </th>
                                 <th scope="col">Họ</th>
                                 <th scope="col">Tên</th>
+                                <th scope="col">Avatar</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Trạng Thái</th>
                                 <th scope="col">Xác Thực</th>
@@ -37,7 +38,11 @@
                                         </fieldset>
                                     </th>
                                     <td th:text="${user.firstName}"></td>
-                                    <td th:text="${user.lastName}"></td>
+                                    <td th:text="${user.lastName}">
+                                    </td>
+                                    <td>
+                                        <img th:src="@{/assets/img/{path}(path=${user.avatar})}" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
+                                    </td>
                                     <td th:text="${user.email}"></td>
                                     <th:block th:switch="${user.isAccountNonLocked}">
                                         <td class="text-danger" th:case="false">Lock</td>
@@ -59,6 +64,7 @@
                                 <th class="invisible"></th>
                                 <th>Họ</th>
                                 <th>Tên</th>
+                                <th class="invisible"></th>
                                 <th>Email</th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>

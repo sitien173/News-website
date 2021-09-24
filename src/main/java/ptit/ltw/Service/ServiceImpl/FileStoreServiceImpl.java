@@ -1,6 +1,5 @@
 package ptit.ltw.Service.ServiceImpl;
-
-import com.google.common.base.Strings;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -28,16 +27,16 @@ import java.util.stream.Collectors;
 @Service
 public class FileStoreServiceImpl implements FileStoreService {
     public static String FILE_STORAGE_ROOT = getRootPath();
-
-
     private static String getRootPath(){
-        try {
-            Resource resource = new ClassPathResource("/static/assets");
-            return resource.getFile().getAbsolutePath();
+      /*  try {
+           // Resource resource = new ClassPathResource("/static/assets");
+           // return resource.getFile().getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return null;*/
+        Path path = Paths.get(System.getProperty("user.dir"),"src/main/resources/static/assets");
+        return path.toAbsolutePath().toString();
     }
 
     private String getExtension(String originalFileName) {
@@ -56,7 +55,7 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public String upload(MultipartFile multipartFile) throws FileNotFoundException {
-        if(Strings.isNullOrEmpty(multipartFile.getOriginalFilename())
+        if(!Strings.isNotBlank(multipartFile.getOriginalFilename())
                 || !isAllow(multipartFile.getOriginalFilename())){
             throw new FileNotFoundException("File not accept");
         }

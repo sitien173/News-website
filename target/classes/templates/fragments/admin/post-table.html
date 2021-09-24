@@ -40,7 +40,7 @@
                                         <a href="#" class="d-inline-block text-truncate text-info" style="max-width: 150px;" data-bs-toggle="tooltip" th:title="${post.title}" th:text="${post.title}"></a>
                                     </td>
                                     <td>
-                                        <img th:src="@{/assets/img/{path}/(path=${post.banner})}" th:onerror="updateImg(this,[[${post.banner}]])" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
+                                        <img th:src="@{/assets/img/{path}/(path=${post.banner})}"  style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
                                     </td>
                                     <td><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#modal'}${post.id}|">Hiển thị</a>
                                         <div class="modal fade" th:id="|${'modal'}${post.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${post.id}${'Label'}|" aria-hidden="true">
@@ -111,7 +111,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
-                                                                    <img th:src="@{/assets/img/{path}/(path=${post.appUser.avatar})}" th:onerror="updateImg(this,[[${post.appUser.avatar}]])" style="width: 100px;height: 100px" alt="avatar">
+                                                                    <img th:src="@{/assets/img/{path}/(path=${post.appUser.avatar})}" style="width: 100px;height: 100px" alt="avatar">
                                                                 </div>
                                                             </div>
                                                         </div>

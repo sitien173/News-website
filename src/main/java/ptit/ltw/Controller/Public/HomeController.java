@@ -12,5 +12,4 @@ public class HomeController {
     public String showViewHome(){
         return "public/index";
     }
-
 }

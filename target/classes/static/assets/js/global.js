@@ -3,7 +3,7 @@ const isValidImage = () => {
     return document.getElementById("file")
         .files[0]
         .name
-        .match(/.(jpg|jpeg|png|gif)$/i);
+        .match(/.(jpg|jpeg|png|gif|svg)$/i);
 }
 
 const fakeProcessUpload = async  () => {

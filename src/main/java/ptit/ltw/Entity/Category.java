@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Category {
+public class Category implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -43,4 +45,5 @@ public class Category {
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "categories")
     private List<Post> posts;
+
 }

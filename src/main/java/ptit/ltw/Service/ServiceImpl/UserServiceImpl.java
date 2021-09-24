@@ -1,6 +1,7 @@
 package ptit.ltw.Service.ServiceImpl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ import ptit.ltw.Service.IService.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+import java.net.URI;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
@@ -69,6 +73,7 @@ public class UserServiceImpl implements UserService {
         String link = environment.getProperty("base.url") + "/forgot-password/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to get password",
                 buildEmail(appUser.getEmail(), link));
+        log.info("Auto generator link authentication:  " + link);
     }
 
     @Override
@@ -122,6 +127,7 @@ public class UserServiceImpl implements UserService {
         String link = environment.getProperty("base.url") + "/registration/confirm?token=" + verificationToken.getToken();
         mailService.sendMail(email, "Confirm Token to enable account",
                 buildEmail(email, link));
+        log.info("Auto generator link authentication:  " + link);
         return verificationToken;
     }
 
