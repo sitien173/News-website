@@ -6,13 +6,13 @@ import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ptit.ltw.model.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Getter
@@ -23,7 +23,9 @@ import java.util.*;
 @Entity
 @Table(name = "AppUser",
         uniqueConstraints = {@UniqueConstraint(name = "appUser_UN_email",columnNames = "email")})
-public class AppUser implements UserDetails {
+public class AppUser implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

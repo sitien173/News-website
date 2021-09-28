@@ -208,7 +208,7 @@
                            class="nav-item nav-link dropdown-toggle text-secondary py-0"
                            id="navbarDropdown3" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img class="theme-item user-avatar" th:src="@{/assets/img/{path}(path=${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatar})}" th:onerror="updateImg(this,[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatar}]])" alt="User image"> <!--<i class="theme-item" -->
+                            <img class="theme-item user-avatar" th:src="@{/assets/img/{path}(path=${session.SPRING_SECURITY_CONTEXT.authentication.principal.avatar})}"  alt="User image"> <!--<i class="theme-item" -->
                             <!--data-feather="user"></i> --> <span class="theme-item" th:text="|${session.SPRING_SECURITY_CONTEXT.authentication.principal.firstName}${' '}${session.SPRING_SECURITY_CONTEXT.authentication.principal.lastName}|">My
 											Name</span><i class="theme-item" data-feather="chevron-down"></i></a>
                         <ul class="dropdown-menu dropdown-menu-end"

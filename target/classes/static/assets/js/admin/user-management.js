@@ -100,10 +100,6 @@ $(document).ready(function() {
 
     // check if email isExit in table
     const $btnSubmit = $('#btn-submit');
-    $('#email').on('keyup change clear',function () {
-        table.columns(3).search( this.value).draw();
-    })
-
     $('#form').submit(function (event) {
         checkPassword(event);
     });

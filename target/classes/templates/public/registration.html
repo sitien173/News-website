@@ -61,45 +61,27 @@
             </div>
             <div class="form-group d-flex flex-centered">
                 <div class="col-5 col-sm-12 mr-2">
-                    <label class="form-label" for="file">
-                        Ảnh đại diện
-                    </label>
-                    <input accept="image/*" class="form-input" id="file" type="file" name="file">
-                    <div class="bar bar-sm">
-                        <div class="bar-item" id="process-bar" role="progressbar" style="width:0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span style="display: none" class="label label-rounded label-error" id="avt-error"></span>
-
-                    <br>
-                    <label class="form-label">
-                        Hoặc Dán Link URL
-                    </label>
-                    <input th:field="*{avatar}" placeholder="Paste Link URL Image" class="form-input" type="text" name="file">
-                </div>
-
-                <div class="col-5 d-flex flex-centered">
-                    <figure id="avt-uploaded" class="img-responsive">
-                        <br>
-                        <br>
+                    <div class="col-12">
+                        <label class="form-label" for="file">Ảnh đại diện</label>
                         <th:block th:if="${appUser.avatar}">
-                            <img class="img-fit-contain" th:onerror="updateImg(this,[[${appUser.avatar}]])" style="width: 200px;height: 200px" th:src="@{/assets/img/{path}(path=${appUser.avatar})}" alt="avt" />
+                            <img class="img-fit-contain" style="width: 100%" th:src="@{/assets/img/{path}(path=${appUser.avatar})}" alt="avt" />
                         </th:block>
                         <th:block th:unless="${appUser.avatar}">
-                            <img class="img-fit-contain" style="width: 200px;height: 200px" th:src="@{/assets/img/avt.jpg}" alt="avt" />
+                            <img class="img-fit-contain" style="width: 100%" th:src="@{/assets/img/avt.jpg}" alt="avt" />
                         </th:block>
-                    </figure>
+                    </div>
+                    <div class="col-12">
+                        <input accept="image/*" class="form-input" id="file" type="file" name="file">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group d-flex flex-centered">
-                <div class="col-5 col-sm-12 mr-2">
+                <div class="col-5 col-sm-12" style="margin-top: -100px">
                     <label class="form-label" for="password">Mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
                            class="form-input" type="password" th:field="*{password}" id="password"
                            placeholder="Mật khẩu">
                     <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
                        th:errors="*{password}"></p>
-                </div>
-                <div class="col-5 col-sm-12 mr-2">
+
                     <label class="form-label" for="repassword">Nhập lại mật khẩu</label>
                     <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
                            class="form-input" type="password" id="repassword" placeholder="Nhập lại mật khẩu">
@@ -115,7 +97,8 @@
         </div>
     </div>
 </form>
-<script th:src="@{/assets/js/registration.js}">
+<script type="text/javascript" th:src="@{/assets/js/global.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/registration.js}">
 
 </script>
 </body>

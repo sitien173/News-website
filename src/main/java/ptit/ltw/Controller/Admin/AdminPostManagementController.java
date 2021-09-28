@@ -18,6 +18,7 @@ import ptit.ltw.Service.IService.UserService;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -64,11 +65,10 @@ public class AdminPostManagementController {
         return "admin/post-management";
     }
 
-
     @PostMapping(value = "/add",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String registrationForm(@Valid @ModelAttribute("post") Post post,
                                    BindingResult result,
-                                   @RequestParam("cateIds") int[] cateIds,
+                                   @RequestParam(value = "cateIds") int[] cateIds,
                                    @RequestParam("file") MultipartFile file,
                                    @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext,
                                    Model model) throws IOException {
@@ -83,7 +83,6 @@ public class AdminPostManagementController {
 
         AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         post.setAppUser(appUser);
-
         postService.save(post);
         return "redirect:/admin/post-management?refresh=true";
     }

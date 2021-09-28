@@ -3,7 +3,7 @@ const isValidImage = () => {
     return document.getElementById("file")
         .files[0]
         .name
-        .match(/.(jpg|jpeg|png|gif)$/i);
+        .match(/.(jpg|jpeg|png|gif|svg)$/i);
 }
 
 const fakeProcessUpload = async  () => {
@@ -40,8 +40,4 @@ const checkPassword = (event) => {
     }
 }
 
-const updateImg = (element,url) => {
-    element.onerror = null;
-    element.src = url;
-}
 

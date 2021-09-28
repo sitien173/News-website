@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -15,7 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Verificationtoken",uniqueConstraints =
                 @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))
-public class VerificationToken  {
+public class VerificationToken implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

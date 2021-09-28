@@ -82,6 +82,7 @@
                             <input type="hidden" id="email-hidden1" th:field="*{email}">
                             <input type="hidden" id="password-hidden1" th:field="*{password}">
                             <input type="hidden" th:field="*{isEnable}">
+                            <input type="hidden" th:field="*{avatar}">
                             <div class="col-12">
                                 <div class="row g-3 mb-3">
                                     <div class="col-sm-6">
@@ -119,10 +120,8 @@
                                 <div class="row g-3 mb-3">
                                     <div class="col-sm-6">
                                         <div class="form-floating">
-                                            <img th:src="@{/assets/img/{path}/(path=${userEdit.avatar})}" th:onerror="updateImg(this,[[${userEdit.avatar}]])" class="img-thumbnail" alt="avatar">
+                                            <img th:src="@{/assets/img/{path}(path=${userEdit.avatar})}"  class="img-thumbnail" alt="avatar">
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="file" class="form-label">Tải ảnh lên từ PC</label>
                                             <input accept="image/*" type="file" class="form-control" id="file" name="file">
@@ -131,44 +130,30 @@
                                             </div>
                                             <span class="d-none text-danger" id="avt-error"></span>
                                         </div>
-                                        <br>
-                                        <div class="form-floating">
-                                            <input type="text" placeholder="dán link URL vào đây" class="form-control" th:field="*{avatar}" id="banner">
-                                            <label for="banner" class="form-label">Hoặc Paste URL</label>
-                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="row g-3 mb-3">
-                                    <div class="col-sm-12">
-                                        <div class="form-floating">
-                                            <div class="row g-3 mb-3">
-                                                <div class="col-sm-4">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select id="role" th:field="*{role}" class="form-control">
-                                                        <th:block th:if="*{role.ADMIN}">
-                                                            <option th:value="*{role.USER}" th:text="*{role.USER}"></option>
-                                                        </th:block>
-                                                        <th:block th:if="*{role.USER}">
-                                                            <option th:value="*{role.ADMIN}" th:text="*{role.ADMIN}"></option>
-                                                        </th:block>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <br>
-                                                    <fieldset class="form-check">
-                                                        <div class="form-label"></div>
-                                                        <input th:field="*{isAccountNonLocked}" type="checkbox" class="form-check-input" id="isAccountNonLocked">
-                                                        <label for="isAccountNonLocked" class="form-check-label">Trạng thái</label>
-                                                    </fieldset>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <br>
-                                                    <br>
-                                                    <a href="#"  class="link-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Đổi mật khẩu</a>
-                                                </div>
-                                            </div>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12">
+                                            <label for="role" class="form-label">Role</label>
+                                            <select id="role" th:field="*{role}" class="form-control">
+                                                <th:block th:if="*{role.ADMIN}">
+                                                    <option th:value="*{role.USER}" th:text="*{role.USER}"></option>
+                                                </th:block>
+                                                <th:block th:if="*{role.USER}">
+                                                    <option th:value="*{role.ADMIN}" th:text="*{role.ADMIN}"></option>
+                                                </th:block>
+                                            </select>
                                         </div>
+                                        <br>
+                                        <div class="col-sm-12">
+                                            <fieldset class="form-check">
+                                                <div class="form-label"></div>
+                                                <input th:field="*{isAccountNonLocked}" type="checkbox" class="form-check-input" id="isAccountNonLocked">
+                                                <label for="isAccountNonLocked" style="margin-right: 30px" class="form-check-label">Trạng thái</label>
+                                                <a href="#"  class="link-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Đổi mật khẩu</a>
+
+                                            </fieldset>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row g-3 mb-4">
