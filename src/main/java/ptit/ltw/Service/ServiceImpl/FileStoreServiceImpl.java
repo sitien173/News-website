@@ -28,17 +28,14 @@ import java.util.stream.Collectors;
 public class FileStoreServiceImpl implements FileStoreService {
     public static String FILE_STORAGE_ROOT = getRootPath();
     private static String getRootPath(){
-      /*  try {
-           // Resource resource = new ClassPathResource("/static/assets");
-           // return resource.getFile().getAbsolutePath();
+        try {
+            Resource resource = new ClassPathResource("/static/assets");
+            return resource.getFile().getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;*/
-        Path path = Paths.get(System.getProperty("user.dir"),"src/main/resources/static/assets");
-        return path.toAbsolutePath().toString();
+        return null;
     }
-
     private String getExtension(String originalFileName) {
         return StringUtils.getFilenameExtension(originalFileName);
     }
@@ -59,13 +56,16 @@ public class FileStoreServiceImpl implements FileStoreService {
                 || !isAllow(multipartFile.getOriginalFilename())){
             throw new FileNotFoundException("File not accept");
         }
+        // lưu và targer hiển thị tức thời
         String storageRoot = FILE_STORAGE_ROOT+ File.separator+"img";
         String fileName = generateFileName(multipartFile.getOriginalFilename());
         File file = new File(storageRoot+File.separator+fileName);
+
         if(!file.getParentFile().exists()){
             file.getParentFile().mkdirs();
         }
         try {
+            // upload to target hiển thị tức thời
             multipartFile.transferTo(file);
         }catch (IOException e){
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public boolean remove(String url) {
-        String path = FILE_STORAGE_ROOT+ File.separator+"img"+url;
+        String path = FILE_STORAGE_ROOT+ File.separator+"img"+ File.separator +url;
         File file = new File(path);
         if(file.exists() && file.isFile()){
             return file.delete();

@@ -1,4 +1,4 @@
-package ptit.ltw.Configuration;
+package ptit.ltw.Configuration.SpringSercurity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

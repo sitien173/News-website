@@ -1,4 +1,4 @@
-package ptit.ltw.Configuration;
+package ptit.ltw.Configuration.SpringSercurity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import ptit.ltw.Enum.Role;
 import ptit.ltw.Service.IService.UserService;
+import ptit.ltw.model.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -21,21 +21,12 @@ public  class SpringSecurityAdmin extends WebSecurityConfigurerAdapter {
     private final DaoAuthenticationProvider daoAuthenticationProvider;
     private final Environment environment;
     private final UserService userService;
-    private final HttpFirewallConfig httpFirewallConfig;
 
     @Autowired
-    public SpringSecurityAdmin(DaoAuthenticationProvider daoAuthenticationProvider, Environment environment, UserService userService, HttpFirewallConfig httpFirewallConfig) {
+    public SpringSecurityAdmin(DaoAuthenticationProvider daoAuthenticationProvider, Environment environment, UserService userService) {
         this.daoAuthenticationProvider = daoAuthenticationProvider;
         this.environment = environment;
         this.userService = userService;
-        this.httpFirewallConfig = httpFirewallConfig;
-    }
-
-
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.httpFirewall(httpFirewallConfig.allowUrlEncodedSlashHttpFirewall());
     }
 
     @Override

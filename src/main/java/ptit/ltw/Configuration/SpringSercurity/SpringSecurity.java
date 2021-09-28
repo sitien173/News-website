@@ -1,4 +1,4 @@
-package ptit.ltw.Configuration;
+package ptit.ltw.Configuration.SpringSercurity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

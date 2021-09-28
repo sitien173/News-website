@@ -1,4 +1,4 @@
-package ptit.ltw.Configuration;
+package ptit.ltw.Configuration.SpringSercurity;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

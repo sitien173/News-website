@@ -99,13 +99,6 @@ $(document).ready(function() {
 
     // check if email isExit in table
     const $btnSubmit = $('#btn-submit');
-    $('#name').on('keyup change clear',function () {
-        table.columns(1).search( this.value).draw();
-    })
-    $('#slug').on('keyup change clear',function () {
-        table.columns(2).search( this.value).draw();
-    })
-
     $('#file').change(function (event) {
         const $bannerError = $('#banner-error');
         if (!isValidImage()) {

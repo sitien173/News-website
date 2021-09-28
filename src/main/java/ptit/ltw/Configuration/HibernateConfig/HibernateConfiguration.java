@@ -1,4 +1,4 @@
-package ptit.ltw.Utils;
+package ptit.ltw.Configuration.HibernateConfig;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class HibernateUtils {
+public class HibernateConfiguration {
     @Bean
     public SessionFactory getSessionFactory() {
         SessionFactory sessionFactory = null;
         StandardServiceRegistry standardServiceRegistry = null;
         try {
             // Create StandardServiceRegistry
-             standardServiceRegistry = new StandardServiceRegistryBuilder()
-                    .configure()
+            standardServiceRegistry = new StandardServiceRegistryBuilder()
+                    .configure("hibernate.cfg.xml")
                     .build();
             // Create MetadataSources
             MetadataSources metadataSources = new MetadataSources(standardServiceRegistry);
@@ -33,5 +33,4 @@ public class HibernateUtils {
         }
         return sessionFactory;
     }
-
 }

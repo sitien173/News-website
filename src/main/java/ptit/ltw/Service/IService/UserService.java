@@ -1,11 +1,13 @@
 package ptit.ltw.Service.IService;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.transaction.annotation.Transactional;
 import ptit.ltw.Entity.AppUser;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Transactional
 public interface UserService extends UserDetailsService {
     void save(AppUser appUser);
     void update(AppUser appUser);
