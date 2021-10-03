@@ -2,6 +2,7 @@ package ptit.ltw.Controller.Admin;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -106,7 +107,9 @@ public class AdminUserManagementController {
     @PostMapping("/change-password")
     public String handlerForm(@RequestParam("id") Integer id,
                               @RequestParam("email") String email,
-                              @RequestParam("password") String password){
+                              @RequestParam("password") String password,
+                              @RequestParam("password-new") String passwordNew){
+       if(!password.equals(passwordNew))
         userService.updatePassword(email,password);
         return "redirect:/admin/user-management/" + id;
     }

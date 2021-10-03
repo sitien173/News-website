@@ -13,6 +13,7 @@ import ptit.ltw.Repositoty.IRepository.CategoryRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Repository
 @Slf4j
 public class CategoryRepositoryImpl extends CrudCustomRepositoryImpl<Category,Integer> implements CategoryRepository {

@@ -1,24 +1,28 @@
 package ptit.ltw.Configuration.Ckfinder.authentication;
 
 import com.cksource.ckfinder.authentication.Authenticator;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import ptit.ltw.model.Role;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-/**
- * WARNING: Your authenticator should never simply return true. By doing so,
- * you are allowing "anyone" to upload and list the files on your server.
- * You should implement some kind of session validation mechanism to make
- * sure that only trusted users can upload or delete your files.
- */
+import javax.inject.Scope;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 @Named
 public class ConfigBasedAuthenticator implements Authenticator {
     @Inject
-    private ApplicationContext applicationContext;
-
+    private HttpSession session;
     @Override
     public boolean authenticate() {
-        return true;
+        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        Authentication authentication = securityContext.getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Role.ADMIN.name()));
     }
 }

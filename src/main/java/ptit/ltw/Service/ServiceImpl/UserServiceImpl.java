@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.IRepository.UserRepository;
@@ -18,6 +19,7 @@ import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
 import ptit.ltw.Service.IService.FileStoreService;
 import ptit.ltw.Service.IService.MailService;
 import ptit.ltw.Service.IService.UserService;
+import ptit.ltw.model.Role;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -81,6 +83,10 @@ public class UserServiceImpl implements UserService {
         AppUser appUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         appUser.setPassword(passwordEncoder.encode(password));
+        // if role is ADMIN not update
+        if(appUser.getRole() == Role.ADMIN)
+            throw new IllegalStateException("Can't change password as administrator");
+
         userRepository.save(appUser);
     }
 
@@ -111,7 +117,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setAuthentication(HttpSession session, AppUser appUser) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(appUser.getEmail(), null, appUser.getAuthorities());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(appUser, null, appUser.getAuthorities());
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
     }
