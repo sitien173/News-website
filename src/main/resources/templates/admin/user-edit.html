@@ -184,10 +184,11 @@
                 <form th:action="@{/admin/user-management/change-password}" method="post">
                     <input type="hidden" name="email" id="email-hidden2" th:value="${userEdit.email}">
                     <input type="hidden" name="id" th:value="${userEdit.id}">
+                    <input type="hidden" name="password" th:value="${userEdit.password}">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="password" class="form-label">Mật khẩu</label>
-                            <input name="password" th:value="${userEdit.password}" type="password" class="form-control" id="password" aria-describedby="passwordSub">
+                            <input name="password-new" th:value="${userEdit.password}" type="password" class="form-control" id="password" aria-describedby="passwordSub">
                             <div id="passwordSub" class="form-text">Tối đa 8 kí tự.Bao gồm chữ hoa, chữ thường và 1 kí tự.</div>
                         </div>
                         <div class="mb-3">

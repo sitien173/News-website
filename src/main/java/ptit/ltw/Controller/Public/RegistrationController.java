@@ -24,6 +24,7 @@ public class RegistrationController {
     private final FileStoreService fileStoreService;
     private final VerificationTokenService verificationTokenService;
     private final UserService userService;
+    
     @GetMapping
     public String showViewRegistration(Model model){
         if(!model.containsAttribute("appUser")){

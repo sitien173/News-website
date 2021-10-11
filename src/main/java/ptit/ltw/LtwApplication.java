@@ -9,21 +9,20 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ptit.ltw.Configuration.HibernateConfig.HibernateConfiguration;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 
-
-@Configuration
-@EnableAsync
 @SpringBootApplication
-@ComponentScan({ "ptit.ltw.*" })
+@EnableAsync
 public class LtwApplication implements ServletContextInitializer {
     public static void main(String[] args) {
         SpringApplication.run(LtwApplication.class, args);

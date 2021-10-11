@@ -4,20 +4,10 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ltw?autoReconnect=true&amp;useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8&amp;sessionVariables=sql_mode='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'&amp;jdbcCompliantTruncation=false</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">Tien11413476</property>
-        <property name="hibernate.dialect">ptit.ltw.model.MySQLCustomDialect</property>
-
-        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <mapping class="ptit.ltw.Entity.AppUser" />
-        <mapping class="ptit.ltw.Entity.VerificationToken"/>
-        <mapping class="ptit.ltw.Entity.Category"/>
-        <mapping class="ptit.ltw.Entity.Comment"/>
-        <mapping class="ptit.ltw.Entity.Post"/>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
     </session-factory>
 </hibernate-configuration>

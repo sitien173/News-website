@@ -2,10 +2,10 @@ package ptit.ltw.Repositoty.RepositoryImpl;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Repositoty.IRepository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository

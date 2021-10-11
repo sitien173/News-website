@@ -7,12 +7,12 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.DataException;
 import org.hibernate.exception.GenericJDBCException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.Category;
 import ptit.ltw.Repositoty.IRepository.CrudCustomRepository;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
@@ -22,26 +22,24 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
-
+@Transactional
 @Repository
 @AllArgsConstructor
 @Slf4j
 public class CrudCustomRepositoryImpl<T,ID> implements CrudCustomRepository<T,ID> {
     protected final SessionFactory sessionFactory;
-
     @Override
     public List<T> getAll(Class<T> className) {
-        List<T> list = null;
-        try (Session session = sessionFactory.getCurrentSession()) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
             String HQL = "From " + className.getSimpleName();
-            list = session.createQuery(HQL,className)
-                    .getResultList();
+            return session.createQuery(HQL,className).list();
         }catch (NoResultException e){
            // true logic
         } catch (HibernateException e) {
             throw new HibernateException("HibernateException: " + e.getMessage());
         }
-        return list;
+        return null;
     }
 
     @Override
@@ -51,14 +49,6 @@ public class CrudCustomRepositoryImpl<T,ID> implements CrudCustomRepository<T,ID
             transaction = session.beginTransaction();
             session.saveOrUpdate(t);
             transaction.commit();
-        } catch (DataException e1){
-            log.error("Closing session after rollback error: ", e1);
-            if(transaction != null) transaction.rollback();
-            throw new DataException(e1.getCause().getMessage(),e1.getSQLException());
-        } catch (GenericJDBCException e2){
-            log.error("Closing session after rollback error: ", e2);
-            if(transaction != null) transaction.rollback();
-            throw new GenericJDBCException(e2.getCause().getMessage(),e2.getSQLException()  );
         } catch (HibernateException e){
             log.error("Closing session after rollback error: ", e);
             if(transaction != null) transaction.rollback();

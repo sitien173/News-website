@@ -1,5 +1,6 @@
 package ptit.ltw.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
