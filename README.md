@@ -1,5 +1,5 @@
 # laptrinhweb-ptit
-Đồ án môn học lập trình web PTIT Web bán hàng
-Hoàn thành Authentication Login.
-[Link to demo:!]. [go](https://ltw-ptit.herokuapp.com/login){:target="_blank" rel="noopener"}
+<h5>Đồ án môn học lập trình web PTIT Web bán hàng<h5>
+<p>Hoàn thành Authentication Login.<p>
+  [Link to demo:!] <a href = "https://ltw-ptit.herokuapp.com/login">Login Authentication</a>
 ...
