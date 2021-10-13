@@ -21,14 +21,14 @@
 </head>
 <body>
 <form id="form" th:action="@{/user/j_spring_security_login}" method="post" class="form-horizontal container d-flex flex-centered">
-    <div  class="col-4 card box-shadow" style="margin-top: 50px">
+    <div  class="col-5 card box-shadow" style="margin-top: 10px">
         <div class="card-header">
             <figure class="figure text-center">
                 <img style="object-fit: cover;width: 100px" th:src="@{/assets/img/login.png}" alt="Login Banner">
                 <figcaption class="figure-caption text-center"><em>Đăng nhập để tăng trải nghiệm website</em></figcaption>
             </figure>
             <figure class="figure text-center">
-                <figcaption class="figure-caption label label-rounded label-error"><span style="color: lightgray" th:utext="${info}"></span></figcaption>
+                <figcaption class="figure-caption"><span class="text-error" th:utext="${info}"></span></figcaption>
             </figure>
         </div>
         <div class="card-body">
@@ -49,6 +49,28 @@
                            class="form-input" name="password" type="password" id="password" placeholder="Mật khẩu">
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+
+                </div>
+                <div class="col-9 col-sm-12">
+                    <img id="captcha-img" th:src="@{/captcha/generator}"/>
+                    <button type="button" style="position: relative;bottom:20px " class="btn btn-primary btn-sm" id="reload-captcha"><i class="icon icon-refresh"></i></button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="captcha">Mã xác thực</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input type="hidden" id="captcha-hidden" th:value="${session.get('captcha-security')}">
+                    <input required class="form-input" type="text" name="captcha" id="captcha" placeholder="Nhập mã xác thực">
+                    <span th:if="${param.get('captcha-message')}" id="captcha-message" class="text-error" th:text="${param.get('captcha-message')}"></span>
+                </div>
+            </div>
+
             <div class="form-group" style="float: right">
                 <a th:href="@{/forgot-password}">Quên mật khẩu</a>
             </div>

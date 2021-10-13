@@ -24,12 +24,11 @@ public class VerificationToken implements Serializable {
     private Long id;
 
     @NaturalId
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false,length = 100)
     private String token;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createAt;
+    @Column(updatable = false)
+    private LocalDateTime createAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;

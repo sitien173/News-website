@@ -23,15 +23,14 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
+    @Column(nullable = false,length = 50)
     private String name;
+
     @NaturalId
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false,length = 100)
     private String slug;
 
-    @Column(columnDefinition = "VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(length = 100)
     private String banner;
 
     @Column(updatable = false)

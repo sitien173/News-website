@@ -53,8 +53,7 @@ public class Post implements Serializable {
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();
 
-    @Column(nullable = false,
-            columnDefinition = "TEXT(65535) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false)
     @Type(type = "text")
     private String content;
 

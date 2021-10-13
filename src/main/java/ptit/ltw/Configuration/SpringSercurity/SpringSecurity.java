@@ -43,7 +43,9 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                     .loginProcessingUrl("/user/j_spring_security_login")
                             .failureUrl("/login?info=Email or Password incorrect. Please again!")
-                                .permitAll()
+                            .successForwardUrl("/captcha/auth")
+                            .permitAll()
+
                 .and()
                 .logout()
                     .logoutUrl("/user/j_spring_security_logout")

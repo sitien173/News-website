@@ -52,10 +52,6 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public String upload(MultipartFile multipartFile) throws FileNotFoundException {
-        if(!Strings.isNotBlank(multipartFile.getOriginalFilename())
-                || !isAllow(multipartFile.getOriginalFilename())){
-            throw new FileNotFoundException("File not accept");
-        }
         // lưu và targer hiển thị tức thời
         String storageRoot = FILE_STORAGE_ROOT+ File.separator+"img";
         String fileName = generateFileName(multipartFile.getOriginalFilename());

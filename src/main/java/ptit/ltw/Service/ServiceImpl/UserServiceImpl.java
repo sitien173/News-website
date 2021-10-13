@@ -11,20 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.IRepository.UserRepository;
 import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
-import ptit.ltw.Service.IService.FileStoreService;
 import ptit.ltw.Service.IService.MailService;
 import ptit.ltw.Service.IService.UserService;
-import ptit.ltw.model.Role;
+import ptit.ltw.Model.Role;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
+    private  final HttpSession session;
     @Override
     public AppUser findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
@@ -115,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setAuthentication(HttpSession session, AppUser appUser) {
+    public void setAuthentication(AppUser appUser) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = new UsernamePasswordAuthenticationToken(appUser, null, appUser.getAuthorities());
         securityContext.setAuthentication(authentication);

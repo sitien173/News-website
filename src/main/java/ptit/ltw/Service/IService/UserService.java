@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     void save(AppUser appUser);
     void update(AppUser appUser);
-    void setAuthentication(HttpSession session, AppUser appUser);
+    void setAuthentication(AppUser appUser);
     AppUser findByEmail(String email);
     AppUser findById(Long id);
     List<AppUser> getAll();

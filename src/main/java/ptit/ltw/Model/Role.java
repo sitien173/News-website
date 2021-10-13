@@ -1,4 +1,4 @@
-package ptit.ltw.model;
+package ptit.ltw.Model;
 
 public enum Role {
     ADMIN,

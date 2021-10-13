@@ -1,4 +1,4 @@
-package ptit.ltw.model;
+package ptit.ltw.Model;
 
 import org.hibernate.dialect.MySQL5Dialect;
 
