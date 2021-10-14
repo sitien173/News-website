@@ -74,14 +74,20 @@
             <div class="form-group" style="float: right">
                 <a th:href="@{/forgot-password}">Quên mật khẩu</a>
             </div>
-            <div class="form-group" style="margin-left: 100px">
+            <div class="form-group" style="margin-left: 120px">
                 <label class="form-checkbox">
                     <input type="checkbox" id="remember-me" name="remember-me">
                     <i class="form-icon"></i> Lưu đăng nhập
                 </label>
             </div>
-            <div class="text-center">
-                <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn">Đăng Nhập</button>
+            <div class="form-group">
+                <div class="col-6">
+                </div>
+
+                <div class="col-6">
+                    <button id="btn-exit" type="button" class="btn btn-gray input-group-btn mx-2">Thoát</button>
+                    <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn">Đăng Nhập</button>
+                </div>
             </div>
             <div class="text-right" style="margin-top: 10px">
                 <a id="btn-registration" th:href="@{/registration}">Chưa có tài khoản. Bấm vào đây để đăng ký</a>
@@ -90,6 +96,6 @@
         </div>
     </div>
 </form>
-<script th:src="@{/assets/js/login.js}"></script>
+<script th:src="@{/assets/js/login.js(v1)}"></script>
 </body>
 </html>

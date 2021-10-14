@@ -4,13 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ptit.ltw.Entity.Category;
 import ptit.ltw.Repositoty.IRepository.CategoryRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional

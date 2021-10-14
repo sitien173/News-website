@@ -15,11 +15,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Table(name = "AppUser",
         uniqueConstraints = {@UniqueConstraint(name = "appUser_UN_email",columnNames = "email")})
@@ -63,8 +60,6 @@ public class AppUser implements UserDetails, Serializable {
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "appUser")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
               org.hibernate.annotations.CascadeType.DELETE})

@@ -1,5 +1,6 @@
 package ptit.ltw.Entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Post")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
 @Table(name = "Verificationtoken",uniqueConstraints =
                 @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))

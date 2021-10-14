@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ptit.ltw.Configuration.Filter.CaptchaAuthenticationFilter;
 import ptit.ltw.Service.IService.UserService;
 
 @Configuration
@@ -35,6 +37,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
+                .addFilterBefore(new CaptchaAuthenticationFilter("/user/j_spring_security_login", "/login?captcha-message=Captcha invalid"), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                     .antMatchers("/**/user/**")
                         .authenticated()
@@ -43,7 +46,6 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                     .loginProcessingUrl("/user/j_spring_security_login")
                             .failureUrl("/login?info=Email or Password incorrect. Please again!")
-                            .successForwardUrl("/captcha/auth")
                             .permitAll()
 
                 .and()

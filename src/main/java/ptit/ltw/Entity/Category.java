@@ -15,9 +15,8 @@ import java.util.List;
         @UniqueConstraint(name = "category_UN_slug",columnNames = "slug"),
         @UniqueConstraint(name = "category_UN_name", columnNames = "name")
 })
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,8 +39,6 @@ public class Category implements Serializable {
     private Boolean isEnable = true;
 
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "categories")
     private List<Post> posts;
 
