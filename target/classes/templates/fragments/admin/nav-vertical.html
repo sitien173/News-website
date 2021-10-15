@@ -35,7 +35,6 @@
             <li><a id="ckfinder-popup" href="#"><i
                     class="data-feather theme-item" data-feather="thumbs-up"></i> <span
                     class="theme-item">Quản lí ảnh</span></a>
-                <div id="output" style="float: left;font-size: 0.8em;line-height: 1.4em;margin: 3px 7px;"></div>
             </li>
             <script>
                 function escapeHtml(unsafe) {
@@ -58,13 +57,7 @@
                         onInit: function( finder ) {
                             finder.on( 'files:choose', function( evt ) {
                                 var file = evt.data.files.first();
-                                var output = document.getElementById( 'output' );
-                                output.innerHTML = 'Selected: ' + escapeHtml( file.get( 'name' ) ) + '<br>URL: ' + escapeHtml( file.getUrl() );
-                            } );
-
-                            finder.on( 'file:choose:resizedImage', function( evt ) {
-                                var output = document.getElementById( 'output' );
-                                output.innerHTML = 'Selected resized image: ' + escapeHtml( evt.data.file.get( 'name' ) ) + '<br>url: ' + escapeHtml( evt.data.resizedUrl );
+                                alert('Selected: ' + escapeHtml( file.get( 'name' ) ) + '     URL: ' + escapeHtml( file.getUrl() ));
                             } );
                         }
                     } );

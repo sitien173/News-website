@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "Verificationtoken",uniqueConstraints =
+@Table(name = "VerificationToken",uniqueConstraints =
                 @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))
 public class VerificationToken implements Serializable {
     private static final long serialVersionUID = 1L;

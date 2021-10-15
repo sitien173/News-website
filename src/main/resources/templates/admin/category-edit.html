@@ -80,7 +80,7 @@
                             <input type="hidden" id="id-hidden1" th:field="*{id}">
                             <input type="hidden" id="name-hidden1" th:field="*{name}">
                             <input type="hidden" id="slug-hidden1" th:field="*{slug}">
-                            <input type="hidden" id="banner-hidden1" th:field="*{banner}">
+                            <input type="hidden" id="avt" th:field="*{banner}">
                             <div class="col-12">
                                 <div class="row g-3 mb-3">
                                     <div class="col-sm-6">
@@ -100,31 +100,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <p class="text-field">Ảnh đại diện</p>
                                 <div class="row g-3 mb-3">
-                                  <div class="col-sm-6">
-                                      <div class="col-sm-12">
-                                          <img th:src="@{/assets/img/{path}/(path=${categoryEdit.banner})}"  class="img-fluid" alt="avatar">
-                                      </div>
-                                      <div class="col-sm-6">
-                                          <div class="form-group">
-                                              <label for="file" class="form-label">Tải ảnh lên từ PC</label>
-                                              <input accept="image/*" type="file" class="form-control" id="file" name="file">
-                                              <div class="progress" style="background-color: white">
-                                                  <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                                              </div>
-                                              <span class="d-none text-danger" id="avt-error"></span>
-                                          </div>
-                                      </div>
-                                  </div>
-                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6">
+                                        <div class="form-floating">
+                                            <input accept="image/*" type="file" class="form-control" id="file" name="file">
+                                            <label for="file" class="form-label">Tải ảnh lên từ PC</label>
+                                            <div class="progress" style="background-color: white">
+                                                <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                            </div>
+                                            <span class="d-none text-danger" id="avt-error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-floating">
+                                            <input required value="Chọn Ảnh Trong Thư Viện" type="button" class="form-control" id="ckfinder-popup1">
+                                            <label for="ckfinder-popup1" class="form-label">Thư viện Ảnh</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <br>
-                                <fieldset class="form-check">
-                                    <input th:field="*{isEnable}" id="isEnable" type="checkbox" class="form-check-input">
-                                    <label for="isEnable" class="form-check-label">Trạng thái</label>
-                                </fieldset>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-sm-6">
+                                        <fieldset class="form-check">
+                                            <input th:field="*{isEnable}" id="isEnable" type="checkbox" class="form-check-input">
+                                            <label for="isEnable" class="form-check-label">Trạng thái</label>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img th:src="@{/assets/img/{path}/(path=${categoryEdit.banner})}" id="avt-selected" class="img-fluid">
+                                    </div>
                                 </div>
                                 <div class="row g-3 mb-4">
                                     <div class="col-sm-12">
@@ -149,6 +152,23 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         feather.replace();
+        var button = document.getElementById( 'ckfinder-popup1' );
+        button.onclick = function() {
+            CKFinder.popup( {
+                chooseFiles: true,
+                width: 800,
+                height: 600,
+                skin: 'moono',
+                onInit: function( finder ) {
+                    finder.on( 'files:choose', function( evt ) {
+                        var file = evt.data.files.first();
+                        $('#avt').val(escapeHtml(file.get( 'name' )));
+                        $('#avt-selected').attr('src',escapeHtml( file.getUrl() ));
+                        close();
+                    } );
+                }
+            } );
+        };
     });
 </script>
 </body>
