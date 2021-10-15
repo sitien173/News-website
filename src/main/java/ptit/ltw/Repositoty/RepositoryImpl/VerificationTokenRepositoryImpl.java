@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 @Repository
 @Slf4j
-@Transactional
 public class VerificationTokenRepositoryImpl extends CrudCustomRepositoryImpl<VerificationToken,Long> implements VerificationTokenRepository {
 
     public VerificationTokenRepositoryImpl(SessionFactory sessionFactory) {

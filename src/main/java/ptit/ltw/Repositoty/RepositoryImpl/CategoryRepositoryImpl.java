@@ -11,14 +11,12 @@ import ptit.ltw.Repositoty.IRepository.CategoryRepository;
 
 import java.util.Optional;
 
-@Transactional
 @Repository
 @Slf4j
 public class CategoryRepositoryImpl extends CrudCustomRepositoryImpl<Category,Integer> implements CategoryRepository {
     public CategoryRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
-
     @Override
     public Optional<Category> findBySlug(String slug) {
         return findByNaturalId(Category.class, "slug", slug);
@@ -26,16 +24,9 @@ public class CategoryRepositoryImpl extends CrudCustomRepositoryImpl<Category,In
 
     @Override
     public Optional<Category> findByName(String name) {
-        Optional<Category> optional = Optional.empty();
-        try (Session session = sessionFactory.getCurrentSession()){
-            String HQL = "from Category where name = :name";
-            optional = session.createQuery(HQL,Category.class).setParameter("name",name)
-                    .uniqueResultOptional();
-        } catch (HibernateException e) {
-            log.error("Closing session after rollback error: ", e);
-            e.printStackTrace();
-        }
-        return optional;
+        String HQL = "from Category where name = :name";
+        return sessionFactory.getCurrentSession().createQuery(HQL,Category.class).setParameter("name",name)
+                .uniqueResultOptional();
     }
 }
 

@@ -1,5 +1,5 @@
 package ptit.ltw.Service.ServiceImpl;
-import org.apache.logging.log4j.util.Strings;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -51,7 +51,10 @@ public class FileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    public String upload(MultipartFile multipartFile) throws FileNotFoundException {
+    public String upload(MultipartFile multipartFile)  {
+        if(!isAllow(multipartFile.getOriginalFilename())) {
+            throw new IllegalStateException("File not accept");
+        }
         // lưu và targer hiển thị tức thời
         String storageRoot = FILE_STORAGE_ROOT+ File.separator+"img";
         String fileName = generateFileName(multipartFile.getOriginalFilename());

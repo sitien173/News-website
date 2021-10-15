@@ -104,7 +104,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-floating">
                                             <input accept="image/*" type="file" class="form-control" id="file" name="file">
-                                            <label for="file" class="form-label">Tải ảnh lên từ PC</label>
+                                            <label for="file" class="form-label">Banner</label>
                                             <div class="progress" style="background-color: white">
                                                 <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                             </div>
@@ -112,9 +112,8 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-floating">
-                                            <input required value="Chọn Ảnh Trong Thư Viện" type="button" class="form-control" id="ckfinder-popup1">
-                                            <label for="ckfinder-popup1" class="form-label">Thư viện Ảnh</label>
+                                        <div class="d-grid gap-2" style="height: 80%">
+                                            <button type="button" class="btn btn-outline-primary" id="ckfinder-popup1">Chọn Ảnh Trong Thư Viện</button>
                                         </div>
                                     </div>
                                 </div>
@@ -137,6 +136,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -152,23 +152,6 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         feather.replace();
-        var button = document.getElementById( 'ckfinder-popup1' );
-        button.onclick = function() {
-            CKFinder.popup( {
-                chooseFiles: true,
-                width: 800,
-                height: 600,
-                skin: 'moono',
-                onInit: function( finder ) {
-                    finder.on( 'files:choose', function( evt ) {
-                        var file = evt.data.files.first();
-                        $('#avt').val(escapeHtml(file.get( 'name' )));
-                        $('#avt-selected').attr('src',escapeHtml( file.getUrl() ));
-                        close();
-                    } );
-                }
-            } );
-        };
     });
 </script>
 </body>
