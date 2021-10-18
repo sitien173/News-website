@@ -79,11 +79,10 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(String email, String password) {
         AppUser appUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
-        appUser.setPassword(passwordEncoder.encode(password));
         // if role is ADMIN not update
         if(appUser.getRole() == Role.ADMIN)
             throw new IllegalStateException("Can't change password as administrator");
-
+        appUser.setPassword(passwordEncoder.encode(password));
         userRepository.save(appUser);
     }
 

@@ -20,18 +20,4 @@ public class CaptchaUtil {
                 .addNoise(new CurvedLineNoiseProducer())
                 .build();
     }
-
-    //Converting to binary String
-    public static String encodeCaptcha(Captcha captcha) {
-        String image = null;
-        try {
-            ByteArrayOutputStream bos= new ByteArrayOutputStream();
-            ImageIO.write(captcha.getImage(),"jpg", bos);
-            byte[] byteArray= Base64.getEncoder().encode(bos.toByteArray());
-            image = new String(byteArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
 }
