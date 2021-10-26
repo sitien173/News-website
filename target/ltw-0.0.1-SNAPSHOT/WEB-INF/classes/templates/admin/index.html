@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{/fragments/admin/head::head(title = 'Admin DashBoard')}">
+
+</head>
+
+<body class="d-flex flex-column h-100">
+<div id="page">
+
+    <div class="wrapper">
+
+<!--      insert nav-vertical  -->
+        <th:block th:insert="~{/fragments/admin/nav-vertical::nav-vertical}">
+        </th:block>
+
+
+        <div id="bodywrapper" class="container-fluid showhidetoggle">
+
+<!--           insert nav-horizontal -->
+            <th:block th:insert="~{/fragments/admin/nav-horizontal}">
+            </th:block>
+
+            <!--  Content -->
+            <div class="content">
+                <div class="container-fluid">
+<!--                    content    -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!--insert footer -->
+<th:block th:insert="~{/fragments/admin/footer::footer}"></th:block>
+
+<th:block th:insert="~{/fragments/admin/import-script::import-script}"></th:block>
+
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        feather.replace();
+    });
+</script>
+</body>
+
+</html>

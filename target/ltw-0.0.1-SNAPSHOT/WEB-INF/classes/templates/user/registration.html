@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <base th:href="${#servletContext.getContextPath()}">
+    <style>
+        body {
+            background: #fff;
+            background-image: url('/assets/img/bg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .box-shadow {
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+    </style>
+    <script th:src="@{/assets/js/global.js}"></script>
+</head>
+<body>
+<form id="form" th:action="@{/registration}"
+      th:object="${appUser}" method="post"
+      class="form-horizontal d-flex flex-centered"
+      enctype="multipart/form-data"
+      style="width: 100%;margin: auto">
+    <div class="col-6 card box-shadow">
+        <div class="text-center">
+            <figure class="avatar avatar-xl">
+                <img th:src="@{/assets/img/register.png}" alt="...">
+            </figure>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="firstName">Họ</label>
+                    <input required class="form-input" type="text" id="firstName" th:field="*{firstName}"
+                           placeholder="Họ">
+                    <p th:if="${#fields.hasErrors('firstName')}" class="label label-rounded label-error"
+                       th:errors="*{firstName}"></p>
+                </div>
+                <div class="col-5 col-sm-12 mr-2">
+                    <label class="form-label" for="lastName">Tên</label>
+                    <input required class="form-input" type="text" id="lastName" th:field="*{lastName}"
+                           placeholder="Tên">
+                    <p th:if="${#fields.hasErrors('lastName')}" class="label label-rounded label-error"
+                       th:errors="*{lastName}"></p>
+                </div>
+            </div>
+            <div class="form-group d-flex flex-centered">
+                <div class="col-10 mr-2">
+                    <label class="form-label" for="email">Email</label>
+                    <input required class="form-input" type="email" id="email" th:field="*{email}" placeholder="Email">
+                    <p th:if="${#fields.hasErrors('email')}" class="label label-rounded label-error"
+                       th:errors="*{email}"></p>
+                </div>
+            </div>
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <div class="col-12">
+                        <label class="form-label" for="file">Ảnh đại diện</label>
+                        <th:block th:if="${appUser.avatar}">
+                            <img class="img-fit-contain" style="width: 100%" th:src="@{/assets/img/{path}(path=${appUser.avatar})}" alt="avt" />
+                        </th:block>
+                        <th:block th:unless="${appUser.avatar}">
+                            <img class="img-fit-contain" style="width: 100%;" th:src="@{/assets/img/avt.jpg}" alt="avt" />
+                        </th:block>
+                    </div>
+                    <div class="col-12">
+                        <input accept="image/*" class="form-input" id="file" type="file" name="file">
+                        <p class="d-none label label-rounded label-error" id="avtError"></p>
+                    </div>
+                </div>
+                <div class="col-5 col-sm-12" style="margin-top: -100px">
+                    <label class="form-label" for="password">Mật khẩu</label>
+                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
+                           class="form-input" type="password" th:field="*{password}" id="password"
+                           placeholder="Mật khẩu">
+                    <p th:if="${#fields.hasErrors('password')}" class="label label-rounded label-error"
+                       th:errors="*{password}"></p>
+
+                    <label class="form-label" for="re-password">Nhập lại mật khẩu</label>
+                    <input required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,100}$"
+                           class="form-input" type="password" id="re-password" placeholder="Nhập lại mật khẩu">
+                    <p style="display: none" id="repass-error" class="label label-rounded label-error"></p>
+                </div>
+            </div>
+            <div class="text-center">
+                <button id="btn-exit" type="button" class="btn btn-gray input-group-btn mx-2">Thoát</button>
+                <button id="btn-submit" type="submit" class="btn btn-primary input-group-btn mx-2">Đăng Ký</button>
+            </div>
+            <div class="text-left">
+                <a th:href="@{/login}" id="btn-signin">Đã có tài khoản. Bấm vào đây để đăng nhập</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" th:src="@{/assets/js/registration.js(v1)}">
+
+</script>
+</body>
+</html>

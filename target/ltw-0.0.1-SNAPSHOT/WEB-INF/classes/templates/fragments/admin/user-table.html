@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="user-table(users)">
+        <div  class="container-fluid bd-content ps-lg-4">
+            <div class="bd-example">
+                <div class="table-responsive">
+                    <form id="form-table" method="post" th:action="@{/admin/user-management/delete}">
+                        <table id="table" class="table table-hover table align-middle">
+                            <caption>List of users</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <fieldset class="form-check">
+                                        <input name="usersCheck" type="checkbox" class="form-check-input" id="selectAll">
+                                    </fieldset>
+                                </th>
+                                <th scope="col">Họ</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Avatar</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Trạng Thái</th>
+                                <th scope="col">Xác Thực</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Ngày Tạo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="user : ${users}">
+                                <tr th:id="${user.id}">
+                                    <th scope="row">
+                                        <fieldset class="form-check">
+                                            <input onchange="handlerInputCheck(this)" name="userId" th:value="${user.id}" type="checkbox" class="form-check-input">
+                                        </fieldset>
+                                    </th>
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.lastName}">
+                                    </td>
+                                    <td>
+                                        <img th:src="@{/assets/img/{path}(path=${user.avatar})}" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
+                                    </td>
+                                    <td th:text="${user.email}"></td>
+                                    <th:block th:switch="${user.isAccountNonLocked}">
+                                        <td class="text-danger" th:case="false">Lock</td>
+                                        <td class="text-primary" th:case="true">Active</td>
+                                        <td th:case="*">Không Xác Định</td>
+                                    </th:block>
+                                    <th:block th:switch="${user.isEnable}">
+                                        <td class="text-primary" th:case="true">Confirmed</td>
+                                        <td class="text-danger" th:case="false">unconfirmed</td>
+                                        <td th:case="*">Không Xác Định</td>
+                                    </th:block>
+                                    <td th:text="${user.role.name}"></td>
+                                    <td th:text="${user.createAt}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th class="invisible"></th>
+                                <th>Họ</th>
+                                <th>Tên</th>
+                                <th class="invisible"></th>
+                                <th>Email</th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                                <th class="invisible"></th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

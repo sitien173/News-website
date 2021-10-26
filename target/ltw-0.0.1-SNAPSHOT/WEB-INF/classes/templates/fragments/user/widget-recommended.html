@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="widget-recommended(recommendPosts)" >
+    <!-- Widget Recommended (Rating) -->
+    <aside class="widget widget-rating-posts">
+        <h4 class="widget-title">Recommended</h4>
+        <th:block th:each="post : ${recommendPosts}">
+            <article class="entry">
+                <div class="entry__img-holder">
+                    <a th:href="@{/post/{slug}(slug=${post.slug})}">
+                        <div class="thumb-container thumb-60">
+                            <img th:attr="data-src=@{/assets/img/{path}(path=${post.banner})}"  th:src="@{/assets/img/{path}(path=${post.banner})}" class="entry__img lazyload" alt>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="entry__body">
+                    <div class="entry__header">
+
+                        <h2 class="entry__title">
+                            <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}">UN’s WFP Building Up Blockchain-Based Payments System</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <span>by</span>
+                                <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                            </li>
+                            <li class="entry__meta-date" th:text="${post.createAt}">
+
+                            </li>
+                            <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                            </li>
+                        </ul>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-rating">
+                                <i class="ui-star"></i><!--
+                      --><i class="ui-star"></i><!--
+                      --><i class="ui-star"></i><!--
+                      --><i class="ui-star"></i><!--
+                      --><i class="ui-star-empty"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+        </th:block>
+    </aside>
+    <!-- end widget recommended (rating) -->
+</th:block>
+</body>
+</html>

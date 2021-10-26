@@ -1,8 +1,6 @@
-var thePageWrapper = document.getElementById("page");
 var theSideBar = document.getElementById("sidebar");
 var bodywrapper = document.getElementById("bodywrapper");
 var thesidebarCollapsebtn = document.getElementById("sidebarCollapse");
-var navSearchForm = document.getElementById("navSearchForm");
 var navBarElement = document.getElementById("navbar");
 var navbarnavlinks = document.getElementsByClassName("theme-item");
 checkCookie();

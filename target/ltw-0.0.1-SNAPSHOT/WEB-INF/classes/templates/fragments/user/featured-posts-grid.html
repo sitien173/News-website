@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="featured-posts-grid(newPosts)" >
+    <!-- Featured Posts Grid -->
+    <section class="featured-posts-grid">
+        <div class="container">
+            <div class="row row-8">
+                <div class="col-lg-6">
+                    <th:block th:each="post : ${newPosts}">
+                        <!-- Small post -->
+                        <div th:if="${postStat.index < 3}" class="featured-posts-grid__item featured-posts-grid__item--sm">
+                            <article class="entry card post-list featured-posts-grid__entry">
+                                <div class="entry__img-holder post-list__img-holder card__img-holder" th:style="'background:url(' + @{/assets/img/{path}(path=${post.banner})} + ')'">
+                                    <a th:href="@{/post/{slug}(slug=${post.slug})}" class="thumb-url"></a>
+                                    <img th:src="@{/assets/img/{path}(path=${post.banner})}" alt class="entry__img d-none">
+                                    <th:block th:each="category : ${post.categories}">
+                                        <a th:href="@{/category/{slug}(slug=${category.slug})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:utext="${category.name}"></a>
+                                    </th:block>
+                                </div>
+
+                                <div class="entry__body post-list__body card__body">
+                                    <h2 class="entry__title">
+                                        <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}"></a>
+                                    </h2>
+                                    <ul class="entry__meta">
+                                        <li class="entry__meta-author">
+                                            <span>by</span>
+                                            <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                        </li>
+                                        <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                        </li>
+                                        <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div> <!-- end post -->
+                    </th:block>
+
+
+                </div> <!-- end col -->
+
+                <div class="col-lg-6">
+
+                    <!-- Large post -->
+                    <th:block th:if="${newPosts.size >= 4}">
+                        <div th:if="${newPosts[4] != null}" class="featured-posts-grid__item featured-posts-grid__item--lg">
+                            <article class="entry card featured-posts-grid__entry">
+                                <div class="entry__img-holder card__img-holder">
+                                    <a th:href="@{/post/{slug}(slug=${newPosts[4].slug})}">
+                                        <img th:src="@{/assets/img/{path}(path=${newPosts[4].banner})}" alt class="entry__img">
+                                    </a>
+                                    <th:block th:each="category : ${newPosts[4].categories}">
+                                        <a th:href="@{/category/{slug}(slug=${category.slug})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:utext="${category.name}"></a>
+                                    </th:block>
+                                </div>
+
+                                <div class="entry__body card__body">
+                                    <h2 class="entry__title">
+                                        <a th:href="@{/post/{slug}(slug=${newPosts[4].slug})}" class="truncate" th:text="${newPosts[4].title}"></a>
+                                    </h2>
+                                    <ul class="entry__meta">
+                                        <li class="entry__meta-author">
+                                            <span>by</span>
+                                            <a href="#" th:text="|${newPosts[4].appUser.firstName}${' '}${newPosts[4].appUser.lastName}|"></a>
+                                        </li>
+                                        <li class="entry__meta-date" th:text="${newPosts[4].createAt}">
+
+                                        </li>
+                                        <li class="entry__meta-date" th:text="|${newPosts[4].view}${' Lượt xem'}|">
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div>
+                    </th:block>
+                    <!-- end large post -->
+                </div>
+
+            </div>
+        </div>
+    </section> <!-- end featured posts grid -->
+</th:block>
+</body>
+</html>
