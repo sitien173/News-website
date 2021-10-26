@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/leaf.svg">
+</head>
+<body>
+<footer th:fragment="footer" class="footer footer--dark">
+    <div class="container">
+        <div class="footer__widgets">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6">
+                    <aside class="widget widget-logo">
+                        <a th:href="@{/}">
+                            <img th:src="@{/assets/img/leaf.png}"  class="logo__img" alt>
+                        </a>
+                        <div class="socials socials--large socials--rounded mb-24">
+                            <a href="#" class="social social-facebook" aria-label="facebook"><i class="ui-facebook"></i></a>
+                            <a href="#" class="social social-twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
+                            <a href="#" class="social social-google-plus" aria-label="google+"><i class="ui-google"></i></a>
+                            <a href="#" class="social social-youtube" aria-label="youtube"><i class="ui-youtube"></i></a>
+                            <a href="#" class="social social-instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <!-- Widget Popular Posts -->
+                    <aside class="widget widget-popular-posts">
+                        <h4 class="widget-title">Bài Đăng Phổ Biến</h4>
+                        <ul class="post-list-small">
+                            <th:block th:each="post : ${postsPopular}">
+                                <th:block th:if="${postStat.index < 5}">
+                                    <li class="post-list-small__item">
+                                        <article class="post-list-small__entry clearfix">
+                                            <div class="post-list-small__body">
+                                                <h3 class="post-list-small__entry-title">
+                                                    <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}"></a>
+                                                </h3>
+                                                <ul class="entry__meta">
+                                                    <li class="entry__meta-author">
+                                                        <span>by</span>
+                                                        <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                                    </li>
+                                                    <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                                    </li>
+                                                    <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </article>
+                                    </li>
+                                </th:block>
+                            </th:block>
+                        </ul>
+                    </aside> <!-- end widget popular posts -->
+                </div>
+
+                <div th:insert="~{/fragments/user/widget-subscriber::widget-subscriber}" class="col-lg-3 col-md-6">
+
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end container -->
+</footer>
+</body>
+</html>

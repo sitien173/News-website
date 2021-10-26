@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.png}">
+</head>
+<body>
+<th:block th:fragment="header(newPosts,categories)" >
+    <!-- Navigation -->
+    <header class="nav">
+        <div class="nav__holder nav--sticky sticky offset scrolling">
+            <div class="container relative">
+                <div class="flex-parent">
+
+                    <!-- Side Menu Button -->
+                    <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+              <span class="nav-icon-toggle__box">
+                <span class="nav-icon-toggle__inner"></span>
+              </span>
+                    </button>
+
+                    <!-- Logo -->
+                    <div class="logo">
+                        <img class="logo__img" style="width: 50px;height: 40px" th:src="@{/assets/img/leaf.png}" alt="logo">
+                        <span class="trending-now__text" style="font-weight: bold">ANVI</span>
+                    </div>
+
+                    <!-- Nav-wrap -->
+                    <nav class="flex-child nav__wrap d-none d-lg-block">
+                        <ul class="nav__menu">
+                                <li class="active">
+                                <a href="/home">Home</a>
+                            </li>
+                            <li class="nav__dropdown">
+                                <a href="#">Posts</a>
+                                <ul class="nav__dropdown-menu nav__megamenu" style="width: 100px; left: 365px;">
+                                    <li>
+                                        <div class="nav__megamenu-wrap">
+                                            <div class="row" id="nav-post">
+                                                <th:block th:each="post : ${newPosts}">
+                                                    <div class="col nav__megamenu-item">
+                                                        <article class="entry">
+                                                            <div class="entry__img-holder">
+                                                                <a th:href="@{/post/{slug}(slug=${post.slug})}">
+                                                                    <img th:src="@{/assets/img/{path}(path = ${post.banner})}" class="entry__img" style="width: 250px;height: 100px;object-fit: cover">
+                                                                 </a>
+                                                            </div>
+                                                            <ul class="entry__meta">
+                                                                <li class="entry__meta-author">
+                                                                    <span>by</span>
+                                                                    <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                                                </li>
+                                                                <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                                                </li>
+                                                                <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                                                                </li>
+                                                            </ul>
+                                                            <th:block th:each="category : ${post.categories}">
+                                                                <a th:href="@{/categoty/{id}(id=${category.id})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:text="${category.name}"></a>
+                                                            </th:block>
+                                                            <div class="entry__body">
+                                                                <h2 class="entry__title">
+                                                                    <a th:href="@{/post/{slug}(slug=${post.slug})}" style="display: inline-block" class="truncate" th:text="${post.title}"></a>
+                                                                </h2>
+                                                            </div>
+                                                        </article>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul> <!-- end megamenu -->
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Danh Mục</a>
+                                <ul class="nav__dropdown-menu">
+                                    <th:block th:each="category : ${categories}">
+                                        <li><a th:href="@{/category/{slug}(slug=${category.slug})}" th:text="${category.name}"></a></li>
+                                    </th:block>
+                                </ul>
+                            </li>
+                            <li class="nav__dropdown">
+                                <a href="#">Tài khoản</a>
+                                <ul class="nav__dropdown-menu">
+                                    <th:block th:if="${session.SPRING_SECURITY_CONTEXT eq null}">
+                                        <li ><a th:href="@{/login}">Đăng nhập</a></li>
+                                    </th:block>
+                                    <th:block th:if="${session.SPRING_SECURITY_CONTEXT}">
+                                        <li ><a th:href="@{/user/info}">Thông tin cá nhân</a></li>
+                                        <li ><a th:href="@{/user/change-password}">Đổi mật khẩu</a></li>
+                                        <li ><a th:href="@{/user/j_spring_security_logout}">Đăng xuất</a></li>
+                                    </th:block>
+                                </ul>
+                            </li>
+
+
+                        </ul> <!-- end menu -->
+                    </nav> <!-- end nav-wrap -->
+
+                    <!-- Nav Right -->
+                    <div class="nav__right">
+
+                        <!-- Search -->
+                        <div class="nav__right-item nav__search">
+                            <a href="#" class="nav__search-trigger" id="nav__search-trigger">
+                                <i class="ui-search nav__search-trigger-icon"></i>
+                            </a>
+                            <div class="nav__search-box" id="nav__search-box">
+                                <form th:action="@{/search}" method="get" class="nav__search-form">
+                                    <input type="text" name="query" placeholder="Nhập từ khóa bài viết cần tìm" class="nav__search-input">
+                                    <button type="submit" class="search-button btn btn-lg btn-color btn-button">
+                                        <i class="ui-search nav__search-icon"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div> <!-- end nav right -->
+
+                </div> <!-- end flex-parent -->
+            </div> <!-- end container -->
+
+        </div>
+    </header> <!-- end navigation -->
+</th:block>
+</body>
+</html>

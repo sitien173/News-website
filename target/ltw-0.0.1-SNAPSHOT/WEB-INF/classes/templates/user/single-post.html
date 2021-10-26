@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/user/head::head(title = '24 new - Read Every Thing')}">
+</head>
+<body class="bg-light style-default style-rounded">
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<main class="main oh" id="main">
+    <th:block th:replace="~{/fragments/user/header::header(${newPosts},${categories})}" />
+    <th:block th:replace="~{/fragments/user/trending-now::trending-now(${newPosts})}" />
+
+    <div class="main-container container pt-24" id="main-container">
+        <!-- Content -->
+        <div class="row">
+            <!-- Posts -->
+            <div class="col-lg-8 blog__content">
+                <section class="section tab-post mb-16">
+                    <div class="title-wrap title-wrap--line">
+                        <h3 class="section-title" th:text="${post.title}"></h3>
+                    </div>
+                    <div class="row card-row" th:utext="${post.content}">
+                    </div>
+                </section>
+                <section class="section tab-post mb-16">
+                    <div class="title-wrap title-wrap--line">
+                        <h3 class="section-title">Bình luận bài viết</h3>
+                    </div>
+                    <div class="row card-row">
+                        <div class="card card-inner">
+                            <div class="card-body">
+                                <th:block th:each="comment : ${post.comments}">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img th:src="@{/assets/img/{path}(path=${comment.appUser.avatar})}" class="img img-rounded img-fluid"/>
+                                            <p class="text-secondary text-center" th:text="${comment.createAt}"></p>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p>
+                                                <span class="float-left"><strong th:text="|${comment.appUser.firstName}${' '}${comment.appUser.lastName}|"></strong></span>
+                                            </p>
+                                            <div class="clearfix"></div>
+                                            <th:block th:utext="${comment.feedback}"/>
+                                        </div>
+                                    </div>
+                                </th:block>
+
+                                <th:block th:if="${totalPage == 0}">
+                                    <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/post/'}${post.slug}|,${currentPage},${currentPage})}" />
+                                </th:block>
+                                <th:block th:if="${totalPage > 0}">
+                                    <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/post/'}${post.slug}|,${currentPage},${totalPage})}" />
+                                </th:block>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="row card-row">
+                    <div class="card card-inner">
+                        <div class="card-body">
+                            <form th:action="@{/user/feedback/add}" method="post">
+                                <input type="hidden" th:value="${post.id}" name="postId">
+                                <div class="form-group">
+                                    <textarea class="form-control" id="feedback" rows="3" name="feedback"></textarea>
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary">Gửi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end posts -->
+            <div class="col-lg-4 ">
+                <!-- Widget Categories -->
+                <aside class="sidebar sidebar--1 sidebar--right" style="width: 100%">
+                    <!-- Widget Ad 300 -->
+                    <aside class="widget widget_media_image">
+                        <a href="#">
+                            <img th:src="@{/assets/img/{path}(path=${'placeholder_336.jpg'})}" alt>
+                        </a>
+                    </aside> <!-- end widget ad 300 -->
+
+                    <th:block th:replace="~{/fragments/user/widget-categories::widget-categories(${categories})}"/>
+                </aside>
+                <!-- end widget categories -->
+                <!-- Sidebar Right-->
+                <th:block th:replace="~{/fragments/user/sidebar-right::sidebar-right(${postsPopular})}" />
+                <!-- end sidebar right-->
+            </div>
+        </div>
+        <!-- end content -->
+    </div>
+
+    <!-- Footer -->
+    <th:block th:replace="~{/fragments/user/footer::footer}"/>
+    <!-- end footer -->
+
+    <div id="back-to-top" class="show">
+        <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+</main> <!-- end main-wrapper -->
+<th:block th:insert="~{/fragments/user/import-script::import-script}" />
+<script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+   CKEDITOR.replace( 'feedback' , {
+        height: 150,
+        removePlugins: 'elementspath',
+        resize_enabled: false,
+        toolbarGroups: [
+           { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+           { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+           { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+           { name: 'forms', groups: [ 'forms' ] },
+           '/',
+           { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+           { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+           { name: 'links', groups: [ 'links' ] },
+           { name: 'insert', groups: [ 'insert' ] },
+           '/',
+           { name: 'styles', groups: [ 'styles' ] },
+           { name: 'colors', groups: [ 'colors' ] },
+           { name: 'tools', groups: [ 'tools' ] },
+           { name: 'others', groups: [ 'others' ] },
+           { name: 'about', groups: [ 'about' ] }
+       ],
+       removeButtons: 'Image,Flash,Table,Iframe,About,Source,Save,NewPage,ExportPdf,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField'
+    });
+
+</script>
+</body>
+</html>

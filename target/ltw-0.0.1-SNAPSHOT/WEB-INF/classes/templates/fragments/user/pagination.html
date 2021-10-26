@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="pagination(link,currentPage,totalPage)" >
+    <script>
+        const nextOrPrevPage = (link,pageNo) => {
+            if(link.includes("&")) location.href = link + 'pageNo=' + pageNo;
+            else location.href = link + '?pageNo=' + pageNo;
+        }
+    </script>
+    <!-- Pagination -->
+    <nav class="pagination">
+        <th:block th:each="i : ${#numbers.sequence(1,totalPage,1)}">
+            <th:block th:if="${i.equals(currentPage)}">
+                <span class="pagination__page pagination__page--current" th:text="${i}"></span>
+            </th:block>
+            <th:block th:if="${i > currentPage || i < currentPage}">
+                <span style="cursor: pointer" th:onclick="nextOrPrevPage([[${link}]],[[${i}]])" class="pagination__page" th:text="${i}"></span>
+            </th:block>
+        </th:block>
+    </nav>
+    <!-- End Pagination -->
+</th:block>
+</body>
+</html>
