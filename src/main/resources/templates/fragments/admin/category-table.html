@@ -31,13 +31,13 @@
                             <tr th:id="${category.id}">
                                 <th scope="row">
                                     <fieldset class="form-check">
-                                        <input name="cateId" th:value="${category.id}" type="checkbox" class="form-check-input">
+                                        <input onchange="handlerInputCheck(this)" name="cateId" th:value="${category.id}" type="checkbox" class="form-check-input">
                                     </fieldset>
                                 </th>
                                 <td th:text="${category.name}"></td>
                                 <td th:text="${category.slug}"></td>
                                 <td>
-                                    <img th:src="@{/assets/img/{path}(path=${category.banner})}"  style="width: 100px;height: 100px;object-fit: cover" class="img-thumbnail">
+                                    <img th:src="@{/assets/img/{path}(path=${category.banner})}" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
                                 </td>
                                 <th:block th:switch="${category.isEnable}">
                                     <td class="text-danger" th:case="false">Lock</td>

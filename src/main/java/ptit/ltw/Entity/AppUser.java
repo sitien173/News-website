@@ -1,13 +1,13 @@
 package ptit.ltw.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ptit.ltw.model.Role;
+import ptit.ltw.Model.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,14 +16,12 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Table(name = "AppUser",
         uniqueConstraints = {@UniqueConstraint(name = "appUser_UN_email",columnNames = "email")})
+@NaturalIdCache
 public class AppUser implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -32,32 +30,27 @@ public class AppUser implements UserDetails, Serializable {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
+    @Column(nullable = false,length = 100)
     private String firstName;
 
     @NotBlank
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
+    @Column(nullable = false,length = 100)
     private String lastName;
 
-    @Column(columnDefinition = "VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(length = 100)
     private String avatar;
 
     @Email
-    @NaturalId
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @NaturalId(mutable = true)
+    @Column(nullable = false,length = 100)
     private String email;
 
     @NotBlank
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false,length = 100)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false,length = 20)
     private Role role = Role.USER;
 
     @Column(nullable = false)
@@ -69,8 +62,6 @@ public class AppUser implements UserDetails, Serializable {
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "appUser")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
               org.hibernate.annotations.CascadeType.DELETE})

@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import ptit.ltw.Entity.Category;
 import ptit.ltw.Repositoty.IRepository.CategoryRepository;
 import ptit.ltw.Service.IService.CategoryService;
+import ptit.ltw.Utils.VNCharacterUtils;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     @Override
     public List<Category> getAll() {
-        return new ArrayList<>(categoryRepository.getAll(Category.class));
+        return new ArrayList<>(categoryRepository.getAll());
     }
 
     @Override
@@ -33,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Integer id) {
-        return categoryRepository.findById(Category.class,id).orElse(null);
+        return categoryRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -43,11 +45,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Integer id) {
-        categoryRepository.delete(Category.class,id);
+        categoryRepository.delete(id);
     }
+
 
     @Override
     public void save(@NotNull Category category) {
+        // Thêm mới chưa có slug -> tự độgn chuyển title xuống slug
+        if(category.getSlug() == null || category.getSlug().isEmpty()){
+            category.setSlug(VNCharacterUtils.removeAccent(category.getName()));
+        }
         categoryRepository.save(category);
     }
 }

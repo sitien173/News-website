@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/user/head::head(title = '24 new - Read Every Thing')}">
+</head>
+<body class="bg-light style-default style-rounded">
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<main class="main oh" id="main">
+    <th:block th:replace="~{/fragments/user/header::header(${newPosts},${categories})}" />
+    <th:block th:replace="~{/fragments/user/trending-now::trending-now(${newPosts})}" />
+    <th:block th:replace="~{/fragments/user/featured-posts-grid::featured-posts-grid(${newPosts})}" />
+
+    <th:block th:replace="~{/fragments/user/main-content::main-content(${newPosts},${posts},${postsTayNguyen},${postsPopular},${categories},${recommendPosts},${currentPage},${totalPage})}" />
+    <!-- Footer -->
+    <th:block th:replace="~{/fragments/user/footer::footer}"/>
+     <!-- end footer -->
+
+    <div id="back-to-top" class="show">
+        <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+</main> <!-- end main-wrapper -->
+<th:block th:insert="~{/fragments/user/import-script::import-script}" />
+</body>
+</html>

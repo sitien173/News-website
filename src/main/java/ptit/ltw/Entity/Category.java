@@ -1,8 +1,10 @@
 package ptit.ltw.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,23 +17,22 @@ import java.util.List;
         @UniqueConstraint(name = "category_UN_slug",columnNames = "slug"),
         @UniqueConstraint(name = "category_UN_name", columnNames = "name")
 })
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@NaturalIdCache
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
+    @Column(nullable = false,length = 50)
     private String name;
-    @NaturalId
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci")
+
+    @NaturalId(mutable = true)
+    @Column(nullable = false,length = 100)
     private String slug;
 
-    @Column(columnDefinition = "VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(length = 100)
     private String banner;
 
     @Column(updatable = false)
@@ -41,9 +42,7 @@ public class Category implements Serializable {
     private Boolean isEnable = true;
 
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "categories")
     private List<Post> posts;
 
 }

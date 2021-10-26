@@ -11,20 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
 import ptit.ltw.Repositoty.IRepository.UserRepository;
 import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
-import ptit.ltw.Service.IService.FileStoreService;
 import ptit.ltw.Service.IService.MailService;
 import ptit.ltw.Service.IService.UserService;
-import ptit.ltw.model.Role;
+import ptit.ltw.Model.Role;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
+    private  final HttpSession session;
     @Override
     public AppUser findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
@@ -46,23 +43,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser findById(Long id) {
-       return userRepository.findById(AppUser.class,id)
+       return userRepository.findById(id)
                .orElseThrow(() ->
                        new IllegalStateException(String.format("Id %s not found",id)));
     }
 
     @Override
     public List<AppUser> getAll() {
-        return new ArrayList<>(userRepository.getAll(AppUser.class));
+        return new ArrayList<>(userRepository.getAll());
     }
 
     @Override
     public void delete(Long id) {
-        userRepository.delete(AppUser.class,id);
+        userRepository.delete(id);
     }
 
     public void forgotPassword(String email) {
-        AppUser appUser = userRepository.findByNaturalId(AppUser.class,"email",email)
+        AppUser appUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         VerificationToken verificationToken = new VerificationToken(
                 UUID.randomUUID().toString(),
@@ -79,18 +76,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String email, String password) {
-        AppUser appUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
-        appUser.setPassword(passwordEncoder.encode(password));
-        // if role is ADMIN not update
-        if(appUser.getRole() == Role.ADMIN)
-            throw new IllegalStateException("Can't change password as administrator");
-
-        userRepository.save(appUser);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(()
                 -> new UsernameNotFoundException(String.format("%s not found",email)));
@@ -98,9 +83,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(@NotNull AppUser appUser) {
-         // TODO: encode password
-        String passwordEncode = passwordEncoder.encode(appUser.getPassword());
-        appUser.setPassword(passwordEncode);
         // TODO: insert verificationToken and send mail to active account
         if(!appUser.isEnabled()) {
             VerificationToken verificationToken = sendMailRegistration(appUser, appUser.getEmail());
@@ -110,16 +92,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(AppUser appUser) {
-        userRepository.save(appUser);
-    }
-
-    @Override
-    public void setAuthentication(HttpSession session, AppUser appUser) {
+    public void setAuthentication(AppUser appUser) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = new UsernamePasswordAuthenticationToken(appUser, null, appUser.getAuthorities());
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+        session.setAttribute("CKFinder_UserRole",appUser.getRole().name());
     }
 
     private VerificationToken sendMailRegistration(AppUser appUser, String email) {

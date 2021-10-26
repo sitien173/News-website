@@ -34,7 +34,7 @@
                                 <tr th:id="${user.id}">
                                     <th scope="row">
                                         <fieldset class="form-check">
-                                            <input name="userId" th:value="${user.id}" type="checkbox" class="form-check-input">
+                                            <input onchange="handlerInputCheck(this)" name="userId" th:value="${user.id}" type="checkbox" class="form-check-input">
                                         </fieldset>
                                     </th>
                                     <td th:text="${user.firstName}"></td>

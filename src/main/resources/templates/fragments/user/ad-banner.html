@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="ad-banner(path)" >
+    <!-- Ad Banner -->
+    <div class="text-center pb-48">
+        <a href="#">
+            <img th:src="@{/assets/img/{path}(path=${path})}" alt>
+        </a>
+    </div>
+    <!-- End Ad Banner -->
+</th:block>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/admin/head::head}">
+<head th:insert="~{/fragments/admin/head::head(title='Quản lí danh mục')}">
 
 </head>
 
@@ -74,9 +74,10 @@
                     <div class="canvas-wrapper">
                         <form id="form" class="row g-3 mb-4" th:action="@{/admin/category-management/add}"
                               method="post" th:object="${category}" enctype="multipart/form-data">
+                            <input type="hidden" id="avt" th:field="*{banner}">
                             <div class="col-12">
                                 <div class="row g-3 mb-3">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <div class="form-floating">
                                             <input required placeholder="Tên Danh Mục" type="text" class="form-control" th:field="*{name}" id="name">
                                             <label for="name" class="form-label">Tên Danh Mục</label>
@@ -84,23 +85,12 @@
                                                th:errors="*{name}"></p>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-floating">
-                                            <input required placeholder="Đường Dẫn" type="text" class="form-control" th:field="*{slug}" id="slug">
-                                            <label for="slug" class="form-label">Đường dẫn</label>
-                                            <p th:if="${#fields.hasErrors('slug')}" class="text-danger"
-                                               th:errors="*{slug}"></p>
-                                        </div>
-                                    </div>
                                 </div>
-
-                                <br>
-                                <p class="text-field">Ảnh đại diện</p>
                                 <div class="row g-3 mb-3">
                                     <div class="col-sm-6">
                                         <div class="form-floating">
                                             <input accept="image/*" type="file" class="form-control" id="file" name="file">
-                                            <label for="file" class="form-label">Tải ảnh lên từ PC</label>
+                                            <label for="file" class="form-label">Banner</label>
                                             <div class="progress" style="background-color: white">
                                                 <div class="progress-bar" role="progressbar" id="process-bar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                             </div>
@@ -108,25 +98,22 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-
-                                    </div>
-                                </div>
-
-                                <div class="row g-3 mb-3">
-                                    <div class="col-sm-12">
-                                        <div class="form-floating">
-                                            <div class="row g-3 mb-3">
-                                                <div class="col-sm-4">
-                                                    <fieldset class="form-check">
-                                                        <input th:field="*{isEnable}" type="checkbox" class="form-check-input" id="isEnable">
-                                                        <label for="isEnable" class="form-check-label">Bật Hoạt Động</label>
-                                                    </fieldset>
-                                                </div>
-                                            </div>
+                                        <div class="d-grid gap-2" style="height: 80%">
+                                            <button type="button" class="btn btn-outline-primary" id="ckfinder-popup1">Chọn Ảnh Trong Thư Viện</button>
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row g-3 mb-3">
+                                    <div class="col-sm-6">
+                                        <fieldset class="form-check">
+                                            <input th:field="*{isEnable}" type="checkbox" class="form-check-input" id="isEnable">
+                                            <label for="isEnable" class="form-check-label">Bật Hoạt Động</label>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img id="avt-selected" src="" class="img-fluid">
+                                    </div>
+                                </div>
                                 <div class="row g-3 mb-4">
                                     <div class="col-sm-12">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

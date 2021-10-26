@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="widget-subscriber" >
+    <!-- Widget Newsletter -->
+    <aside class="widget widget_mc4wp_form_widget">
+        <h4 class="widget-title">Newsletter</h4>
+        <p class="newsletter__text">
+            <i class="ui-email newsletter__icon"></i>
+            Đăng Ký Để Nhận Tin Tức Mới Nhất
+        </p>
+        <form th:action="@{/subscriber/add}" class="mc4wp-form" method="post">
+            <div class="mc4wp-form-fields">
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your email" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-lg btn-color" value="Đăng Ký">
+                </div>
+            </div>
+        </form>
+    </aside> <!-- end widget newsletter -->
+</th:block>
+</body>
+</html>

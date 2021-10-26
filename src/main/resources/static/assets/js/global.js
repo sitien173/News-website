@@ -1,4 +1,4 @@
-const URL = location.origin;
+const URL = location.href;
 const isValidImage = () => {
     return document.getElementById("file")
         .files[0]
@@ -30,14 +30,12 @@ const checkPassword = (event) => {
     const password = document.getElementById("password");
     const rePassword = document.getElementById("re-password");
     const error = document.getElementById("repass-error");
-    const btnSubmit  = document.getElementById("btn-submit");
     if(password.value !== rePassword.value){
         error.style.display="block";
         error.textContent = "Mật khẩu không khớp";
         event.preventDefault();
-    }else {
-        btnSubmit.disabled = true;
     }
 }
+
 
 

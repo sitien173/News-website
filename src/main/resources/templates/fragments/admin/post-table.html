@@ -33,7 +33,7 @@
                                 <tr th:id="${post.id}">
                                     <th scope="row">
                                         <fieldset class="form-check">
-                                            <input name="postCheckId" th:value="${post.id}" type="checkbox" class="form-check-input">
+                                            <input onchange="handlerInputCheck(this)" name="postCheckId" th:value="${post.id}" type="checkbox" class="form-check-input">
                                         </fieldset>
                                     </th>
                                     <td ><!-- HTML to write -->
@@ -42,7 +42,8 @@
                                     <td>
                                         <img th:src="@{/assets/img/{path}/(path=${post.banner})}"  style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
                                     </td>
-                                    <td><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#modal'}${post.id}|">Hiển thị</a>
+                                    <td><a th:href="@{/post/{slug}(slug=${post.slug})}" class="text-primary" target="_blank">Hiển thị</a>
+                                    <!--
                                         <div class="modal fade" th:id="|${'modal'}${post.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${post.id}${'Label'}|" aria-hidden="true">
                                             <div class="modal-dialog modal-fullscreen">
                                                 <div class="modal-content">
@@ -60,6 +61,7 @@
                                                 </div>
                                             </div>
                                         </div>
+-->
                                     </td>
                                     <td class="text-info" th:utext="${post.view}"></td>
                                     <th:block th:switch="${post.isEnable}">

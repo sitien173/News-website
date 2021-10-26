@@ -1,19 +1,16 @@
 package ptit.ltw.Entity;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "Comment")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class Comment implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -29,13 +26,10 @@ public class Comment implements Serializable {
     private LocalDate createAt = LocalDate.now();
 
     @Column
-    private Long parentId;
+    private String feedback;
 
     @ManyToOne
     @JoinColumn(name = "appuser_id",foreignKey = @ForeignKey(name = "FK_comment_user"))
     private AppUser appUser;
-
-    @Transient
-    private List<Comment> child;
 
 }

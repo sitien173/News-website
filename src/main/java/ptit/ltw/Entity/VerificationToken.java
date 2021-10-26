@@ -3,19 +3,18 @@ package ptit.ltw.Entity;
 
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
-@Table(name = "Verificationtoken",uniqueConstraints =
+@Table(name = "VerificationToken",uniqueConstraints =
                 @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))
+@NaturalIdCache
 public class VerificationToken implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -24,12 +23,11 @@ public class VerificationToken implements Serializable {
     private Long id;
 
     @NaturalId
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false,length = 100)
     private String token;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createAt;
+    @Column(updatable = false)
+    private LocalDateTime createAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;

@@ -1,13 +1,16 @@
 package ptit.ltw.Entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,25 +18,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Post")
-@Getter
-@Setter
+@Table(name = "Post",uniqueConstraints = @UniqueConstraint(name = "UN_Post_slug",columnNames = "slug"))
+@Data
 @NoArgsConstructor
+@NaturalIdCache
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,
-            columnDefinition = "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci")
+    @NaturalId(mutable = true) // có thể thay đổi
+    @Column(nullable = false)
+    private String slug;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column
     private String banner;
 
     @Column
-        @ColumnDefault("0")
     private Integer view = 0;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "post",orphanRemoval = true,cascade = CascadeType.ALL)
@@ -53,8 +58,7 @@ public class Post implements Serializable {
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();
 
-    @Column(nullable = false,
-            columnDefinition = "TEXT(65535) CHARACTER SET utf8 COLLATE utf8_general_ci")
+    @Column(nullable = false)
     @Type(type = "text")
     private String content;
 
