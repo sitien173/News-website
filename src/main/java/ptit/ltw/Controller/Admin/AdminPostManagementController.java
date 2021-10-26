@@ -45,23 +45,26 @@ public class AdminPostManagementController {
         return categories;
     }
 
+    @ModelAttribute("categories")
+    public List<Category> getCategories(@RequestParam(value = "refresh",required = false) Boolean isRefresh){
+        if(isRefresh != null) categories = null;
+        return categories == null ? getCategories() : categories;
+    }
+
+    @ModelAttribute("posts")
+    public List<Post> getPosts(@RequestParam(value = "refresh",required = false) Boolean isRefresh){
+        if(isRefresh != null) posts = null;
+        return posts == null ? getPosts() : posts;
+    }
 
     @GetMapping
-    public String showView(@RequestParam(value = "refresh",required = false) Boolean isRefresh,
-                           Model model){
-        if(isRefresh != null) {
-            model.addAttribute("posts",getPosts());
-            model.addAttribute("categories",getCategories());
-        }
-        else model.addAttribute("posts",posts == null ? getPosts() : posts);
+    public String showView(){
         return "admin/post-management";
     }
 
     @GetMapping("/add")
     public String showViewAdd(Model model){
-        model.addAttribute("posts",posts == null ? getPosts() : posts);
         model.addAttribute("post", getPost());
-        model.addAttribute("categories",categories == null ? getCategories() : categories);
         return "admin/post-management";
     }
 
@@ -101,8 +104,6 @@ public class AdminPostManagementController {
     @GetMapping("/{id}")
     public String getInfo(@PathVariable("id") long id,Model model){
         model.addAttribute("postEdit",postService.findById(id));
-        model.addAttribute("categories",categories == null ? getCategories() : categories);
-        model.addAttribute("posts",posts == null ? getPosts() : posts);
         return "admin/post-edit";
     }
 
@@ -113,7 +114,6 @@ public class AdminPostManagementController {
                              @RequestParam("file")MultipartFile file,
                              @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext) throws IOException {
         if(result.hasErrors()) return "admin/post-edit";
-            // check change email
         else if( !file.isEmpty() )
             post.setBanner(fileStoreService.upload(file));
 

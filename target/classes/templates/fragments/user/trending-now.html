@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="trending-now(newPosts)" >
+    <!-- Trending Now -->
+    <div class="container">
+        <div class="trending-now">
+        <span class="trending-now__label">
+          <i class="ui-flash"></i>
+          <span class="trending-now__text d-lg-inline-block d-none">News Post</span>
+        </span>
+            <div class="newsticker">
+                <ul class="newsticker__list" style="height: 34px; overflow: hidden;">
+                    <th:block th:each="post : ${newPosts}">
+                        <li class="newsticker__item" style="margin-top: 0px;"><a th:href="@{/post/{slug}(slug=${post.slug})}" class="newsticker__item-url" th:text="${post.title}"></a></li>
+                    </th:block>
+                </ul>
+            </div>
+            <div class="newsticker-buttons">
+                <button class="newsticker-button newsticker-button--prev" id="newsticker-button--prev" aria-label="next article"><i class="ui-arrow-left"></i></button>
+                <button class="newsticker-button newsticker-button--next" id="newsticker-button--next" aria-label="previous article"><i class="ui-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <!-- End Trending Now -->
+</th:block>
+</body>
+</html>

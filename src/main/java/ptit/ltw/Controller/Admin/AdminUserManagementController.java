@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ptit.ltw.Entity.AppUser;
+import ptit.ltw.Entity.Category;
 import ptit.ltw.Service.IService.FileStoreService;
 import ptit.ltw.Service.IService.UserService;
 
@@ -22,7 +23,9 @@ import java.util.List;
 public class AdminUserManagementController {
     private final UserService userService;
     private final FileStoreService fileStoreService;
+    private final BCryptPasswordEncoder passwordEncoder;
     private static List<AppUser> users;
+
 
     private AppUser getAppUser(){
         AppUser appUser = new AppUser();
@@ -34,17 +37,19 @@ public class AdminUserManagementController {
         return users;
     }
 
+    @ModelAttribute("users")
+    public List<AppUser> getCategories(@RequestParam(value = "refresh",required = false) Boolean isRefresh){
+        if(isRefresh != null) users = null;
+        return users == null ? getUsers() : users;
+    }
+
     @GetMapping
-    public String showView(@RequestParam(value = "refresh",required = false) Boolean isRefresh,
-                           Model model){
-        if(isRefresh != null) model.addAttribute("users",getUsers());
-        else model.addAttribute("users",users == null ? getUsers() : users);
+    public String showView(){
         return "admin/user-management";
     }
 
     @GetMapping("/add")
     public String showViewAdd(Model model){
-        model.addAttribute("users",users == null ? getUsers() : users);
         model.addAttribute("appUser", getAppUser());
         return "admin/user-management";
     }
@@ -52,17 +57,16 @@ public class AdminUserManagementController {
     @PostMapping(value = "/add",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String registrationForm(@Valid @ModelAttribute("appUser") AppUser appUser,
                                    BindingResult result,
-                                   @RequestParam("file")MultipartFile file,
-                                   Model model) throws IOException {
+                                   @RequestParam("file")MultipartFile file) throws IOException {
         if(result.hasErrors()) return "admin/user-management";
         if(userService.findByEmail(appUser.getEmail()) != null){
             result.rejectValue("email","error","Email is exist");
-            model.addAttribute("users",users);
             return "admin/user-management";
         }
         // upload file to uploads
         if(!file.isEmpty())  appUser.setAvatar(fileStoreService.upload(file));
-        // TODO: check email isExist
+        String passwordEncode = passwordEncoder.encode(appUser.getPassword());
+        appUser.setPassword(passwordEncode);
         userService.save(appUser);
         return "redirect:/admin/user-management?refresh=true";
     }
@@ -71,7 +75,6 @@ public class AdminUserManagementController {
     @GetMapping("/{id}")
     public String getInfo(@PathVariable("id") int id,Model model){
         model.addAttribute("userEdit",userService.findById((long) id));
-        model.addAttribute("users",users == null ? getUsers() : users);
         return "admin/user-edit";
     }
 
@@ -79,14 +82,12 @@ public class AdminUserManagementController {
     public String updateForm(@Valid @ModelAttribute("userEdit") AppUser appUser,
                                    BindingResult result,
                                    @RequestParam("email1") String email,
-                                   @RequestParam("file")MultipartFile file,
-                                   Model model) throws IOException {
+                                   @RequestParam("file")MultipartFile file) throws IOException {
         if(result.hasErrors()) return "admin/user-edit";
         // check change email
         else if (!appUser.getEmail().equals(email)){
             if(userService.findByEmail(email) != null){
                 result.rejectValue("email","error","Email is exist");
-                model.addAttribute("users",users);
                 return "admin/user-edit";
             }
             appUser.setEmail(email);
@@ -94,7 +95,7 @@ public class AdminUserManagementController {
             appUser.setAvatar(fileStoreService.upload(file));
         // upload file to uploads
         // TODO: check email isExist
-        userService.update(appUser);
+        userService.save(appUser);
         return "redirect:/admin/user-management?refresh=true";
     }
 
@@ -109,8 +110,11 @@ public class AdminUserManagementController {
                               @RequestParam("email") String email,
                               @RequestParam("password") String password,
                               @RequestParam("password-new") String passwordNew){
-       if(!password.equals(passwordNew))
-        userService.updatePassword(email,password);
+       if(!password.equals(passwordNew)){
+           AppUser appUser = userService.findByEmail(email);
+           appUser.setPassword(passwordEncoder.encode(password));
+           userService.save(appUser);
+       }
         return "redirect:/admin/user-management/" + id;
     }
 

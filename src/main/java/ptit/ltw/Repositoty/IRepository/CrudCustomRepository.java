@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface CrudCustomRepository<T, ID>{
     void save(@NotNull T t);
-    void delete(Class<T> className,ID id);
-    Optional<T> findById(Class<T> className, ID id);
-    Optional<T> findByNaturalId(Class<T> className, String fieldNameNaturalId, Serializable value);
-    Collection<T> getAll(Class<T> className);
+    void delete(ID id);
+    Optional<T> findById(ID id);
+    Optional<T> findByNaturalId(Serializable value);
+    Collection<T> getAll();
 }

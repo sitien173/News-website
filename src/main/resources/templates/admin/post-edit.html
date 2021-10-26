@@ -2,8 +2,7 @@
 
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/admin/head::head}">
-    <title>Chỉnh Sửa Bài Đăng</title>
+<head th:insert="~{/fragments/admin/head::head(title = 'Chỉnh Sửa Bài Đăng')}">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -87,6 +86,16 @@
                                         <label for="title" class="form-label">Tiêu đề</label>
                                         <p th:if="${#fields.hasErrors('title')}" class="text-danger"
                                            th:errors="*{title}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-sm-12">
+                                    <div class="form-floating">
+                                        <input readonly placeholder="Đường dẫn" type="text" class="form-control" th:field="*{slug}" id="slug">
+                                        <label for="slug" class="form-label">Đường dẫn</label>
+                                        <p th:if="${#fields.hasErrors('slug')}" class="text-danger"
+                                           th:errors="*{slug}"></p>
                                     </div>
                                 </div>
                             </div>

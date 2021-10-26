@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="main-content(newPosts,posts,postsTayNguyen,postsPopular,categories,recommendPosts,currentPage,totalPage)" >
+    <div class="main-container container pt-24" id="main-container">
+        <!-- Content -->
+        <div class="row">
+            <!-- Posts -->
+            <div class="col-lg-8 blog__content">
+                <!-- Latest News -->
+                <th:block th:replace="~{/fragments/user/Latest-new::Latest-new(${newPosts})}" />
+                <!-- end latest news -->
+            </div>
+            <!-- end posts -->
+            <div class="col-lg-4 ">
+                <!-- Sidebar Right-->
+                <th:block th:replace="~{/fragments/user/sidebar-right::sidebar-right(${postsPopular})}" />
+                <!-- end sidebar right-->
+            </div>
+        </div>
+        <!-- end content -->
+
+        <!-- Ad Banner 728 -->
+        <th:block th:replace="~{/fragments/user/ad-banner::ad-banner(${'placeholder_728.jpg'})}" />
+        <!-- End Ad Banner 728 -->
+
+
+        <!-- Content Secondary -->
+        <th:block th:replace="~{/fragments/user/sub-content::sub-content(${'Tin Tây Nguyên'},${postsTayNguyen},${categories},${recommendPosts})}" />
+        <!-- content secondary -->
+
+        <th:block th:if="${totalPage == 0}">
+            <th:block  th:replace="~{/fragments/user/pagination::pagination(${link},${currentPage},${currentPage})}" />
+        </th:block>
+        <th:block th:if="${totalPage > 0}">
+            <th:block  th:replace="~{/fragments/user/pagination::pagination(${link},${currentPage},${totalPage})}" />
+        </th:block>
+        <br>
+    </div> <!-- end main container -->
+</th:block>
+</body>
+</html>

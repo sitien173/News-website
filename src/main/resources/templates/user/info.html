@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <base th:href="${#servletContext.getContextPath()}">
+    <style>
+        body {
+            background: #fff;
+            background-image: url('/assets/img/bg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .box-shadow {
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+    </style>
+    <script th:src="@{/assets/js/global.js}"></script>
+</head>
+<body>
+<div class="form-horizontal d-flex flex-centered" style="width: 100%;margin-top: 100px">
+    <div class="col-6 card box-shadow">
+        <div class="card-body">
+            <div class="form-group d-flex flex-centered">
+                <div class="col-5 col-sm-12 mr-2">
+                    <div class="col-12">
+                        <th:block th:if="${user.avatar}">
+                            <img class="img-fit-contain" style="width: 100%" th:src="@{/assets/img/{path}(path=${user.avatar})}" alt="avt" />
+                        </th:block>
+                        <th:block th:unless="${user.avatar}">
+                            <img class="img-fit-contain" style="width: 100%;" th:src="@{/assets/img/avt.jpg}" alt="avt" />
+                        </th:block>
+                    </div>
+                </div>
+                <div class="col-5 col-sm-12">
+                    <div class="form-group">
+                        <div class="has-icon-left">
+                            <input class="form-input" id="fullName" readonly th:value="|${user.firstName}${' '}${user.lastName}|">
+                            <i class="form-icon icon icon-people"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="has-icon-left">
+                            <input class="form-input" id="email" readonly th:value="${user.email}">
+                            <i class="form-icon icon icon-mail"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="has-icon-left">
+                            <input class="form-input" id="createAt" readonly th:value="${user.createAt}">
+                            <i class="form-icon icon icon-time"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="has-icon-left">
+                            <th:block th:if="${user.isAccountNonLocked}">
+                                <input class="form-input" readonly th:value="${'Hoạt động'}">
+                                <i class="form-icon icon icon-check"></i>
+                            </th:block>
+                            <th:block th:unless="${user.isAccountNonLocked}">
+                                <input class="form-input" readonly th:value="${'Lock'}">
+                                <i class="form-icon icon icon-stop"></i>
+                            </th:block>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="has-icon-left">
+                            <th:block th:if="${user.role.ADMIN}">
+                                <input class="form-input" readonly th:value="${'ADMIN'}">
+                                <i class="form-icon icon icon-flag"></i>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button onclick="history.back()" type="button" class="btn btn-gray input-group-btn mx-2">Trở về</button>
+                <a th:href="@{/user/info/update}" class="btn btn-primary input-group-btn mx-2">Chỉnh sửa</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+const URL = location.href;
 const isValidImage = () => {
     return document.getElementById("file")
         .files[0]

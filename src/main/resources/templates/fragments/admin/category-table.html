@@ -31,7 +31,7 @@
                             <tr th:id="${category.id}">
                                 <th scope="row">
                                     <fieldset class="form-check">
-                                        <input name="cateId" th:value="${category.id}" type="checkbox" class="form-check-input">
+                                        <input onchange="handlerInputCheck(this)" name="cateId" th:value="${category.id}" type="checkbox" class="form-check-input">
                                     </fieldset>
                                 </th>
                                 <td th:text="${category.name}"></td>

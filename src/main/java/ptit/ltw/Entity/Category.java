@@ -1,8 +1,10 @@
 package ptit.ltw.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +19,7 @@ import java.util.List;
 })
 @Data
 @NoArgsConstructor
+@NaturalIdCache
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -25,7 +28,7 @@ public class Category implements Serializable {
     @Column(nullable = false,length = 50)
     private String name;
 
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(nullable = false,length = 100)
     private String slug;
 
@@ -39,7 +42,7 @@ public class Category implements Serializable {
     private Boolean isEnable = true;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "categories")
     private List<Post> posts;
 
 }

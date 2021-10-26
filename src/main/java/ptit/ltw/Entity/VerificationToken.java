@@ -3,6 +3,7 @@ package ptit.ltw.Entity;
 
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "VerificationToken",uniqueConstraints =
                 @UniqueConstraint(name = "vf_UN_token",columnNames = "token"))
+@NaturalIdCache
 public class VerificationToken implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -31,9 +31,6 @@ public class CaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
         HttpServletResponse res = (HttpServletResponse)response;
         if(processUrl.equals(req.getServletPath()) && "POST".equalsIgnoreCase(req.getMethod())){
             String expect = req.getSession().getAttribute("captcha-security").toString();
-            //remove from session
-            req.getSession().removeAttribute("captcha-security");
-
             if (expect != null && !expect.equals(req.getParameter("captcha"))){
                 log.info("Verify Code Captcha Filter: Invalid Captcha");
                 unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("Wrong captcha code."));

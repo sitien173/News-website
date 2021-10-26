@@ -2,6 +2,7 @@ package ptit.ltw.Controller.User;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ public class RegistrationController {
     private final FileStoreService fileStoreService;
     private final VerificationTokenService verificationTokenService;
     private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
     
     @GetMapping
     public String showViewRegistration(Model model){
@@ -43,7 +45,8 @@ public class RegistrationController {
             return "user/registration";
         }
         if(!file.isEmpty())  appUser.setAvatar(fileStoreService.upload(file));
-        // TODO: check email isExist
+        String passwordEncode = passwordEncoder.encode(appUser.getPassword());
+        appUser.setPassword(passwordEncode);
         userService.save(appUser);
         return "redirect:/wait-confirm?info=We have sent a confirmation code to your email. Please check your email and confirm your account";
     }

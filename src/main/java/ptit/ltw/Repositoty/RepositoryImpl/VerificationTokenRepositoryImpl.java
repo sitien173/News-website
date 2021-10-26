@@ -18,13 +18,15 @@ import java.util.Optional;
 public class VerificationTokenRepositoryImpl extends CrudCustomRepositoryImpl<VerificationToken,Long> implements VerificationTokenRepository {
 
     public VerificationTokenRepositoryImpl(SessionFactory sessionFactory) {
-        super(sessionFactory);
+        super(sessionFactory,VerificationToken.class);
     }
 
     @Override
     public Optional<VerificationToken> findByToken(String token) {
-      return findByNaturalId(VerificationToken.class,"token",token);
+      return findByNaturalId(token);
     }
+
+    @Transactional
     @Override
     public void setConfirmAt(Long id,LocalDateTime confirmTime) {
         Transaction tr = null;

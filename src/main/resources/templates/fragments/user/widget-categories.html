@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="widget-categories(categories)" >
+    <!-- Widget Categories -->
+    <aside class="widget widget_categories">
+        <h4 class="widget-title">Categories</h4>
+        <ul>
+            <th:block th:each="category : ${categories}">
+                <li><a th:href="@{/category/{slug}(slug=${category.slug})}" th:text="${category.name}"></a><span class="categories-count" th:text="${category.posts.size}">5</span></li>
+            </th:block>
+        </ul>
+    </aside>
+    <!-- end widget categories -->
+</th:block>
+</body>
+</html>

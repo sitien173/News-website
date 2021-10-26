@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/user/head::head(title = '24 new - Read Every Thing')}">
+</head>
+<body class="bg-light style-default style-rounded">
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<main class="main oh" id="main">
+    <th:block th:replace="~{/fragments/user/header::header(${newPosts},${categories})}" />
+    <th:block th:replace="~{/fragments/user/trending-now::trending-now(${newPosts})}" />
+    <div class="main-container container pt-24" id="main-container">
+        <div class="row">
+            <!-- Posts -->
+            <div class="col-lg-8 blog__content mb-72">
+
+                <!-- Worldwide News -->
+                <section class="section">
+                    <div class="title-wrap title-wrap--line">
+                        <h3 class="section-title">Kết quả tìm kiếm</h3>
+                    </div>
+
+                    <th:block th:each="post : ${resultPost}">
+                        <article class="entry card post-list">
+                            <div class="entry__img-holder post-list__img-holder card__img-holder" th:style="'background:url(' + @{/assets/img/{path}(path=${post.banner})} + ')'">
+                                <a th:href="@{/post/{slug}(slug=${post.slug})}" class="thumb-url"></a>
+                                <img th:src="@{/assets/img/{path}(path=${post.banner})}" alt class="entry__img d-none">
+                                <th:block th:each="category : ${post.categories}">
+                                    <a th:href="@{/category/{slug}(slug=${category.slug})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:utext="${category.name}"></a>
+                                </th:block>
+                            </div>
+
+                            <div class="entry__body post-list__body card__body">
+                                <h2 class="entry__title">
+                                    <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}"></a>
+                                </h2>
+                                <ul class="entry__meta">
+                                    <li class="entry__meta-author">
+                                        <span>by</span>
+                                        <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                    </li>
+                                    <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                    </li>
+                                    <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </article>
+                    </th:block>
+                </section> <!-- end worldwide news -->
+            </div> <!-- end posts -->
+
+            <!-- Sidebar 1 -->
+            <aside class="col-lg-4 sidebar sidebar--1 sidebar--right">
+
+                <!-- Widget Ad 300 -->
+                <aside class="widget widget_media_image">
+                    <a href="#">
+                        <img th:src="@{/assets/img/{path}(path=${'placeholder_336.jpg'})}" alt>
+                    </a>
+                </aside> <!-- end widget ad 300 -->
+
+                <!-- Widget Categories -->
+                <th:block th:replace="~{/fragments/user/widget-categories::widget-categories(${categories})}" />
+                <!-- end widget categories -->
+
+                <!-- Widget Recommended (Rating) -->
+                <th:block th:replace="~{/fragments/user/widget-recommended::widget-recommended(${recommendPosts})}" />
+                <!-- end widget recommended (rating) -->
+            </aside>
+            <!-- end sidebar 1 -->
+        </div>
+        <th:block th:if="${totalPage == 0}">
+            <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/search?query='}${query}${'&'}|,${currentPage},${currentPage})}" />
+        </th:block>
+        <th:block th:if="${totalPage > 0}">
+            <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/search?query='}${query}${'&'}|,${currentPage},${totalPage})}" />
+        </th:block>
+        <br>
+    </div>
+    <!-- Footer -->
+    <th:block th:replace="~{/fragments/user/footer::footer}"/>
+    <!-- end footer -->
+
+    <div id="back-to-top" class="show">
+        <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+</main> <!-- end main-wrapper -->
+<th:block th:insert="~{/fragments/user/import-script::import-script}" />
+</body>
+</html>

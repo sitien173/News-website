@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.svg}">
+</head>
+<body>
+<th:block th:fragment="Latest-new(posts)" >
+    <!-- Latest News -->
+    <section class="section tab-post mb-16">
+        <div class="title-wrap title-wrap--line">
+            <h3 class="section-title">Tin mới nhất</h3>
+        </div>
+        <!-- tab content -->
+        <div class="tabs__content tabs__content-trigger tab-post__tabs-content">
+            <div class="tabs__content-pane tabs__content-pane--active">
+                <div class="row card-row">
+                    <th:block th:each="post : ${posts}">
+                        <div class="col-md-6">
+                            <article class="entry card">
+                                <div class="entry__img-holder card__img-holder">
+                                    <a th:href="@{/post/{slug}(slug=${post.slug})}">
+                                        <div class="thumb-container thumb-70">
+                                            <img th:attr="data-src=@{/assets/img/{path}(path=${post.banner})}" th:src="@{/assets/img/{path}(path=${post.banner})}" class="entry__img lazyloaded" alt>
+                                        </div>
+                                    </a>
+                                    <th:block th:each="category : ${post.categories}">
+                                        <a th:href="@{/category/{slug}(slug=${category.slug})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:utext="${category.name}"></a>
+                                    </th:block>
+                                </div>
+
+                                <div class="entry__body card__body">
+                                    <div class="entry__header">
+                                        <h2 class="entry__title">
+                                            <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}"></a>
+                                        </h2>
+                                            <ul class="entry__meta">
+                                                <li class="entry__meta-author">
+                                                    <span>by</span>
+                                                    <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                                </li>
+                                                <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                                </li>
+                                                <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+                                                </li>
+                                            </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </th:block>
+
+                </div>
+            </div> <!-- end pane 1 -->
+        </div> <!-- end tab content -->
+    </section>
+    <!-- end latest news -->
+</th:block>
+</body>
+</html>

@@ -34,6 +34,6 @@ public class ForgotPasswordController {
     public String confirmToken(@RequestParam("token") String token) {
         VerificationToken verificationToken = verificationTokenService.confirmToken(token);
         userService.setAuthentication(verificationToken.getAppUser());
-        return "redirect:/user/update-password";
+        return "user/update-password";
     }
 }

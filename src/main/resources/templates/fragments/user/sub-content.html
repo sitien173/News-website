@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/leaf.png}">
+</head>
+<body>
+<th:block th:fragment="sub-content(title,cPosts,categories,recommendPosts)" >
+    <!-- Content Secondary -->
+    <div class="row">
+        <!-- Posts -->
+        <div class="col-lg-8 blog__content mb-72">
+
+            <!-- Worldwide News -->
+            <section class="section">
+                <div th:if="${cPosts.size > 0}" class="title-wrap title-wrap--line">
+                    <h3 class="section-title" th:text="${title}"></h3>
+                    <a th:if="${cPosts[0]}" th:href="@{/category/{slug}(slug=${cPosts[0].categories[0].slug},view-all=true)}" class="all-posts-url">View All</a>
+                </div>
+
+                <th:block th:each="post : ${cPosts}">
+                    <article class="entry card post-list">
+                        <div class="entry__img-holder post-list__img-holder card__img-holder" th:style="'background:url(' + @{/assets/img/{path}(path=${post.banner})} + ')'">
+                            <a th:href="@{/post/{slug}(slug=${post.slug})}" class="thumb-url"></a>
+                            <img th:src="@{/assets/img/{path}(path=${post.banner})}" alt class="entry__img d-none">
+                            <th:block th:each="category : ${post.categories}">
+                                <a th:href="@{/category/{slug}(slug=${category.slug})}" class="entry__meta-category entry__meta-category--label entry__meta-category--violet" th:utext="${category.name}"></a>
+                            </th:block>
+                        </div>
+
+                        <div class="entry__body post-list__body card__body">
+                            <h2 class="entry__title">
+                                <a th:href="@{/post/{slug}(slug=${post.slug})}" class="truncate" th:text="${post.title}"></a>
+                            </h2>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-author">
+                                    <span>by</span>
+                                    <a href="#" th:text="|${post.appUser.firstName}${' '}${post.appUser.lastName}|"></a>
+                                </li>
+                                <li class="entry__meta-date" th:text="${post.createAt}">
+
+                                </li>
+                                <li class="entry__meta-date" th:text="|${post.view}${' Lượt xem'}|">
+
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </th:block>
+            </section> <!-- end worldwide news -->
+        </div> <!-- end posts -->
+
+        <!-- Sidebar 1 -->
+        <aside class="col-lg-4 sidebar sidebar--1 sidebar--right">
+
+            <!-- Widget Ad 300 -->
+            <aside class="widget widget_media_image">
+                <a href="#">
+                    <img th:src="@{/assets/img/{path}(path=${'placeholder_336.jpg'})}" alt>
+                </a>
+            </aside> <!-- end widget ad 300 -->
+
+            <!-- Widget Categories -->
+            <th:block th:replace="~{/fragments/user/widget-categories::widget-categories(${categories})}" />
+            <!-- end widget categories -->
+
+            <!-- Widget Recommended (Rating) -->
+            <th:block th:replace="~{/fragments/user/widget-recommended::widget-recommended(${recommendPosts})}" />
+            <!-- end widget recommended (rating) -->
+        </aside>
+        <!-- end sidebar 1 -->
+    </div>
+    <!-- content secondary -->
+</th:block>
+</body>
+</html>

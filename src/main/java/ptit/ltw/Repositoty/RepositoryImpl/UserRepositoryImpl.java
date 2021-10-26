@@ -12,11 +12,11 @@ import java.util.Optional;
 public class UserRepositoryImpl extends CrudCustomRepositoryImpl<AppUser,Long> implements UserRepository{
 
     public UserRepositoryImpl(SessionFactory sessionFactory) {
-        super(sessionFactory);
+        super(sessionFactory,AppUser.class);
     }
 
     @Override
     public Optional<AppUser> findByEmail(String email) {
-        return findByNaturalId(AppUser.class,"email",email);
+        return findByNaturalId(email);
     }
 }

@@ -2,7 +2,7 @@
 
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/admin/head::head}">
+<head th:insert="~{/fragments/admin/head::head(title='Chỉnh sửa danh mục')}">
 
 </head>
 
@@ -79,7 +79,6 @@
                               method="post" th:object="${categoryEdit}" enctype="multipart/form-data">
                             <input type="hidden" id="id-hidden1" th:field="*{id}">
                             <input type="hidden" id="name-hidden1" th:field="*{name}">
-                            <input type="hidden" id="slug-hidden1" th:field="*{slug}">
                             <input type="hidden" id="avt" th:field="*{banner}">
                             <div class="col-12">
                                 <div class="row g-3 mb-3">
@@ -93,7 +92,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-floating">
-                                            <input required placeholder="Đường Dẫn" id="slug" name="slug1" type="text" class="form-control" th:value="*{slug}">
+                                            <input readonly placeholder="Đường Dẫn" id="slug" name="slug1" type="text" class="form-control" th:field="*{slug}">
                                             <label for="slug" class="form-label">Đường Dẫn</label>
                                             <p th:if="${#fields.hasErrors('slug')}" class="text-danger"
                                                th:errors="*{slug}"></p>

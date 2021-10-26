@@ -10,15 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content>
 
-    <link th:href="@{assets/css/css.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/css.css}" rel="stylesheet">
 
     <!-- Css -->
-    <link th:href="@{assets/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{assets/css/font-icons.css}" rel="stylesheet">
-    <link th:href="@{assets/css/style.css}" rel="stylesheet">
-
-    <!-- Lazyload (must be placed in head in order to work) -->
-    <script th:src="@{assets/js/lazysizes.min.js}"></script></head>
+    <link th:href="@{/assets/css/cdn/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/cdn/slick.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/cdn/slick-theme.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/font-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+    <base th:href="${#servletContext.getContextPath()}">
 <body>
 
 </body>

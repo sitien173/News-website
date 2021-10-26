@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/user/head::head(title = '24 new - Read Every Thing')}">
+</head>
+<body class="bg-light style-default style-rounded">
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<!-- Preloader -->
+<div class="loader-mask" style="display: none;">
+    <div class="loader" style="display: none;">
+        <div></div>
+    </div>
+</div>
+
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
+
+<main class="main oh" id="main">
+    <th:block th:replace="~{/fragments/user/header::header(${newPosts},${categories})}" />
+    <th:block th:replace="~{/fragments/user/trending-now::trending-now(${newPosts})}" />
+    <div class="main-container container pt-24" id="main-container">
+        <!-- Content Secondary -->
+        <th:block th:replace="~{/fragments/user/sub-content::sub-content(${category.name},${cPosts},${categories},${recommendPosts})}" />
+        <!-- content secondary -->
+        <th:block th:if="${totalPage == 0}">
+            <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/category/'}${category.slug}|,${currentPage},${currentPage})}" />
+        </th:block>
+        <th:block th:if="${totalPage > 0}">
+            <th:block th:replace="~{/fragments/user/pagination::pagination(|${link}${'/category/'}${category.slug}|,${currentPage},${totalPage})}" />
+        </th:block>
+        <br>
+    </div>
+    <!-- Footer -->
+    <th:block th:replace="~{/fragments/user/footer::footer}"/>
+    <!-- end footer -->
+
+    <div id="back-to-top" class="show">
+        <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+</main> <!-- end main-wrapper -->
+<th:block th:insert="~{/fragments/user/import-script::import-script}" />
+</body>
+</html>

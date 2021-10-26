@@ -1,7 +1,6 @@
 package ptit.ltw.Service.ServiceImpl;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
+import com.cksource.ckfinder.exception.FileNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,40 +10,42 @@ import org.springframework.web.multipart.MultipartFile;
 import ptit.ltw.Service.IService.FileStoreService;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.InvalidPathException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 
 @Service
 public class FileStoreServiceImpl implements FileStoreService {
     public static String FILE_STORAGE_ROOT = getRootPath();
     private static String getRootPath(){
-        try {
+        /*try {
             Resource resource = new ClassPathResource("/static/assets");
             return resource.getFile().getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return null;*/
+        Path path = Paths.get(System.getProperty("user.dir"),"src/main/resources/static/assets");
+        return path.toAbsolutePath().toString();
     }
     private String getExtension(String originalFileName) {
         return StringUtils.getFilenameExtension(originalFileName);
     }
     private String generateFileName(String originalFileName) {
-        return UUID.randomUUID().toString() + "." + getExtension(originalFileName);
+        // replace <:> tránh InvalidPathException
+        return originalFileName.substring(0,originalFileName.lastIndexOf(".")) + LocalDateTime.now().toString().replaceAll(":","-") + "." + getExtension(originalFileName);
     }
 
     private boolean isAllow(String fileName){
-        String[] allowFiles = {".gif",".png",".jpg",".jpeg",".bpm",".svg"};
+        String[] allowFiles = {".gif",".jfif",".png",".jpg",".jpeg",".bpm",".svg"};
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         List<String> suffixList = Arrays.stream(allowFiles).collect(Collectors.toList());
         return suffixList.contains(suffix);
@@ -52,10 +53,11 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public String upload(MultipartFile multipartFile)  {
-        if(!isAllow(multipartFile.getOriginalFilename())) {
-            throw new IllegalStateException("File not accept");
-        }
-        // lưu và targer hiển thị tức thời
+        if(multipartFile.isEmpty())
+            throw  new IllegalStateException("File is Empty");
+        else if(!isAllow(multipartFile.getOriginalFilename()))
+            throw new IllegalStateException("File not accept.Support for extension [gif | jfif | png | jpg | jpeg | bpm | svg]");
+
         String storageRoot = FILE_STORAGE_ROOT+ File.separator+"img";
         String fileName = generateFileName(multipartFile.getOriginalFilename());
         File file = new File(storageRoot+File.separator+fileName);
@@ -64,7 +66,6 @@ public class FileStoreServiceImpl implements FileStoreService {
             file.getParentFile().mkdirs();
         }
         try {
-            // upload to target hiển thị tức thời
             multipartFile.transferTo(file);
         }catch (IOException e){
             e.printStackTrace();
@@ -72,23 +73,26 @@ public class FileStoreServiceImpl implements FileStoreService {
         return fileName;
     }
 
+    public static Path findPath(Path path,String fileName) throws IOException {
+        try (Stream<Path> walk = Files.walk(path)) {
+            return walk.filter(Files::isRegularFile)
+                    .filter(path1 -> path1.getFileName().toString().equalsIgnoreCase(fileName))
+                    .findFirst().orElse(null);
+        }
+    }
+
     @Override
     public Resource load(String fileName) {
+        String storageRoot = FILE_STORAGE_ROOT + File.separator + "img" + File.separator;
         try {
-            try {
-                String storageRoot = FILE_STORAGE_ROOT + File.separator + "img" + File.separator;
-                Path file = Paths.get(storageRoot).resolve(fileName);
-                Resource resource = new UrlResource(file.toUri());
-                if (resource.exists() || resource.isReadable()) {
-                    return resource;
-                }
-            }catch (InvalidPathException e){
-                URL url = new URL(fileName);
-                InputStreamResource resource = new InputStreamResource(url.openStream());
+            Path path = Paths.get(storageRoot);
+            Path path1 = findPath(path,fileName);
+            if(path1 == null) return null;
+            Resource resource = new UrlResource(path1.toUri());
+            if(resource.exists() || resource.isReadable())
                 return resource;
-            }
-        } catch (IOException e ) {
-            // true logic
+        } catch (IOException e) {
+           e.printStackTrace();
         }
         return null;
     }

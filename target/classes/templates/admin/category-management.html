@@ -2,7 +2,7 @@
 
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/admin/head::head}">
+<head th:insert="~{/fragments/admin/head::head(title='Quản lí danh mục')}">
 
 </head>
 
@@ -77,20 +77,12 @@
                             <input type="hidden" id="avt" th:field="*{banner}">
                             <div class="col-12">
                                 <div class="row g-3 mb-3">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <div class="form-floating">
                                             <input required placeholder="Tên Danh Mục" type="text" class="form-control" th:field="*{name}" id="name">
                                             <label for="name" class="form-label">Tên Danh Mục</label>
                                             <p th:if="${#fields.hasErrors('name')}" class="text-danger"
                                                th:errors="*{name}"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-floating">
-                                            <input required placeholder="Đường Dẫn" type="text" class="form-control" th:field="*{slug}" id="slug">
-                                            <label for="slug" class="form-label">Đường dẫn</label>
-                                            <p th:if="${#fields.hasErrors('slug')}" class="text-danger"
-                                               th:errors="*{slug}"></p>
                                         </div>
                                     </div>
                                 </div>

@@ -4933,4 +4933,10 @@ dd {
 		color: #2D95E3;
 		font-size: 14px; }
 
-/*# sourceMappingURL=style.css.map */
+	.truncate {
+		white-space: normal;
+		word-break: normal;
+		width: 250px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}

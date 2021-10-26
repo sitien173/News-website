@@ -3,6 +3,7 @@ package ptit.ltw.Entity;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.*;
 @Entity
 @Table(name = "AppUser",
         uniqueConstraints = {@UniqueConstraint(name = "appUser_UN_email",columnNames = "email")})
+@NaturalIdCache
 public class AppUser implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +41,7 @@ public class AppUser implements UserDetails, Serializable {
     private String avatar;
 
     @Email
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(nullable = false,length = 100)
     private String email;
 

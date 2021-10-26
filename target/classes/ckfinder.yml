@@ -1,7 +1,7 @@
-enabled: false # Change this value to "true" to enable the application
+enabled: true # Change this value to "true" to enable the application
 
-licenseName: ~
-licenseKey: ~
+licenseName: 'localhost'
+licenseKey: '9H7HYPTYA4X1GB57TLLQ46PC53SJU'
 roleSessionAttribute: 'CKFinder_UserRole'
 serveStaticResources: true
 checkSizeAfterScaling: true
@@ -76,7 +76,7 @@ cache:
   proxyCommand: 0
 
 accessControl:
-  - role: '*'
+  - role: 'ADMIN'
     resourceType: '*'
     folder: /
 
@@ -87,7 +87,7 @@ accessControl:
 
     FILE_VIEW: true
     FILE_CREATE: true
-    FILE_RENAME: true
+    FILE_RENAME: false
     FILE_DELETE: true
 
     IMAGE_RESIZE: true
