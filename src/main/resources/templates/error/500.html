@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <title>Lỗi</title>
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <style>
-        .box-shadow {
-            border: 0 none lightgray;
-            box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
-        }
-
-    </style>
 </head>
 <body>
-<div class="container d-flex flex-centered" style="margin-top: 50px">
-    <div class="card d-flex flex-centered box-shadow">
-        <div class="card-body">
-            <div class="text-center">
-                <h6 th:utext="${message}"></h6>
-            </div>
-            <div class="text-center">
-                <button  type="submit" onclick="history.back()" class="btn btn-primary input-group-btn">Quay lại</button>
-            </div>
+<div class="container d-flex flex-centered">
+    <div class="container-fluid">
+        <img th:src="@{/assets/img/500.png}" alt="Error" />
+        <p class="text-center" th:utext="${message}"></p>
+        <div class="text-center">
+            <button  type="submit" onclick="history.back()" class="btn btn-primary input-group-btn">Quay lại</button>
         </div>
     </div>
 </div>

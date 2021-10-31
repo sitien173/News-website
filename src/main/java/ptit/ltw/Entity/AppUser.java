@@ -54,10 +54,10 @@ public class AppUser implements UserDetails, Serializable {
     private Role role = Role.USER;
 
     @Column(nullable = false)
-    private Boolean isEnable = false;
+    private Boolean isEnable = true;
 
     @Column(nullable = false)
-    private Boolean isAccountNonLocked = true;
+    private Boolean isAccountNonLocked = false;
 
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();

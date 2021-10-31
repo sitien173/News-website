@@ -19,7 +19,7 @@ public class UpdatePasswordController {
                                     @SessionAttribute("SPRING_SECURITY_CONTEXT") SecurityContext securityContext){
         AppUser appUser = (AppUser) securityContext.getAuthentication().getPrincipal();
         appUser.setPassword(passwordEncoder.encode(password));
-        appUser.setIsEnable(false);
+        appUser.setIsAccountNonLocked(false);
         userService.save(appUser);
         return "redirect:/wait-confirm?info=We have sent a confirmation code to your email. Please check your email and authentication your account";
     }

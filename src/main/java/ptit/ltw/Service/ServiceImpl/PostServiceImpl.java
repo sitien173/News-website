@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +24,8 @@ public class PostServiceImpl implements PostService {
     private final SubscriberService subscriberService;
     @Override
     public List<Post> getAll() {
-        return new ArrayList<>(postRepository.getAll());
+       return postRepository.getAll()
+               .stream().filter(Post::getIsEnable).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +50,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(Long id) {
-        postRepository.delete(id);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(String.format("id %s not found",id)));
+        post.setIsEnable(false);
+        postRepository.save(post);
     }
 
     private String getSlug(String title){

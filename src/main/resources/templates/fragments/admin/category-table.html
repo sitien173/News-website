@@ -22,7 +22,6 @@
                             <th scope="col">Tên</th>
                             <th scope="col">Đường dẫn</th>
                             <th scope="col">Banner</th>
-                            <th scope="col">Trạng Thái</th>
                             <th scope="col">Ngày Tạo</th>
                         </tr>
                         </thead>
@@ -39,11 +38,6 @@
                                 <td>
                                     <img th:src="@{/assets/img/{path}(path=${category.banner})}" style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
                                 </td>
-                                <th:block th:switch="${category.isEnable}">
-                                    <td class="text-danger" th:case="false">Lock</td>
-                                    <td class="text-primary" th:case="true">Active</td>
-                                    <td th:case="*">Không Xác Định</td>
-                                </th:block>
                                 <td th:text="${category.createAt}"></td>
                             </tr>
                         </th:block>
@@ -54,8 +48,7 @@
                             <th>Tên</th>
                             <th>Đường dẫn</th>
                             <th class="invisible"></th>
-                            <th class="invisible"></th>
-                            <th class="invisible"></th>
+                            <th>Ngày tạo</th>
                         </tr>
                         </tfoot>
                     </table>

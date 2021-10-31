@@ -19,13 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     @Override
     public List<Category> getAll() {
-        return new ArrayList<>(categoryRepository.getAll());
-    }
-
-    @Override
-    public List<Category> getAllIsEnable() {
-       return this.getAll()
-               .stream().filter(Category::getIsEnable).collect(Collectors.toList());
+        return categoryRepository.getAll().stream().filter(Category::getIsEnable).collect(Collectors.toList());
     }
 
     @Override
@@ -45,7 +39,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Integer id) {
-        categoryRepository.delete(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(String.format("id %s not found",id)));
+        category.setIsEnable(false);
+        categoryRepository.save(category);
     }
 
 

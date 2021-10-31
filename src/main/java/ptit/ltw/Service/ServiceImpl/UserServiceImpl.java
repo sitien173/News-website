@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ptit.ltw.Entity.AppUser;
 import ptit.ltw.Entity.VerificationToken;
@@ -17,7 +16,6 @@ import ptit.ltw.Repositoty.IRepository.UserRepository;
 import ptit.ltw.Repositoty.IRepository.VerificationTokenRepository;
 import ptit.ltw.Service.IService.MailService;
 import ptit.ltw.Service.IService.UserService;
-import ptit.ltw.Model.Role;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -25,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +31,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final Environment environment;
     private final MailService mailService;
     private  final HttpSession session;
@@ -50,12 +48,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AppUser> getAll() {
-        return new ArrayList<>(userRepository.getAll());
+        return userRepository.getAll()
+                .stream()
+                .filter(AppUser::isEnabled)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void delete(Long id) {
-        userRepository.delete(id);
+        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(String.format("id %s not found",id)));
+        appUser.setIsEnable(false);
+        userRepository.save(appUser);
     }
 
     public void forgotPassword(String email) {
@@ -84,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(@NotNull AppUser appUser) {
         // TODO: insert verificationToken and send mail to active account
-        if(!appUser.isEnabled()) {
+        if(!appUser.isAccountNonLocked()) {
             VerificationToken verificationToken = sendMailRegistration(appUser, appUser.getEmail());
             appUser.addVerificationToken(verificationToken);
         }
