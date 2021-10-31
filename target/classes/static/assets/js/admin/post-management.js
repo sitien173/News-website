@@ -7,6 +7,11 @@ $(document).ready(function() {
 
     // DataTable
     const table = $('#table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "bInfo" : false,
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {

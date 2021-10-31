@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{/fragments/user/head::head(title = '24 new - Read Every Thing')}">
+<head th:insert="~{/fragments/user/head::head(title = 'ANVI - Trang Tin Tức')}">
 </head>
 <body class="bg-light style-default style-rounded">
 
@@ -50,13 +50,13 @@
                                 <th:block th:each="comment : ${post.comments}">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <img th:src="@{/assets/img/{path}(path=${comment.appUser.avatar})}" class="img img-rounded img-fluid"/>
-                                            <p class="text-secondary text-center" th:text="${comment.createAt}"></p>
+                                            <img style="width: 70px;height: 70px;border-radius: 25%" th:src="@{/assets/img/{path}(path=${comment.appUser.avatar})}" class="img img-rounded img-fluid"/>
                                         </div>
                                         <div class="col-md-10">
                                             <p>
-                                                <span class="float-left"><strong th:text="|${comment.appUser.firstName}${' '}${comment.appUser.lastName}|"></strong></span>
+                                                <span class="float-left"><strong th:text="|${comment.appUser.firstName}${' '}${comment.appUser.lastName}|"></strong>-<em th:text="${comment.createAt}"></em></span>
                                             </p>
+
                                             <div class="clearfix"></div>
                                             <th:block th:utext="${comment.feedback}"/>
                                         </div>

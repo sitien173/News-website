@@ -23,7 +23,6 @@
                                 <th scope="col">Banner</th>
                                 <th scope="col">Nội Dung</th>
                                 <th scope="col">Views</th>
-                                <th scope="col">Trạng Thái</th>
                                 <th scope="col">Người Đăng</th>
                                 <th scope="col">Ngày Tạo</th>
                             </tr>
@@ -43,32 +42,8 @@
                                         <img th:src="@{/assets/img/{path}/(path=${post.banner})}"  style="width: 60px;height: 60px;object-fit: cover" class="img-thumbnail">
                                     </td>
                                     <td><a th:href="@{/post/{slug}(slug=${post.slug})}" class="text-primary" target="_blank">Hiển thị</a>
-                                    <!--
-                                        <div class="modal fade" th:id="|${'modal'}${post.id}|" tabindex="-1" th:aria-labelledby="|${'modal'}${post.id}${'Label'}|" aria-hidden="true">
-                                            <div class="modal-dialog modal-fullscreen">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="text-center" th:utext="|${'Title: '}${post.title}|"></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="card card-body">
-                                                        <div th:utext="${post.content}"></div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <a th:href="@{/admin/post-management/{id}/(id=${post.id})}" class="btn btn-primary">Go to edit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
--->
                                     </td>
                                     <td class="text-info" th:utext="${post.view}"></td>
-                                    <th:block th:switch="${post.isEnable}">
-                                        <td class="text-danger" th:case="false">Lock</td>
-                                        <td class="text-primary" th:case="true">Active</td>
-                                        <td th:case="*">Không Xác Định</td>
-                                    </th:block>
                                     <th><a href="#" class="text-primary" data-bs-toggle="modal" th:data-bs-target="|${'#user-modal'}${post.appUser.id}|" th:utext="${post.appUser.email}"></a>
                                         <div class="modal fade" th:id="|${'user-modal'}${post.appUser.id}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -138,9 +113,8 @@
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
-                                <th class="invisible"></th>
                                 <th>Author</th>
-                                <th class="invisible"></th>
+                                <th>Ngày tạo</th>
                             </tr>
                             </tfoot>
                         </table>

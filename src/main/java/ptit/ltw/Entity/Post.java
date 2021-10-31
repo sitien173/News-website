@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class Post implements Serializable {
     @Column(nullable = false)
     private String slug;
 
+    @NotBlank(message = "Tile not empty")
     @Column(nullable = false)
     private String title;
 
@@ -58,6 +60,7 @@ public class Post implements Serializable {
     @Column(updatable = false)
     private LocalDate createAt = LocalDate.now();
 
+    @NotBlank(message = "Content not empty")
     @Column(nullable = false)
     @Type(type = "text")
     private String content;

@@ -23,8 +23,7 @@
                                 <th scope="col">Tên</th>
                                 <th scope="col">Avatar</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Trạng Thái</th>
-                                <th scope="col">Xác Thực</th>
+                                <th scope="col">Xác thực</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Ngày Tạo</th>
                             </tr>
@@ -45,13 +44,8 @@
                                     </td>
                                     <td th:text="${user.email}"></td>
                                     <th:block th:switch="${user.isAccountNonLocked}">
-                                        <td class="text-danger" th:case="false">Lock</td>
-                                        <td class="text-primary" th:case="true">Active</td>
-                                        <td th:case="*">Không Xác Định</td>
-                                    </th:block>
-                                    <th:block th:switch="${user.isEnable}">
+                                        <td class="text-danger" th:case="false">Unconfirmed</td>
                                         <td class="text-primary" th:case="true">Confirmed</td>
-                                        <td class="text-danger" th:case="false">unconfirmed</td>
                                         <td th:case="*">Không Xác Định</td>
                                     </th:block>
                                     <td th:text="${user.role.name}"></td>
@@ -68,8 +62,7 @@
                                 <th>Email</th>
                                 <th class="invisible"></th>
                                 <th class="invisible"></th>
-                                <th class="invisible"></th>
-                                <th class="invisible"></th>
+                                <th>Ngày Tạo</th>
                             </tr>
                             </tfoot>
                         </table>

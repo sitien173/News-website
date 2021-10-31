@@ -29,8 +29,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
             throw new IllegalStateException("token expired");
         }
         verificationTokenRepository.setConfirmAt(verificationToken.getId(), LocalDateTime.now());
-        if (!verificationToken.getAppUser().isEnabled()){
-            verificationToken.getAppUser().setIsEnable(true);
+        if (!verificationToken.getAppUser().isAccountNonLocked()){
+            verificationToken.getAppUser().setIsAccountNonLocked(true);
             userRepository.save(verificationToken.getAppUser());
         }
        return verificationToken;

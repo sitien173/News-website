@@ -40,7 +40,7 @@ public class InitializeDataInterceptor implements HandlerInterceptor {
     }
 
     private List<Category> getCategories(){
-        if(categories == null) categories = categoryService.getAllIsEnable();
+        if(categories == null) categories = categoryService.getAll();
         return categories;
     }
     private Page<Post> getPosts(Integer pageNo){
