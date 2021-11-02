@@ -82,6 +82,7 @@ public class InitializeDataInterceptor implements HandlerInterceptor {
            referer.contains(REQUEST_CATEGORY_CONTROLLER) ||
            referer.contains(REQUEST_SEARCH_CONTROLLER)){
             modelAndView.addObject("posts",listPost);
+            modelAndView.addObject("postsPopular",getPopularPost());
             modelAndView.addObject("categories",getCategories());
             modelAndView.addObject("recommendPosts",getRecommendPost());
             modelAndView.addObject("newPosts",getNewPost());
