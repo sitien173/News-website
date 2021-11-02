@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ptit.ltw.Configuration.Filter.CaptchaAuthenticationFilter;
+import ptit.ltw.Model.Role;
 import ptit.ltw.Service.IService.UserService;
 
 @Configuration
@@ -39,8 +40,11 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new CaptchaAuthenticationFilter("/user/j_spring_security_login", "/login?captcha-message=Captcha invalid"), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                    .antMatchers("/user/update-password")
+                         .hasAuthority(Role.USER.name())
                     .antMatchers("/**/user/**")
                         .authenticated()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
